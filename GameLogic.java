@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 public class GameLogic {
 
-	private ArrayList<Player>order;
-	private Boolean gameWon;
+	private ArrayList<Player> m_order;
+	private Boolean m_gameWon;
 
 	
 	GameLogic(){
@@ -19,16 +19,16 @@ public class GameLogic {
 	}
 	public ArrayList<Player> getOrderPlay(){
 		//returns a player
-		return order;
+		return m_order;
 		
 	}
 	public void setGameWon(Boolean won){
 		// Set the game to true if won
-		gameWon = won;
+		m_gameWon = won;
 	}
 	public Boolean getGameWon(){
 		//return if the game is won
-		return gameWon;
+		return m_gameWon;
 		
 	}
 	public Player nextMove() {
