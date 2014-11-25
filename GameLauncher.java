@@ -1,13 +1,13 @@
 
 public class GameLauncher {
-	private String[]tempNames;
-	int numSnames;
-	int numLadders;
+	private String[] m_tempNames;
+	int m_numSnames;
+	int m_numLadders;
 
 	
 	
 	public static void main(String[] args) {
-		
+		//Main Method
 		
 		
 
