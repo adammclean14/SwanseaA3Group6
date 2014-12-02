@@ -1,4 +1,3 @@
-COMMENTS STILL NEED DOING
 /**
  * @file	-Dice.java
  * @author	-F.Akkad
@@ -19,8 +18,10 @@ public class Dice {
 	final public static int HIGH_DICEROLL = 7;
 	/* the number of times a number is generated before the final selection */
 	final public static int SHUFFLE = 11;
-	public static int m_Count = 0;
-	public static int m_SelectedNumber = 0;
+	
+	/* variables used to collect the randomly generated number */
+	public static int m_Count;
+	public static int m_SelectedNumber;
 	
 	/**
 	 * Method to shuffle and then retrieve a randomly
