@@ -27,12 +27,22 @@ public abstract class Player {
 		m_pieceColor = color;
 		m_hasWon = hasWon;
 	}
+
+	Player(){
+		
+	}
 	 /** 
 	  * This method returns the name stored in the variable m_name;
+	  * @return m_name
 	  */
 	public String getName(){
 		return m_name;
 	}
+	/**
+	* Method to set the member variable m_name
+	* @param name
+	*
+	*/
 	public void setName(String name){
 		name = m_name;
 	}

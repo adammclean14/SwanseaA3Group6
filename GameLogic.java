@@ -1,19 +1,15 @@
 import java.util.ArrayList;
 
 
-public class GameLogic {
+abstract class GameLogic {
 
 	private ArrayList<Player> m_order;
 	private Boolean m_gameWon;
+	private int m_playerIndex = 0;
+
 
 	
-	GameLogic(){
-		
-	}
-	
-	public void boardSetUp(){
-		//Set up the board
-	}
+	abstract void boardSetUp();
 	public void setOrderPlay(){
 		//Set order of play
 	}
@@ -27,18 +23,20 @@ public class GameLogic {
 		m_gameWon = won;
 	}
 	public Boolean getGameWon(){
-		//return if the game is won
-		return m_gameWon;
+
+		if(m_gameWon){
+			return true;
+		}else{
+			return false;
+		}
 		
 	}
 	public Player nextMove() {
-		//return the player whos next turn it is
-		return null;
+		Player temp = New Player();
+		temp = m_order.get(m_playerIndex);
+		m_playerIndex++;
+		return temp;
 		
 	}
-	public void play(){
-		
-		//method to play the game
-		
-	}
+	abstract void play();
 }
