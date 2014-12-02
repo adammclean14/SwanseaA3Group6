@@ -22,21 +22,22 @@ public class Dice {
 	public static int m_Count = 0;
 	public static int m_SelectedNumber = 0;
 	
-	
 	/**
 	 * Method to shuffle and then retrieve a randomly
 	 * generated number between 1 and 6 inclusively.
 	 */
-	public int diceRoll() {
+	public static int diceRoll() {
 		boolean activated = true;
 		if (activated == true) {
 			while (m_Count < SHUFFLE) {
 				Random rand = new Random();
-				m_SelectedNumber = rand.nextInt(HIGH_DICEROLL - LOW_DICEROLL) + HIGH_DICEROLL;
+				m_SelectedNumber = rand.nextInt(HIGH_DICEROLL - LOW_DICEROLL) + LOW_DICEROLL;
 				m_Count ++;
 			}
 		}
 		return m_SelectedNumber;
 	}
+
+}
 
 }
