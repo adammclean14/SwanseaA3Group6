@@ -20,7 +20,7 @@ public class GameTimer{
 	 * Constructor which automatically sets timer to zero and starts timer.
 	 */
 	public GameTimer() {
-		setTime(0,0,0);
+		setTime(0,0,30);
 		startTime();
 	}
 	/**
@@ -57,19 +57,20 @@ public class GameTimer{
 		Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
-				
+				updateTime();
+				System.out.println(getTime());
 			}
-		}, m_delay, m_updateInterval;
+		}, delay, m_updateInterval);
 	}
 	/**
 	 * update the minutes and seconds when the timer is running.
 	 */
 	public void updateTime(){
-		if (m_minutes > 60){
+		if (m_minutes == 59){
 			m_hours++;
 			m_minutes = 0;
 		}
-		else if (m_seconds > 60){
+		else if (m_seconds == 59){
 			m_minutes++;
 			m_seconds = 0;
 		}
