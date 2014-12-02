@@ -57,30 +57,55 @@ public class GameLauncher {
 	/* Fields to store game settings */
 	private static int m_numberOfMovers;
 	private static int m_numberOfPlayers;
-	
-	
+
+	/**
+	 * Gets the number of snakes/ladders chosen by the player.
+	 * @return integer - number of snakes/ladders
+	 */
 	public static int getNumberOfMovers() {
 		return m_numberOfMovers;
 	}
 
+	/**
+	 * Sets the number of snakes/ladders.
+	 * @param numberOfMovers integer - number of snakes/ladders
+	 */
 	public static void setNumberOfMovers(int numberOfMovers) {
 		GameLauncher.m_numberOfMovers = numberOfMovers;
 	}
 
+	/**
+	 * Gets the number of players the user has chosen to enter the game.
+	 * @return integer - number of players
+	 */
 	public static int getNumberOfPlayers() {
 		return m_numberOfPlayers;
 	}
 
+	/**
+	 * Sets the number of players playing the game.
+	 * @param numberOfPlayers integer - number of players in the game.
+	 */
 	public static void setNumberOfPlayers(int numberOfPlayers) {
 		GameLauncher.m_numberOfPlayers = numberOfPlayers;
 	}
 
+	/**
+	 * Main method. This is the first method called to begin the program.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		intialise();
 		m_frame.setVisible(true);
 	}
 
+	/**
+	 * This initialises a window with buttons to choose either snakes
+	 * and ladders or tic tac toe. 
+	 */
 	private static void intialise() {
+
+		/* Create a new form */
 		m_frame = new JFrame();
 		m_frame.setTitle("Group 6 Game");
 		m_frame.setResizable(false);
@@ -92,6 +117,8 @@ public class GameLauncher {
 		m_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		m_frame.getContentPane().setLayout(null);
 
+		/* Create snakes and ladders button. When pressed, show snakes
+		 * and ladders game setup options */
 		m_btnSnakesAndLadders = new JButton("Play Snakes and Ladders");
 		m_btnSnakesAndLadders.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
@@ -108,6 +135,7 @@ public class GameLauncher {
 				COMPONENT_HEIGHT);
 		m_frame.getContentPane().add(m_btnSnakesAndLadders);
 
+		/* Create TicTacToe button. When pressed loads TicTacToe game */		
 		m_btnTicTacToe = new JButton("Play TicTacToe");
 		m_btnTicTacToe.setBounds(
 				COMPONENT_LOCATION_X + HORIZONAL_SPACING, 
@@ -122,6 +150,10 @@ public class GameLauncher {
 		m_frame.getContentPane().add(m_btnTicTacToe);
 	}
 
+	/**
+	 * This method creates a panel with options to set up the game.
+	 * e.g. number of snakes/ladders, number of players.
+	 */
 	private static void createPanel() {
 		m_layeredPane = new JLayeredPane();
 		m_layeredPane.setVisible(false);
@@ -132,9 +164,14 @@ public class GameLauncher {
 				PANEL_HEIGHT);
 		m_frame.getContentPane().add(m_layeredPane);
 
+		/* This commands call the GUI components which deal with 
+		 * the number of players or movers. */
 		askNumberOfMovers();
 		askNumberOfPlayers();
 
+		/* Play snake and ladders button is created. When pressed
+		 * a snake and ladders game is loaded with the number
+		 * of players and movers as parameters. */
 		m_btnPlayGame = new JButton("Play Game");
 		m_btnPlayGame.setBounds(
 				COMPONENT_LOCATION_X, 
@@ -149,8 +186,10 @@ public class GameLauncher {
 		m_layeredPane.add(m_btnPlayGame);
 	}
 
-
-
+	/**
+	 * This method initialises the slider and other components which
+	 * allow the user to decide the number of movers in the game.
+	 */
 	private static void askNumberOfMovers(){
 		m_lblHowManyMovers = new JLabel("How many Snake/Ladders?");
 		m_lblHowManyMovers.setBounds(
@@ -160,6 +199,8 @@ public class GameLauncher {
 				COMPONENT_HEIGHT);
 		m_layeredPane.add(m_lblHowManyMovers);
 
+		/* As the slider changes value, the field "m_numberOfMovers" is
+		 * updated and the text box reflects the new value of the slider. */
 		m_moverSlider = new JSlider();
 		m_moverSlider.setMinimum(MIN_NUMBER_OF_MOVERS);
 		m_moverSlider.setMaximum(MAX_NUMBER_OF_MOVERS);
@@ -189,6 +230,10 @@ public class GameLauncher {
 		m_layeredPane.add(m_txtNumberOfMovers);
 	}
 
+	/**
+	 * This method initialises the slider and other components which
+	 * allow the user to decide the number of players in the game.
+	 */
 	private static void askNumberOfPlayers(){
 		m_lblHowManyPlayers = new JLabel("How many players?");
 		m_lblHowManyPlayers.setBounds(
@@ -198,6 +243,8 @@ public class GameLauncher {
 				COMPONENT_HEIGHT);
 		m_layeredPane.add(m_lblHowManyPlayers);
 
+		/* As the slider changes value, the field "m_numberOfPlayers" is
+		 * updated and the text box reflects the new value of the slider. */
 		m_playerSlider = new JSlider();
 		m_playerSlider.setMinimum(MIN_NUMBER_OF_PLAYERS);
 		m_playerSlider.setMaximum(MAX_NUMBER_OF_PLAYERS);
@@ -227,13 +274,20 @@ public class GameLauncher {
 		m_layeredPane.add(m_txtNumberOfPlayers);
 	}
 
+	/**
+	 * This method loads a game of snakes and ladders.
+	 * @param numberOfMovers number of snakes/ladders on the board.
+	 * @param numberOfPlayers number of players playing snakes and ladders
+	 */
 	private static void loadSnakesAndLadders(int numberOfMovers, int numberOfPlayers) {
-//to be implemented
+
 	}
 
-
+	/**
+	 * This method loads a game of TicTacToe.
+	 */
 	private static void LoadTicTacToe() {
-//to be implemented
+
 	}
 
 }

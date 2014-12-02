@@ -20,7 +20,7 @@ public class GameTimer{
 	 * Constructor which automatically sets timer to zero and starts timer.
 	 */
 	public GameTimer() {
-		setTime(0,0,30);
+		setTime(0,0,0);
 		startTime();
 	}
 	/**
