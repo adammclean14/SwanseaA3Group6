@@ -22,10 +22,6 @@ public class Dice {
 	public static int m_Count = 0;
 	public static int m_SelectedNumber = 0;
 	
-	public static void main(String args[]) {
-		System.out.println(diceRoll());
-	}
-	
 	/**
 	 * Method to shuffle and then retrieve a randomly
 	 * generated number between 1 and 6 inclusively.
