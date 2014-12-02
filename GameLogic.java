@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.awt.Color;
 
 
 abstract class GameLogic {
@@ -10,14 +11,14 @@ abstract class GameLogic {
 
 	
 	abstract void boardSetUp();
-	public void setOrderPlay(){
-		//Set order of play
-	}
+	
+	
+	
 	public ArrayList<Player> getOrderPlay(){
 		//returns a player
 		return m_order;
-		
 	}
+	
 	public void setGameWon(Boolean won){
 		// Set the game to true if won
 		m_gameWon = won;
@@ -32,7 +33,7 @@ abstract class GameLogic {
 		
 	}
 	public Player nextMove() {
-		Player temp = New Player();
+		Player temp = new Player();
 		temp = m_order.get(m_playerIndex);
 		m_playerIndex++;
 		return temp;
