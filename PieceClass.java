@@ -2,8 +2,8 @@
 
 
 public class PieceClass {
-	int gameType;
-	int playerMark;
+	private int m_gameType;
+	private int m_playerMark;
 	//Gets game type
 	public int getGame(){
 		//Will call into gameLogic or some other class and find which game is being played
@@ -11,7 +11,7 @@ public class PieceClass {
 		//If gameType = 1 (S&L), then counter subclass will activate
 		//If gameType = 2 (TTT), the NoughtCross subclass will activate
 		//Really subclasses will check this value and if the value doesn't match the value they need, the class will end
-		return gameType;
+		return m_gameType;
 	}
 	
 	//This class could make the getGame function redundant
@@ -19,6 +19,6 @@ public class PieceClass {
 	public int getPlayerID(){
 		//Returns an int that tells class what color or symbol the player is using
 		//i.e. 1,2,3,4 all return the different colors and 5,6 return X and O
-		return playerMark;
+		return m_playerMark;
 	}
 }
