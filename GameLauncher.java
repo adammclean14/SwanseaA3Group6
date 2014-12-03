@@ -54,8 +54,8 @@ public class GameLauncher {
 
 	/* Store the GUI components */
 	private static JFrame m_frame;
-	private static JButton m_btnSnakesAndLadders;
-	private static JButton m_btnTicTacToe;
+	private static JButton m_btnSnakesLadder;
+	private static JButton m_btnTTT;
 	private static JLayeredPane m_snakesLadderPanel;
 	private static JLayeredPane m_TTTPanel;
 
@@ -69,7 +69,8 @@ public class GameLauncher {
 	private static JLabel[] m_lblTTTPlayerName;
 	private static JTextField [] m_txtSnakesLaddersPlayerName;
 	private static JTextField [] m_txtTTTPlayerName;
-	private static JButton m_btnPlayGame;
+	private static JButton m_btnPlaySnakeLadder;
+	private static JButton m_btnPlayTTT;
 
 	/* Fields to store game settings */
 	private static int m_numberOfMovers;
@@ -140,31 +141,31 @@ public class GameLauncher {
 		createTTTPanel();
 
 		/* Create snakes and ladders button. */
-		m_btnSnakesAndLadders = new JButton("Play Snakes and Ladders");
-		m_btnSnakesAndLadders.setBounds(
+		m_btnSnakesLadder = new JButton("Play Snakes and Ladders");
+		m_btnSnakesLadder.setBounds(
 				COMPONENT_LOCATION, 
 				COMPONENT_LOCATION, 
 				COMPONENT_WIDTH, 
 				COMPONENT_HEIGHT);
-		m_frame.getContentPane().add(m_btnSnakesAndLadders);
+		m_frame.getContentPane().add(m_btnSnakesLadder);
 
 		/* Create TicTacToe button. */		
-		m_btnTicTacToe = new JButton("Play TicTacToe");
-		m_btnTicTacToe.setBounds(
+		m_btnTTT = new JButton("Play TicTacToe");
+		m_btnTTT.setBounds(
 				COMPONENT_LOCATION + HORIZONAL_SPACING, 
 				COMPONENT_LOCATION, 
 				COMPONENT_WIDTH, 
 				COMPONENT_HEIGHT);
-		m_frame.getContentPane().add(m_btnTicTacToe);
+		m_frame.getContentPane().add(m_btnTTT);
 
 		/* When buttons are pressed, show panels to allow game customisation. */
-		m_btnTicTacToe.addMouseListener(new MouseAdapter() {
+		m_btnTTT.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				m_TTTPanel.setVisible(true);
 				m_snakesLadderPanel.setVisible(false);
 			}
 		});
-		m_btnSnakesAndLadders.addMouseListener(new MouseAdapter() {
+		m_btnSnakesLadder.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				m_snakesLadderPanel.setVisible(true);
 				m_TTTPanel.setVisible(false);
@@ -189,18 +190,18 @@ public class GameLauncher {
 		m_frame.getContentPane().add(m_snakesLadderPanel);
 
 		/* The play game button is created. */
-		m_btnPlayGame = new JButton("Play Game");
-		m_btnPlayGame.setBounds(
+		m_btnPlaySnakeLadder = new JButton("Play Game");
+		m_btnPlaySnakeLadder.setBounds(
 				COMPONENT_LOCATION, 
 				m_snakesLadderPanel.getX() + m_snakesLadderPanel.getHeight() - VERTICAL_SPACING, 
 				COMPONENT_WIDTH, 
 				COMPONENT_HEIGHT);
-		m_snakesLadderPanel.add(m_btnPlayGame);
+		m_snakesLadderPanel.add(m_btnPlaySnakeLadder);
 
 		/* Once the play game button is clicked, the info is gathered
 		 * and sent to the Snakes and ladders game. 
 		 */
-		m_btnPlayGame.addMouseListener(new MouseAdapter() {
+		m_btnPlaySnakeLadder.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				// Collect the names of the players.
 				for (int i = 0; i < getNumberOfPlayers(); i++){
@@ -231,7 +232,7 @@ public class GameLauncher {
 		m_moverSlider.setSnapToTicks(true);
 		m_moverSlider.setBounds(
 				COMPONENT_LOCATION, 
-				m_btnPlayGame.getY() - VERTICAL_SPACING, 
+				m_btnPlaySnakeLadder.getY() - VERTICAL_SPACING, 
 				SLIDER_WIDTH, 
 				COMPONENT_HEIGHT);
 		m_snakesLadderPanel.add(m_moverSlider);
@@ -376,20 +377,20 @@ public class GameLauncher {
 		m_frame.getContentPane().add(m_TTTPanel);
 
 		/* The play game button is created. */
-		m_btnPlayGame = new JButton("Play Game");
-		m_btnPlayGame.setBounds(
+		m_btnPlayTTT = new JButton("Play Game");
+		m_btnPlayTTT.setBounds(
 				COMPONENT_LOCATION, 
 				m_snakesLadderPanel.getX() + m_TTTPanel.getHeight() - VERTICAL_SPACING, 
 				COMPONENT_WIDTH, 
 				COMPONENT_HEIGHT);
-		m_TTTPanel.add(m_btnPlayGame);
+		m_TTTPanel.add(m_btnPlayTTT);
 
 		/* Once the play game button is clicked, the info is gathered
 		 * and sent to the TicTacToe game. */
-		m_btnPlayGame.addMouseListener(new MouseAdapter() {
+		m_btnPlayTTT.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				// Collect the names of the players.
-				for (int i = 0; i < getNumberOfPlayers(); i++){
+				for (int i = 0; i < NUMBER_OF_TTT_PLAYERS; i++){
 					m_playerNames[i] = m_txtTTTPlayerName[i].getText();
 				}
 				loadTicTacToe(m_playerNames);
@@ -442,6 +443,7 @@ public class GameLauncher {
 			m_TTTPanel.add(m_txtTTTPlayerName[i]);
 		}
 	}
+
 
 	/**
 	 * This method loads a game of snakes and ladders.
