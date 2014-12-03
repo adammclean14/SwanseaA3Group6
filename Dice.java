@@ -1,42 +1,112 @@
-/**
- * @file	-Dice.java
- * @author	-F.Akkad
- * @date	-2 Dec '14
- * 
- * Operates the dice function of the snakes and ladders game
- * which generates a random number between 1 and 6 inclusively
- * to be used for the players move.
- */
-package gamesproject;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Random;
 
-public class Dice {
-	
-	/* the lowest boundary used in generating a random number (inclusive) */
-	final public static int LOW_DICEROLL = 1;
-	/* the highest boundary used in generating a random number (exclusive) */
-	final public static int HIGH_DICEROLL = 7;
-	/* the number of times a number is generated before the final selection */
-	final public static int SHUFFLE = 11;
-	
-	/* variables used to collect the randomly generated number */
-	public static int m_Count;
-	public static int m_SelectedNumber;
-	
-	/**
-	 * Method to shuffle and then retrieve a randomly
-	 * generated number between 1 and 6 inclusively.
-	 */
-	public static int diceRoll() {
-		boolean activated = true;
-		if (activated == true) {
-			while (m_Count < SHUFFLE) {
-				Random rand = new Random();
-				m_SelectedNumber = rand.nextInt(HIGH_DICEROLL - LOW_DICEROLL) + LOW_DICEROLL;
-				m_Count ++;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.*;
+
+public  class ImageTesting extends JFrame{
+	private JButton diceRollbtn;
+	private JFrame frame;
+	static String imageLocation;
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ImageTesting window = new ImageTesting();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+		});
+	}	
+	
+	//Calls different object creations
+	//Make the parameters a string (for image, i.e. "/Ladder.jpg"), then start and end points as floats (for JLabel bounds)
+	//Figure out how to stretch image
+	public ImageTesting(){
+		//Calls create image with the location of the image as a parameter
+		//Will work on adding bounds and shifting size of image
+		frame = new JFrame();
+		frame.setBounds(100, 100, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		createImage(getDiceNumber());
+		
+	}
+	
+	//private  void showNumber(){
+	//	createImage(getDiceNumber());
+		
+	//}
+	
+	public  String getDiceNumber (){
+		//Creates rand number from 1 to 6
+		int max = 6;
+		int min = 1;
+		Random rand = new Random();
+		int randomNum = rand.nextInt((max - min) + 1) + min;
+		
+		//Creates string for image location
+		return imageLocation = randomNum + "dice.gif";
+		
+	}
+	
+	
+	public void  createImage (String imageLocation){
+		//Should this be in its own function called from like game logic or main whenever the game starts so the frame doesn't keep getting remade as new
+		
+		
+		
+		final JLabel label1 = new JLabel("");
+		Image image = new ImageIcon (this.getClass().getResource(imageLocation)).getImage();
+		label1.setIcon(new ImageIcon(image));
+		label1.setBounds(40, 78, 40, 40);
+		//final label2 = label1;
+		
+		diceRollbtn = new JButton("Start Roll");
+		diceRollbtn.setBounds(20, 118, 80, 40);
+		diceRollbtn.addMouseListener(new MouseAdapter() {
+			int i = 0;
+			public void mousePressed(MouseEvent e){
+				if (i % 2 == 0){
+					diceRollbtn.setText("End Roll");
+				Image gif = new ImageIcon (this.getClass().getResource("/diceFast.gif")).getImage();
+				label1.setIcon(new ImageIcon(gif));
+				i = i + 1;
+				}
+				else{
+					diceRollbtn.setText("Start Roll");
+			
+				String thing = getDiceNumber();
+				Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
+				label1.setIcon(new ImageIcon(image));
+				System.out.println(thing);
+					
+				i = i -1;
+				 
+				
+				}	
+				
+				
 		}
-		return m_SelectedNumber;
+		});
+		frame.getContentPane().add(diceRollbtn);
+		frame.getContentPane().add(label1);
+
+
+				
 	}
 
 }
