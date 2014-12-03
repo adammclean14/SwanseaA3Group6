@@ -58,7 +58,7 @@ public class GameTimer{
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				updateTime();
-				System.out.println(getTime());
+				getTime();
 			}
 		}, delay, m_updateInterval);
 	}

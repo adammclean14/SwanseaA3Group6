@@ -13,7 +13,6 @@ abstract class GameLogic {
 	abstract void boardSetUp();
 	
 	
-	
 	public ArrayList<Player> getOrderPlay(){
 		//returns a player
 		return m_order;
@@ -30,13 +29,6 @@ abstract class GameLogic {
 		}else{
 			return false;
 		}
-		
-	}
-	public Player nextMove() {
-		Player temp = new Player();
-		temp = m_order.get(m_playerIndex);
-		m_playerIndex++;
-		return temp;
 		
 	}
 	abstract void play();
