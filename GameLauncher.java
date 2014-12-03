@@ -9,6 +9,15 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * @file GameLauncher.java
+ * @author Jon Haddow
+ * @date 03 Dec 2014
+ *
+ * This class launches the main menu to start a game
+ * and choose the settings for the game.
+ */
+
 public class GameLauncher {
 
 	/* Store the GUI components */
@@ -23,12 +32,13 @@ public class GameLauncher {
 	private static JTextField m_txtNumberOfMovers;
 	private static JLabel m_lblHowManyPlayers;
 	private static JSlider m_playerSlider;
-	private static JTextField m_txtNumberOfPlayers;
+	private static JLabel[] m_lblPlayerName;
+	private static JTextField [] m_txtPlayerName;
 	private static JButton m_btnPlayGame;
 
 	/* Store dimensions of the frame */
 	private static int FRAME_LOCATION = 100;
-	private static int FRAME_HEIGHT = 265;
+	private static int FRAME_HEIGHT = 400;
 	private static int FRAME_WIDTH = 415;
 
 	/* Store dimensions for the components */ 
@@ -37,9 +47,10 @@ public class GameLauncher {
 	private static int COMPONENT_WIDTH = 190;
 	private static int COMPONENT_HEIGHT = 25;
 	private static int PANEL_WIDTH = 200;
-	private static int PANEL_HEIGHT = 170;
+	private static int PANEL_HEIGHT = 270;
 	private static int SLIDER_WIDTH = 100;
 	private static int TXTBOX_WIDTH = 50;
+	private static int TXTBOX_HEIGHT = 20;
 
 	/* Store the spacing between components */
 	private static int HORIZONAL_SPACING = 200;
@@ -164,26 +175,26 @@ public class GameLauncher {
 				PANEL_HEIGHT);
 		m_frame.getContentPane().add(m_layeredPane);
 
-		/* This commands call the GUI components which deal with 
-		 * the number of players or movers. */
-		askNumberOfMovers();
-		askNumberOfPlayers();
-
 		/* Play snake and ladders button is created. When pressed
 		 * a snake and ladders game is loaded with the number
 		 * of players and movers as parameters. */
 		m_btnPlayGame = new JButton("Play Game");
 		m_btnPlayGame.setBounds(
 				COMPONENT_LOCATION_X, 
-				m_txtNumberOfPlayers.getY() + VERTICAL_SPACING *2 , 
+				m_layeredPane.getX() + m_layeredPane.getHeight() - VERTICAL_SPACING, 
 				COMPONENT_WIDTH, 
 				COMPONENT_HEIGHT);
 		m_btnPlayGame.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				loadSnakesAndLadders(m_numberOfMovers,m_numberOfPlayers);
+				loadSnakesAndLadders(getNumberOfMovers(),getNumberOfPlayers());
 			}
 		});
 		m_layeredPane.add(m_btnPlayGame);
+
+		/* This commands call the GUI components which deal with 
+		 * the number of players or movers. */
+		askNumberOfMovers();
+		askNumberOfPlayers();
 	}
 
 	/**
@@ -191,14 +202,6 @@ public class GameLauncher {
 	 * allow the user to decide the number of movers in the game.
 	 */
 	private static void askNumberOfMovers(){
-		m_lblHowManyMovers = new JLabel("How many Snake/Ladders?");
-		m_lblHowManyMovers.setBounds(
-				COMPONENT_LOCATION_X, 
-				COMPONENT_LOCATION_Y, 
-				COMPONENT_WIDTH, 
-				COMPONENT_HEIGHT);
-		m_layeredPane.add(m_lblHowManyMovers);
-
 		/* As the slider changes value, the field "m_numberOfMovers" is
 		 * updated and the text box reflects the new value of the slider. */
 		m_moverSlider = new JSlider();
@@ -208,23 +211,31 @@ public class GameLauncher {
 		m_moverSlider.setSnapToTicks(true);
 		m_moverSlider.setBounds(
 				COMPONENT_LOCATION_X, 
-				m_lblHowManyMovers.getY() + VERTICAL_SPACING, 
+				m_btnPlayGame.getY() - VERTICAL_SPACING, 
 				SLIDER_WIDTH, 
 				COMPONENT_HEIGHT);
 		m_layeredPane.add(m_moverSlider);
 		m_moverSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				m_numberOfMovers = m_moverSlider.getValue();
-				m_txtNumberOfMovers.setText("" + m_numberOfMovers);
+				setNumberOfMovers(m_moverSlider.getValue());
+				m_txtNumberOfMovers.setText("" + getNumberOfMovers());
 			}
 		});
+
+		m_lblHowManyMovers = new JLabel("How many Snake/Ladders?");
+		m_lblHowManyMovers.setBounds(
+				COMPONENT_LOCATION_X, 
+				m_moverSlider.getY() - VERTICAL_SPACING, 
+				COMPONENT_WIDTH, 
+				COMPONENT_HEIGHT);
+		m_layeredPane.add(m_lblHowManyMovers);
 
 		m_txtNumberOfMovers = new JTextField();
 		m_txtNumberOfMovers.setBounds(
 				m_moverSlider.getX() + SLIDER_WIDTH + VERTICAL_SPACING, 
-				m_lblHowManyMovers.getY() + VERTICAL_SPACING, 
+				m_moverSlider.getY(), 
 				TXTBOX_WIDTH, 
-				COMPONENT_HEIGHT);
+				TXTBOX_HEIGHT);
 		m_txtNumberOfMovers.setEditable(false);
 		m_txtNumberOfMovers.setText("" + m_moverSlider.getValue());
 		m_layeredPane.add(m_txtNumberOfMovers);
@@ -238,7 +249,7 @@ public class GameLauncher {
 		m_lblHowManyPlayers = new JLabel("How many players?");
 		m_lblHowManyPlayers.setBounds(
 				COMPONENT_LOCATION_X, 
-				m_txtNumberOfMovers.getY() + VERTICAL_SPACING, 
+				COMPONENT_LOCATION_Y, 
 				COMPONENT_WIDTH, 
 				COMPONENT_HEIGHT);
 		m_layeredPane.add(m_lblHowManyPlayers);
@@ -256,22 +267,67 @@ public class GameLauncher {
 				SLIDER_WIDTH, 
 				COMPONENT_HEIGHT);
 		m_layeredPane.add(m_playerSlider);
-		m_playerSlider.addChangeListener(new ChangeListener() {
+
+		/* Declare array of names */
+		m_lblPlayerName = new JLabel[MAX_NUMBER_OF_PLAYERS];
+		m_txtPlayerName = new JTextField[MAX_NUMBER_OF_PLAYERS];
+
+		/* Draw array of name text boxes */
+		for (int i = 0; i < MAX_NUMBER_OF_PLAYERS; i++) {			
+			m_lblPlayerName[i] = new JLabel();
+			m_txtPlayerName[i] = new JTextField();
+			if (i == 0){
+				m_lblPlayerName[i].setBounds(
+						COMPONENT_LOCATION_X, 
+						m_playerSlider.getY() + VERTICAL_SPACING, 
+						COMPONENT_WIDTH/2, 
+						COMPONENT_HEIGHT);
+				m_txtPlayerName[i].setBounds(
+						COMPONENT_LOCATION_X + COMPONENT_WIDTH/2, 
+						m_playerSlider.getY() + VERTICAL_SPACING, 
+						COMPONENT_WIDTH/2, 
+						COMPONENT_HEIGHT);
+			} else {
+				m_lblPlayerName[i].setBounds(
+						COMPONENT_LOCATION_X, 
+						m_txtPlayerName[i-1].getY() + VERTICAL_SPACING, 
+						COMPONENT_WIDTH/2, 
+						COMPONENT_HEIGHT);
+				m_txtPlayerName[i].setBounds(
+						COMPONENT_LOCATION_X + COMPONENT_WIDTH/2, 
+						m_txtPlayerName[i-1].getY() + VERTICAL_SPACING, 
+						COMPONENT_WIDTH/2, 
+						COMPONENT_HEIGHT);
+			}
+			m_lblPlayerName[i].setText("Player " + (i+1) + ":");
+			m_layeredPane.add(m_lblPlayerName[i]);
+			m_layeredPane.add(m_txtPlayerName[i]);
+		}
+		updatePlayerBoxes();
+		
+		m_playerSlider.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e) {
-				m_numberOfMovers = m_playerSlider.getValue();
-				m_txtNumberOfPlayers.setText("" + m_numberOfMovers);
+				setNumberOfPlayers(m_playerSlider.getValue());
+				updatePlayerBoxes();
 			}
 		});
 
-		m_txtNumberOfPlayers = new JTextField();
-		m_txtNumberOfPlayers.setBounds(
-				m_playerSlider.getX() + SLIDER_WIDTH + VERTICAL_SPACING, 
-				m_lblHowManyPlayers.getY() + VERTICAL_SPACING, 
-				TXTBOX_WIDTH, 
-				COMPONENT_HEIGHT);
-		m_txtNumberOfPlayers.setEditable(false);
-		m_txtNumberOfPlayers.setText("" + m_playerSlider.getValue());
-		m_layeredPane.add(m_txtNumberOfPlayers);
+	}
+	
+	/**
+	 * This method would update the number of player name boxes to
+	 * depend upon the number of players selected.
+	 */
+	private static void updatePlayerBoxes(){
+		for (int i = 0; i < MAX_NUMBER_OF_PLAYERS; i++){
+			if (i < m_playerSlider.getValue()){
+				m_lblPlayerName[i].setVisible(true);
+				m_txtPlayerName[i].setVisible(true);
+			} else {
+				m_lblPlayerName[i].setVisible(false);
+				m_txtPlayerName[i].setVisible(false);
+			}
+		}
 	}
 
 	/**
