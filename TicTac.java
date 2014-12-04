@@ -18,21 +18,21 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 	};
 
 
-	public ArrayList<Player> m_order = new ArrayList<Player>();
-	public ArrayList<JButton> m_winningButtons = new ArrayList<JButton>();
-	public Boolean m_gameWon;
-	public Boolean m_tied;
-	public int m_turnCount;
-	public int m_player1LongestChain;
-	public int m_player2LongestChain;
-	public final int m_boardSizeX = 8;
-	public final int m_boardSizeY = 8;
-	public final int m_boardSize = m_boardSizeX * m_boardSizeY;
-	public JFrame m_window = new JFrame("Dans Crazy Tic Tac Toe!");
-	public JButton m_buttons[][] = new JButton[m_boardSizeX][m_boardSizeY];
-	public String m_letter = "";
-	public Timer flashtimer = new Timer(500, timerAction);
-	public Color m_oldBackground = Color.BLACK;
+	private ArrayList<Player> m_order = new ArrayList<Player>();
+	private ArrayList<JButton> m_winningButtons = new ArrayList<JButton>();
+	private Boolean m_gameWon;
+	private Boolean m_tied;
+	private int m_turnCount;
+	private int m_player1LongestChain;
+	private int m_player2LongestChain;
+	private final int m_boardSizeX = 8;
+	private final int m_boardSizeY = 8;
+	private final int m_boardSize = m_boardSizeX * m_boardSizeY;
+	private JFrame m_window = new JFrame("Dans Crazy Tic Tac Toe!");
+	private JButton m_buttons[][] = new JButton[m_boardSizeX][m_boardSizeY];
+	private String m_letter = "";
+	private Timer flashtimer = new Timer(500, timerAction);
+	private Color m_oldBackground = Color.BLACK;
 
 	//! The first constructor for the class
 	/*!
@@ -175,30 +175,6 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			return chainLength;
 		}
 	}
-	//	public void checkVerticalChain(int changedX, int changedY){
-	//		m_player1LongestChain = 0;
-	//		m_player2LongestChain = 0;
-	//		for (int i = 0; i < m_boardSizeX; i++){
-	//			m_player1LongestChain = 0;
-	//			m_player2LongestChain = 0;
-	//			for (int j = 0; j < m_boardSizeY; j++){
-	//				if (m_buttons[i][j].getText() == "O"){
-	//					m_player2LongestChain = 0;
-	//					m_player1LongestChain++;
-	//				}
-	//				if (m_buttons[i][j].getText() == "X"){
-	//					m_player1LongestChain = 0;
-	//					m_player2LongestChain++;
-	//				}
-	//				if (m_player1LongestChain == 5){
-	//					JOptionPane.showMessageDialog(null,  "Player 1 wins");
-	//				}
-	//				if (m_player2LongestChain == 5){
-	//					JOptionPane.showMessageDialog(null,  "Player 2 Wins");
-	//				}
-	//			}
-	//		}
-	//	}
 	public void checkHorizontalChain(int changedX, int changedY){
 		int chainLength = 0;
 		String checkValue = "";
@@ -253,30 +229,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			return chainLength;
 		}
 	}
-	//	public void checkVerticalChain(int changedX, int changedY){
-	//		m_player1LongestChain = 0;
-	//		m_player2LongestChain = 0;
-	//		for (int j = 0; j < m_boardSizeX; j++){
-	//			m_player1LongestChain = 0;
-	//			m_player2LongestChain = 0;
-	//			for (int i = 0; i < m_boardSizeY; i++){
-	//				if (m_buttons[i][j].getText() == "O"){
-	//					m_player2LongestChain = 0;
-	//					m_player1LongestChain++;
-	//				}
-	//				if (m_buttons[i][j].getText() == "X"){
-	//					m_player1LongestChain = 0;
-	//					m_player2LongestChain++;
-	//				}
-	//				if (m_player1LongestChain == 5){
-	//					JOptionPane.showMessageDialog(null,  "Player 1 wins");
-	//				}
-	//				if (m_player2LongestChain == 5){
-	//					JOptionPane.showMessageDialog(null,  "Player 2 Wins");
-	//				}
-	//			}
-	//		}
-	//	}
+	
 	public void checkDiagonalChain(int changedX, int changedY){
 		int chainLength = 0;
 		String checkValue = "";
@@ -373,40 +326,6 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			return chainLength;
 		}
 	}
-	//	public void CheckLongestChain(int changedX, int changedY){
-	//		
-	//		
-	//		
-	//		
-	//		if (m_buttons[changedX][changedY].getText() == "O"){
-	//			m_player1LongestChain = 1;
-	//		} else if (m_buttons[changedX][changedY].getText() == "X"){
-	//			m_player2LongestChain = 1;
-	//		}
-	//		int count = 1;
-	//		for (int i = changedX; i < i +4; i ++){
-	//			if ((changedX + count) < (m_boardSizeX -1) && (changedY + count) < (m_boardSizeY - 1)){
-	//				if (m_buttons[changedX + count][changedY + count].getText() == "O"){
-	//					m_player1LongestChain++;
-	//				} else if (m_buttons[changedX + count][changedY + count].getText() == "X"){
-	//					m_player2LongestChain++;
-	//				}
-	//				count++;
-	//			}
-	//			
-	//		}
-	//		count = 1;
-	//		for (int i = changedX; i < i - 4; i-- ){
-	//			if (i < 0 && changedY < 0){
-	//				if (m_buttons[changedX - count][changedY - count].getText() == "O"){
-	//					m_player1LongestChain++;
-	//				} else if (m_buttons[changedX - count][changedY - count].getText() == "X"){
-	//					m_player2LongestChain++;
-	//				}
-	//				count++;
-	//			}
-	//		}
-	//	}
 
 	public void GetMove(){
 	}
@@ -459,8 +378,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 				for (int j = 0; j < m_boardSizeY; j++ ){
 					m_buttons[i][j].setEnabled(true);
 					m_buttons[i][j].setText("");
-					
-
+					m_buttons[i][j].setForeground(Color.WHITE);
 				}
 			}
 			m_order.get(0).setHasWon(false);
@@ -476,12 +394,6 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 	ActionListener listener = new ActionListener() {
 		public void actionPerformed(ActionEvent turn) {
 
-			//Calculate whose turn it is
-			//			if(m_turnCount % 2 == 0)	{
-			//				m_letter = "X";
-			//			} else {
-			//				m_letter = "O";
-			//			}
 
 			if (getTurnPlayer() == getTurnPlayer(0)){
 				m_letter = "X";
@@ -531,25 +443,5 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 		flashtimer.start();
 		//run();
 	}
-	//	public void run(){
-	//		for (int i = 0; i < m_winningButtons.size(); i++){
-	//			m_winningButtons.get(i).setVisible(false);
-	//		}
-	//		try {
-	//			Thread.sleep(200);
-	//		} catch (InterruptedException e) {
-	//			// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-	//		for (int i = 0; i < m_winningButtons.size(); i++){
-	//			m_winningButtons.get(i).setVisible(true);
-	//		}
-	//		try {
-	//			Thread.sleep(200);
-	//		} catch (InterruptedException e) {
-	//			// TODO Auto-generated catch block
-	//			e.printStackTrace();
-	//		}
-	//	}
 
 }
