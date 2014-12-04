@@ -505,6 +505,8 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			}
 		}
 		m_oldBackground = m_winningButtons.get(0).getBackground();
+		m_player1Name.setFont(m_boldFont);
+		m_player2Name.setFont(m_defaultFont);
 		flashtimer.start();
 		m_timerDisplay.stop();
 		//run();
