@@ -26,7 +26,7 @@ public class Human extends Player {
 	public Color getColor(){
 		return m_pieceColor;
 	}
-	public Boolean getHasWon(){
+	public Boolean getWon(){
 		return m_hasWon;
 	}
 	
