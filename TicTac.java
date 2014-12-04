@@ -7,16 +7,13 @@ import javax.swing.*;
 public class TicTac extends GameLogic /*implements Runnable*/ {
 	ActionListener timerAction = new ActionListener() {
 		public void actionPerformed(ActionEvent flash) {
-
 			for (int i = 0; i < m_winningButtons.size(); i++){
 				if (m_winningButtons.get(i).getBackground() == m_oldBackground){
 					m_winningButtons.get(i).setBackground(Color.BLACK);
 				} else {
 					m_winningButtons.get(i).setBackground(m_oldBackground);
 				}
-
 			}
-
 		}
 	};
 
@@ -508,9 +505,11 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			}
 			if (m_order.get(m_turnCount).getWon() == false){
 				checkHorizontalChain(buttonX, buttonY);
-			} else if (m_order.get(m_turnCount).getWon() == false){
+			} 
+			if (m_order.get(m_turnCount).getWon() == false){
 				checkVerticalChain(buttonX, buttonY);
-			} else if (m_order.get(m_turnCount).getWon() == false){
+			} 
+			if (m_order.get(m_turnCount).getWon() == false){
 				checkDiagonalChain(buttonX, buttonY);
 			}
 			if (m_order.get(m_turnCount).getWon() == true){
