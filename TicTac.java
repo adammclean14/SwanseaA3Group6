@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.awt.event.*;
 import java.awt.Color;
 import javax.swing.*;
+import java.awt.Font;
 
 public class TicTac extends GameLogic /*implements Runnable*/ {
 	ActionListener timerAction = new ActionListener() {
@@ -16,6 +17,20 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			}
 		}
 	};
+	ActionListener countAction = new ActionListener(){
+		public void actionPerformed(ActionEvent count){
+			m_timeCount++;
+			if (m_timeCount == 60){
+				m_minutes++;
+				m_timeCount = 0;
+			}
+			if (m_timeCount < 10){
+				m_time.setText("Time: " + m_minutes + ":" + "0" + m_timeCount);
+			} else {
+				m_time.setText("Time: " + m_minutes + ":" + m_timeCount);
+			}
+		}
+	};
 
 
 	private ArrayList<Player> m_order = new ArrayList<Player>();
@@ -25,14 +40,22 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 	private int m_turnCount;
 	private int m_player1LongestChain;
 	private int m_player2LongestChain;
-	private final int m_boardSizeX = 8;
-	private final int m_boardSizeY = 8;
-	private final int m_boardSize = m_boardSizeX * m_boardSizeY;
+	private final int BOARDSIZEX = 8;
+	private final int BOARDSIZEY = 8;
+	private final int BOARDSIZE = BOARDSIZEX * BOARDSIZEY;
 	private JFrame m_window = new JFrame("Dans Crazy Tic Tac Toe!");
-	private JButton m_buttons[][] = new JButton[m_boardSizeX][m_boardSizeY];
+	private JButton m_buttons[][] = new JButton[BOARDSIZEX][BOARDSIZEY];
 	private String m_letter = "";
 	private Timer flashtimer = new Timer(500, timerAction);
 	private Color m_oldBackground = Color.BLACK;
+	private JLabel m_time = new JLabel("0");
+	private int m_timeCount = 0;
+	private int m_minutes = 0;
+	private Timer m_timerDisplay = new Timer(1000, countAction);
+	private JLabel m_player1Name = new JLabel("");
+	private JLabel m_player2Name = new JLabel("");
+	private Font m_defaultFont = new Font("Serif", Font.PLAIN, m_time.getFont().getSize());
+	private Font m_boldFont = new Font(m_defaultFont.getFontName(), Font.BOLD, m_defaultFont.getSize());
 
 	//! The first constructor for the class
 	/*!
@@ -42,7 +65,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 	 * draw. All three constructors are the same
 	 */
 	public TicTac (Human player_1, Human player_2){
-		for (int i = 0; i < m_boardSize -1; i++){
+		for (int i = 0; i < BOARDSIZE -1; i++){
 			m_order.add(player_1);
 			m_order.add(player_2);
 		}
@@ -111,7 +134,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 		m_turnCount++;
 	}
 	public void CheckTie(){
-		if (m_turnCount == m_boardSize){
+		if (m_turnCount == BOARDSIZE){
 			m_tied = true;
 		}
 		if (m_tied){
@@ -147,7 +170,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 	}
 
 	public int checkBottom(int changedX, int changedY, String checkValue, int chainLength){
-		if (changedX < m_boardSizeX){
+		if (changedX < BOARDSIZEX){
 			if (m_buttons[changedX][changedY].getText() == checkValue){
 				chainLength++;
 				chainLength = checkBottomRight(changedX + 1, changedY, checkValue, chainLength);
@@ -202,7 +225,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 		}
 	}
 	public int checkRight(int changedX, int changedY, String checkValue, int chainLength){
-		if (changedY < m_boardSizeY){
+		if (changedY < BOARDSIZEY){
 			if (m_buttons[changedX][changedY].getText() == checkValue){
 				chainLength++;
 				chainLength = checkRight(changedX, changedY + 1, checkValue, chainLength);
@@ -271,7 +294,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 		}
 	}
 	public int checkBottomRight(int changedX, int changedY, String checkValue, int chainLength){
-		if (changedX < m_boardSizeX && changedY < m_boardSizeY){
+		if (changedX < BOARDSIZEX && changedY < BOARDSIZEY){
 			if (m_buttons[changedX][changedY].getText() == checkValue){
 				chainLength++;
 				chainLength = checkBottomRight(changedX + 1, changedY + 1, checkValue, chainLength);
@@ -299,7 +322,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 		}
 	}
 	public int checkBottomLeft(int changedX, int changedY, String checkValue, int chainLength){
-		if (changedX < m_boardSizeX && changedY >= 0){
+		if (changedX < BOARDSIZEX && changedY >= 0){
 			if (m_buttons[changedX][changedY].getText() == checkValue){
 				chainLength++;
 				chainLength = checkBottomLeft(changedX + 1, changedY - 1, checkValue, chainLength);
@@ -313,7 +336,7 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 		}
 	}
 	public int checkTopRight(int changedX, int changedY, String checkValue, int chainLength){
-		if (changedX >= 0 && changedY < m_boardSizeY){
+		if (changedX >= 0 && changedY < BOARDSIZEY){
 			if (m_buttons[changedX][changedY].getText() == checkValue){
 				chainLength++;
 				chainLength = checkTopRight(changedX - 1, changedY + 1, checkValue, chainLength);
@@ -345,22 +368,49 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 	}
 	public void boardSetUp(){
 		//Create m_m_window
-		m_window.setSize(800,660);
-		m_window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		final int EDGE_BUFFER = 10;
+		final int SIZE_X = 800;
+		final int SIZE_Y = 660;
+		final int PANEL_DIMENSIONS = 600;
+		final int INTERFACE_X_POS = 650;
+		final int INTERFACE_VERTICAL_SPACING = 10;
+		final int INTERFACE_X_SIZE = 100;
+		final int INTERFACE_Y_SIZE = 30;
+		
+		m_window.setSize(SIZE_X, SIZE_Y);
+		m_window.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		m_window.setLayout(null);
 		JPanel panel = new JPanel();
-		panel.setSize(600,600);
-		panel.setLocation(10, 10);
-		panel.setLayout(new GridLayout(8,8));
+		panel.setSize(PANEL_DIMENSIONS, PANEL_DIMENSIONS);
+		panel.setLocation(EDGE_BUFFER, EDGE_BUFFER);
+		panel.setLayout(new GridLayout(BOARDSIZEX,BOARDSIZEY));
 		m_window.add(panel);
 		JButton reset = new JButton("Reset");
-		reset.setSize(100,30);
-		reset.setLocation(650, 300);
+		reset.setSize(INTERFACE_X_SIZE,INTERFACE_Y_SIZE);
+		reset.setLocation(INTERFACE_X_POS, INTERFACE_VERTICAL_SPACING);
 		m_window.add(reset);
 		//Add m_buttons To The m_m_window
 		reset.addActionListener(resetListener);
-		for(int i = 0; i< m_boardSizeX; i++)	{
-			for (int j = 0; j < m_boardSizeY; j++ ){
+		JButton exit = new JButton("Exit");
+		exit.setSize(INTERFACE_X_SIZE,INTERFACE_Y_SIZE);
+		exit.setLocation(INTERFACE_X_POS,(INTERFACE_VERTICAL_SPACING + reset.getHeight()) + reset.getY());
+		m_window.add(exit);
+		exit.addActionListener(exitListener);
+		m_player1Name.setText("P1: " + m_order.get(0).getName());
+		m_player2Name.setText("P2: " + m_order.get(1).getName());
+		m_player1Name.setSize(INTERFACE_X_SIZE,INTERFACE_Y_SIZE);
+		m_player2Name.setFont(m_defaultFont);
+		m_player1Name.setLocation(INTERFACE_X_POS,(INTERFACE_VERTICAL_SPACING + exit.getHeight()) + exit.getY());
+		m_player2Name.setSize(INTERFACE_X_SIZE,INTERFACE_Y_SIZE);
+		m_player2Name.setLocation(INTERFACE_X_POS,(INTERFACE_VERTICAL_SPACING + m_player1Name.getHeight()) + m_player1Name.getY());
+		m_window.add(m_player1Name);
+		m_window.add(m_player2Name);
+		m_time.setSize(INTERFACE_X_SIZE, INTERFACE_Y_SIZE);
+		m_time.setLocation(INTERFACE_X_POS,(INTERFACE_VERTICAL_SPACING + m_player2Name.getHeight() + m_player2Name.getY()));
+		m_window.add(m_time);
+		m_timerDisplay.start();
+		for(int i = 0; i< BOARDSIZEX; i++)	{
+			for (int j = 0; j < BOARDSIZEY; j++ ){
 				m_buttons[i][j] = new JButton();
 				panel.add(m_buttons[i][j]);
 				m_buttons[i][j].addActionListener(listener);
@@ -374,8 +424,8 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 
 	ActionListener resetListener = new ActionListener() {
 		public void actionPerformed(ActionEvent reset) {
-			for(int i = 0; i< m_boardSizeX; i++)	{
-				for (int j = 0; j < m_boardSizeY; j++ ){
+			for(int i = 0; i< BOARDSIZEX; i++)	{
+				for (int j = 0; j < BOARDSIZEY; j++ ){
 					m_buttons[i][j].setEnabled(true);
 					m_buttons[i][j].setText("");
 					m_buttons[i][j].setForeground(Color.WHITE);
@@ -388,12 +438,16 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			for (int i = 0; i < m_winningButtons.size(); i++){
 					m_winningButtons.get(i).setBackground(m_oldBackground);
 			}
+			m_timerDisplay.start();
+			m_timeCount = 0;
+			m_minutes = 0;
 		}
 	};
 
 	ActionListener listener = new ActionListener() {
 		public void actionPerformed(ActionEvent turn) {
-
+			
+			
 
 			if (getTurnPlayer() == getTurnPlayer(0)){
 				m_letter = "X";
@@ -407,8 +461,8 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			pressedButton.setEnabled(false);
 			int buttonX = 0;
 			int buttonY = 0;
-			for(int i = 0; i< m_boardSizeX; i++)	{
-				for (int j = 0; j < m_boardSizeY; j++ ){
+			for(int i = 0; i< BOARDSIZEX; i++)	{
+				for (int j = 0; j < BOARDSIZEY; j++ ){
 					if (m_buttons[i][j] == pressedButton){
 						buttonX = i;
 						buttonY = j;
@@ -427,20 +481,32 @@ public class TicTac extends GameLogic /*implements Runnable*/ {
 			if (m_order.get(m_turnCount).getWon() == true){
 				JOptionPane.showMessageDialog(null,  m_order.get(m_turnCount).getName() + " has won!");
 			}
-
+			if (m_turnCount % 2 == 0){
+				m_player2Name.setFont(m_boldFont);
+				m_player1Name.setFont(m_defaultFont);
+			} else {
+				m_player1Name.setFont(m_boldFont);
+				m_player2Name.setFont(m_defaultFont);	
+			}
 			m_turnCount++;
 			CheckTie();
 
 		}
 	};
+	ActionListener exitListener = new ActionListener() {
+		public void actionPerformed(ActionEvent exit) {
+			m_window.hide();
+		}	
+	};
 	public void disableButtons(){
-		for(int i = 0; i< m_boardSizeX; i++)	{
-			for (int j = 0; j < m_boardSizeY; j++ ){
+		for(int i = 0; i< BOARDSIZEX; i++)	{
+			for (int j = 0; j < BOARDSIZEY; j++ ){
 				m_buttons[i][j].setEnabled(false);
 			}
 		}
 		m_oldBackground = m_winningButtons.get(0).getBackground();
 		flashtimer.start();
+		m_timerDisplay.stop();
 		//run();
 	}
 
