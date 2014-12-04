@@ -1,12 +1,10 @@
 import java.util.ArrayList;
-import java.awt.Color;
 
 
 abstract class GameLogic {
 
 	private ArrayList<Player> m_order;
 	private Boolean m_gameWon;
-	private int m_playerIndex = 0;
 
 
 	
