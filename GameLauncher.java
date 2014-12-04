@@ -22,15 +22,15 @@ import javax.swing.event.ChangeListener;
 
 public class GameLauncher {
 
-	/* Set values for the game */
-	private final static int MAX_NUMBER_OF_MOVERS = 10;
-	private final static int MIN_NUMBER_OF_MOVERS = 1;
-	private final static int DEFAULT_NUMBER_OF_MOVERS = 5;
-	private final static int MAX_NUMBER_OF_SNAKESLADDERS_PLAYERS = 4;
-	private final static int MIN_NUMBER_OF_SNAKESLADDERS_PLAYERS = 1;
-	private final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
-	private final static int NUMBER_OF_TTT_PLAYERS = 2;	
-	private final static Color[] PLAYER_COLORS = {Color.blue, Color.red, Color.orange, Color.black};
+	/* Set values for the game. These are public so they can be accessed by other classes. */
+	public final static int MAX_NUMBER_OF_MOVERS = 10;
+	public final static int MIN_NUMBER_OF_MOVERS = 1;
+	public final static int DEFAULT_NUMBER_OF_MOVERS = 5;
+	public final static int MAX_NUMBER_OF_SNAKESLADDERS_PLAYERS = 4;
+	public final static int MIN_NUMBER_OF_SNAKESLADDERS_PLAYERS = 1;
+	public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
+	public final static int NUMBER_OF_TTT_PLAYERS = 2;	
+	public final static Color[] PLAYER_COLORS = {Color.blue, Color.red, Color.orange, Color.black};
 
 	/* Store dimensions of the frame */
 	private final static int FRAME_LOCATION = 100;
@@ -161,12 +161,14 @@ public class GameLauncher {
 		/* When buttons are pressed, show panels to allow game customisation. */
 		m_btnTTT.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				createTTTPanel();
 				m_TTTPanel.setVisible(true);
 				m_snakesLadderPanel.setVisible(false);
 			}
 		});
 		m_btnSnakesLadder.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
+				createSnakesLaddersPanel();
 				m_snakesLadderPanel.setVisible(true);
 				m_TTTPanel.setVisible(false);
 			}
@@ -335,6 +337,7 @@ public class GameLauncher {
 		}
 
 		/* update the player boxes dependent on the number of players. */
+		m_numberOfPlayers = m_playerSlider.getValue();
 		updatePlayerBoxes();
 		m_playerSlider.addChangeListener(new ChangeListener(){
 			public void stateChanged(ChangeEvent e) {
@@ -453,7 +456,7 @@ public class GameLauncher {
 	 * @param playerColors Color array of player colours.
 	 */
 	private static void loadSnakesAndLadders(int numberOfMovers, int numberOfPlayers, String[] playerNames, Color[] playerColors) {
-
+		
 	}
 
 	/**
@@ -461,7 +464,6 @@ public class GameLauncher {
 	 * @param playerNames String array of player names.
 	 */
 	private static void loadTicTacToe(String[] playerNames) {
-
+		
 	}
-
 }
