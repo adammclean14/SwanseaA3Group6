@@ -23,6 +23,12 @@ public class GameTimer{
 		setTime(0,0,0);
 		startTime();
 	}
+	public GameTimer(int seconds, int minutes, int hours){
+		settime(seconds,minutes,hours);
+		//startTime();
+	}
+
+
 	/**
 	 * Sets the current time.
 	 * @param hours as integer.
@@ -58,7 +64,7 @@ public class GameTimer{
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				updateTime();
-				getTime();
+				System.out.println(getTime());
 			}
 		}, delay, m_updateInterval);
 	}
