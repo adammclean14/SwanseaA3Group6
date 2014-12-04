@@ -1,4 +1,5 @@
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.util.ArrayList;
 import java.awt.event.*;
 
@@ -102,56 +103,155 @@ public class TicTac extends GameLogic {
 		}
 		if (m_tied){
 			JOptionPane.showMessageDialog(null, "Game is a tie");
-		}
-	}
-	public void checkHorizontalChain(int changedX, int changedY){
-		m_player1LongestChain = 0;
-		m_player2LongestChain = 0;
-		for (int i = 0; i < m_boardSizeX; i++){
-			m_player1LongestChain = 0;
-			m_player2LongestChain = 0;
-			for (int j = 0; j < m_boardSizeY; j++){
-				if (m_buttons[i][j].getText() == "O"){
-					m_player2LongestChain = 0;
-					m_player1LongestChain++;
-				}
-				if (m_buttons[i][j].getText() == "X"){
-					m_player1LongestChain = 0;
-					m_player2LongestChain++;
-				}
-				if (m_player1LongestChain == 5){
-					JOptionPane.showMessageDialog(null,  "Player 1 wins");
-				}
-				if (m_player2LongestChain == 5){
-					JOptionPane.showMessageDialog(null,  "Player 2 Wins");
-				}
-			}
+			disableButtons();
 		}
 	}
 	public void checkVerticalChain(int changedX, int changedY){
-		m_player1LongestChain = 0;
-		m_player2LongestChain = 0;
-		for (int j = 0; j < m_boardSizeX; j++){
-			m_player1LongestChain = 0;
-			m_player2LongestChain = 0;
-			for (int i = 0; i < m_boardSizeY; i++){
-				if (m_buttons[i][j].getText() == "O"){
-					m_player2LongestChain = 0;
-					m_player1LongestChain++;
-				}
-				if (m_buttons[i][j].getText() == "X"){
-					m_player1LongestChain = 0;
-					m_player2LongestChain++;
-				}
-				if (m_player1LongestChain == 5){
-					JOptionPane.showMessageDialog(null,  "Player 1 wins");
-				}
-				if (m_player2LongestChain == 5){
-					JOptionPane.showMessageDialog(null,  "Player 2 Wins");
-				}
-			}
+		int chainLength = 0;
+		String checkValue = "";
+		if (m_buttons[changedX][changedY].getText() == "X"){
+			chainLength = 1;
+			checkValue = "X";
+			chainLength = checkBottom(changedX + 1, changedY, checkValue, chainLength);
+			chainLength = checkTop(changedX - 1, changedY, checkValue, chainLength);
+		}else if (m_buttons[changedX][changedY].getText() == "O"){
+			chainLength = 1;
+			checkValue = "O";
+			chainLength = checkBottom(changedX + 1, changedY, checkValue, chainLength);
+			chainLength = checkTop(changedX - 1, changedY, checkValue, chainLength);
+		}
+		if (chainLength == 5 && checkValue == "O"){
+			m_order.get(m_turnCount).setHasWon(true);
+			disableButtons();
+		} else if (chainLength == 5 && checkValue == "X"){
+			m_order.get(m_turnCount).setHasWon(true);
+			disableButtons();
 		}
 	}
+	
+	public int checkBottom(int changedX, int changedY, String checkValue, int chainLength){
+		if (changedX < m_boardSizeX){
+			if (m_buttons[changedX][changedY].getText() == checkValue){
+				chainLength++;
+				chainLength = checkBottomRight(changedX + 1, changedY, checkValue, chainLength);
+				return chainLength;
+			} else{
+				return chainLength;
+			}
+		} else {
+			return chainLength;
+		}
+	}
+	
+	public int checkTop(int changedX, int changedY, String checkValue, int chainLength){
+		if (changedX >= 0){
+			if (m_buttons[changedX][changedY].getText() == checkValue){
+				chainLength++;
+				chainLength = checkTop(changedX - 1, changedY, checkValue, chainLength);
+				return chainLength;
+			} else{
+				return chainLength;
+			}
+		} else {
+			return chainLength;
+		}
+	}
+//	public void checkVerticalChain(int changedX, int changedY){
+//		m_player1LongestChain = 0;
+//		m_player2LongestChain = 0;
+//		for (int i = 0; i < m_boardSizeX; i++){
+//			m_player1LongestChain = 0;
+//			m_player2LongestChain = 0;
+//			for (int j = 0; j < m_boardSizeY; j++){
+//				if (m_buttons[i][j].getText() == "O"){
+//					m_player2LongestChain = 0;
+//					m_player1LongestChain++;
+//				}
+//				if (m_buttons[i][j].getText() == "X"){
+//					m_player1LongestChain = 0;
+//					m_player2LongestChain++;
+//				}
+//				if (m_player1LongestChain == 5){
+//					JOptionPane.showMessageDialog(null,  "Player 1 wins");
+//				}
+//				if (m_player2LongestChain == 5){
+//					JOptionPane.showMessageDialog(null,  "Player 2 Wins");
+//				}
+//			}
+//		}
+//	}
+	public void checkHorizontalChain(int changedX, int changedY){
+			int chainLength = 0;
+			String checkValue = "";
+			if (m_buttons[changedX][changedY].getText() == "X"){
+				chainLength = 1;
+				checkValue = "X";
+				chainLength = checkRight(changedX, changedY + 1, checkValue, chainLength);
+				chainLength = checkLeft(changedX, changedY - 1, checkValue, chainLength);
+			}else if (m_buttons[changedX][changedY].getText() == "O"){
+				chainLength = 1;
+				checkValue = "O";
+				chainLength = checkRight(changedX, changedY + 1, checkValue, chainLength);
+				chainLength = checkLeft(changedX, changedY - 1, checkValue, chainLength);
+			}
+			if (chainLength == 5 && checkValue == "O"){
+				m_order.get(m_turnCount).setHasWon(true);
+				disableButtons();
+			} else if (chainLength == 5 && checkValue == "X"){
+				m_order.get(m_turnCount).setHasWon(true);
+				disableButtons();
+			}
+	}
+	public int checkRight(int changedX, int changedY, String checkValue, int chainLength){
+		if (changedY < m_boardSizeY){
+			if (m_buttons[changedX][changedY].getText() == checkValue){
+				chainLength++;
+				chainLength = checkRight(changedX, changedY + 1, checkValue, chainLength);
+				return chainLength;
+			} else{
+				return chainLength;
+			}
+		} else {
+			return chainLength;
+		}
+	}
+	public int checkLeft(int changedX, int changedY, String checkValue, int chainLength){
+		if (changedY >= 0){
+			if (m_buttons[changedX][changedY].getText() == checkValue){
+				chainLength++;
+				chainLength = checkLeft(changedX, changedY - 1, checkValue, chainLength);
+				return chainLength;
+			} else{
+				return chainLength;
+			}
+		} else {
+			return chainLength;
+		}
+	}
+//	public void checkVerticalChain(int changedX, int changedY){
+//		m_player1LongestChain = 0;
+//		m_player2LongestChain = 0;
+//		for (int j = 0; j < m_boardSizeX; j++){
+//			m_player1LongestChain = 0;
+//			m_player2LongestChain = 0;
+//			for (int i = 0; i < m_boardSizeY; i++){
+//				if (m_buttons[i][j].getText() == "O"){
+//					m_player2LongestChain = 0;
+//					m_player1LongestChain++;
+//				}
+//				if (m_buttons[i][j].getText() == "X"){
+//					m_player1LongestChain = 0;
+//					m_player2LongestChain++;
+//				}
+//				if (m_player1LongestChain == 5){
+//					JOptionPane.showMessageDialog(null,  "Player 1 wins");
+//				}
+//				if (m_player2LongestChain == 5){
+//					JOptionPane.showMessageDialog(null,  "Player 2 Wins");
+//				}
+//			}
+//		}
+//	}
 	public void checkDiagonalChain(int changedX, int changedY){
 		int chainLength = 0;
 		String checkValue = "";
@@ -177,9 +277,11 @@ public class TicTac extends GameLogic {
 			}
 		}
 		if (chainLength == 5 && checkValue == "O"){
-			JOptionPane.showMessageDialog(null,  "Player 1 wins");
+			m_order.get(m_turnCount).setHasWon(true);
+			disableButtons();
 		} else if (chainLength == 5 && checkValue == "X"){
-			JOptionPane.showMessageDialog(null,  "Player 2 wins");
+			m_order.get(m_turnCount).setHasWon(true);
+			disableButtons();
 		}
 	}
 	public int checkBottomRight(int changedX, int changedY, String checkValue, int chainLength){
@@ -277,22 +379,34 @@ public class TicTac extends GameLogic {
 	 * to know whether to place a O or an X
 	 */
 	public String getTurnPlayer(){
-		return "";
+		return m_order.get(m_turnCount).getName();
+	}
+	public String getTurnPlayer(int count){
+		return m_order.get(count).getName();
 	}
 	public void play(){
 		
 	}
 	public void boardSetUp(){
 		//Create m_m_window
-		m_window.setSize(800,800);
+		m_window.setSize(800,660);
 		m_window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		m_window.setLayout(new GridLayout(8,8));
-		
+		m_window.setLayout(null);
+		JPanel panel = new JPanel();
+		panel.setSize(600,600);
+		panel.setLocation(10, 10);
+		panel.setLayout(new GridLayout(8,8));
+		m_window.add(panel);
+		JButton reset = new JButton("Reset");
+		reset.setSize(100,30);
+		reset.setLocation(650, 300);
+		m_window.add(reset);
 		//Add m_buttons To The m_m_window
-		for(int i = 0; i< 8; i++)	{
-			for (int j = 0; j < 8; j++ ){
+		reset.addActionListener(resetListener);
+		for(int i = 0; i< m_boardSizeX; i++)	{
+			for (int j = 0; j < m_boardSizeY; j++ ){
 				m_buttons[i][j] = new JButton();
-				m_window.add(m_buttons[i][j]);
+				panel.add(m_buttons[i][j]);
 				m_buttons[i][j].addActionListener(listener);
 			}
 			m_window.setVisible(true);
@@ -301,24 +415,41 @@ public class TicTac extends GameLogic {
 		//Make The m_m_window Visible
 		
 	}
+	
+	ActionListener resetListener = new ActionListener() {
+		public void actionPerformed(ActionEvent reset) {
+			for(int i = 0; i< m_boardSizeX; i++)	{
+				for (int j = 0; j < m_boardSizeY; j++ ){
+					m_buttons[i][j].setEnabled(true);
+					m_buttons[i][j].setText("");
+				}
+			}
+		}
+	};
 	ActionListener listener = new ActionListener() {
-		public void actionPerformed(ActionEvent a) {
-			m_turnCount++;
+		public void actionPerformed(ActionEvent turn) {
+			
 			//Calculate whose turn it is
-			if(m_turnCount % 2 == 0)	{
+//			if(m_turnCount % 2 == 0)	{
+//				m_letter = "X";
+//			} else {
+//				m_letter = "O";
+//			}
+			
+			if (getTurnPlayer() == getTurnPlayer(0)){
 				m_letter = "X";
 			} else {
 				m_letter = "O";
 			}
 
 			//Write the m_letter to the button and deactivate it
-			JButton pressedButton = (JButton)a.getSource(); 
+			JButton pressedButton = (JButton)turn.getSource(); 
 			pressedButton.setText(m_letter);
 			pressedButton.setEnabled(false);
 			int buttonX = 0;
 			int buttonY = 0;
-			for(int i = 0; i< 8; i++)	{
-				for (int j = 0; j < 8; j++ ){
+			for(int i = 0; i< m_boardSizeX; i++)	{
+				for (int j = 0; j < m_boardSizeY; j++ ){
 					if (m_buttons[i][j] == pressedButton){
 						buttonX = i;
 						buttonY = j;
@@ -328,9 +459,21 @@ public class TicTac extends GameLogic {
 			checkHorizontalChain(buttonX, buttonY);
 			checkVerticalChain(buttonX, buttonY);
 			checkDiagonalChain(buttonX, buttonY);
+			if (m_order.get(m_turnCount).getWon() == true){
+				JOptionPane.showMessageDialog(null,  m_order.get(m_turnCount).getName() + " has won!");
+			}
+
+			m_turnCount++;
 			CheckTie();
 
 		}
 	};
+	public void disableButtons(){
+		for(int i = 0; i< m_boardSizeX; i++)	{
+			for (int j = 0; j < m_boardSizeY; j++ ){
+				m_buttons[i][j].setEnabled(false);
+			}
+		}
+	}
 
 }
