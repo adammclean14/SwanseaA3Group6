@@ -461,9 +461,14 @@ public class GameLauncher {
 
 	/**
 	 * This method loads a game of TicTacToe.
+	 * @param playerNames 
 	 * @param playerNames String array of player names.
 	 */
 	private static void loadTicTacToe(String[] playerNames) {
-		
+		Human player1 = new Human(playerNames[0], PLAYER_COLORS[0],false);
+		Human player2 = new Human(playerNames[1], PLAYER_COLORS[1],false);
+		TicTac newGame = new TicTac(player1,player2);
+		newGame.boardSetUp();
 	}
 }
+
