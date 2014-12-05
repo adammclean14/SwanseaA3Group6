@@ -471,4 +471,3 @@ public class GameLauncher {
 		newGame.boardSetUp();
 	}
 }
-
