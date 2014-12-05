@@ -217,7 +217,7 @@ public class TicTac extends GameLogic{
 		if (changedX < BOARDSIZEX){
 			if (m_buttons[changedX][changedY].getText() == checkValue){
 				chainLength++;
-				chainLength = checkBottomRight(changedX + 1, changedY, checkValue, chainLength);
+				chainLength = checkBottom(changedX + 1, changedY, checkValue, chainLength);
 				m_winningButtons.add(m_buttons[changedX][changedY]);
 				return chainLength;
 			} else{
