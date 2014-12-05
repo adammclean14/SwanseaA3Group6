@@ -46,11 +46,11 @@ public class BoardTile {
 
 		snakeLadderBoard.getContentPane().add(boardPanel);
 
+		//Draws numbers onto grid
 		drawBoardNumbers();
 
-		drawDice();
-
-		createSideMenu();
+		//Creates side menu that contains dice, timer, player's turn, etc
+		createSideMenu(snakeLadderBoard);
 
 		//Each square is roughly 75 pixels wide/high
 		snakeLadderBoard.setSize(1000,800);
@@ -58,70 +58,74 @@ public class BoardTile {
 		snakeLadderBoard.setResizable(false);
 
 		snakeLadderBoard.add(new PaintSurface(), BorderLayout.CENTER);    
-		//snakeLadderBoard.add(new PaintCounter(), BorderLayout.CENTER);
 
 	}
 
-	private void createSideMenu() {
+	private void createSideMenu(JFrame snakeLadderBoard) {
 		menuPanel = new JPanel();
 		//menuPanel.setLayout((new GridLayout(10, 10, 2, 2)));
 		menuPanel.setSize(150, 150);
 		menuPanel.setBounds(0, 0, 150, 300);
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(Color.LIGHT_GRAY);
+		
 		//added roll die btn   
-		diceRollbtn.setBounds(755, 350, 150, 65);
-		menuPanel.add(diceRollbtn);
-		//added dice animation/image
-		diceLbl = new JLabel();
-		diceLbl.setBounds(925, 350, 65, 65);
-		menuPanel.add(diceLbl);
+		drawDice(menuPanel);
+		
 		//Timer Title Label
 		timerTitle = new JLabel("TIMER");
 		timerTitle.setBounds(815, 590, 150, 150);
 		timerTitle.setFont((new Font(timerTitle.getName(), Font.PLAIN, 35)));
 		menuPanel.add(timerTitle);
+		
 		//Timer Number just for demonstration of placement...not functional
 		timerFakeLbl = new JLabel("0:23:15");
 		timerFakeLbl.setBounds(800, 635, 150, 150);
 		timerFakeLbl.setFont((new Font(timerFakeLbl.getName(), Font.PLAIN, 35)));
 		timerFakeLbl.setForeground(Color.BLUE);
 		menuPanel.add(timerFakeLbl);
+		
 		//Label to make a border for the timer labels
 		timerBox = new JLabel("");
 		timerBox.setBounds(790,625,150,125);
 		Border timerBdr = BorderFactory.createLineBorder(Color.BLUE, 5);
 		timerBox.setBorder(timerBdr);
 		menuPanel.add(timerBox);
+		
 		//Player Turn Lbl
 		playerLbl = new JLabel("YOUR TURN:");
 		playerLbl.setBounds(775, 150, 250, 150);
 		playerLbl.setFont((new Font(playerLbl.getName(), Font.PLAIN, 35)));
 		menuPanel.add(playerLbl);
+		
 		//Player Turn Name Lbl
 		turnLbl = new JLabel("Jon");
 		turnLbl.setBounds(850, 175, 250, 200);
 		turnLbl.setFont((new Font(turnLbl.getName(), Font.PLAIN, 35)));
 		turnLbl.setForeground(Color.RED);
 		menuPanel.add(turnLbl);
+		
 		//Label to make a border for the player labels
 		playerBox = new JLabel("");
 		playerBox.setBounds(765,175,225,150);
 		Border playerBdr = BorderFactory.createLineBorder(Color.DARK_GRAY, 5);
 		playerBox.setBorder(playerBdr);
 		menuPanel.add(playerBox);
+		
 		snakeLadderBoard.getContentPane().add(menuPanel);
 	}
 
 
-	private void drawDice() {
+	private void drawDice(JPanel panel) {
 		String imageLocation = getRandNum();
 		final JLabel diceLbl = new JLabel("");
 		java.awt.Image image = new ImageIcon (this.getClass().getResource(imageLocation)).getImage();
 		diceLbl.setIcon(new ImageIcon(image));
-
+		diceLbl.setBounds(925, 350, 65, 65);
 		final JButton diceRollbtn = new JButton("Roll Die");
-
+		diceRollbtn.setBounds(755, 350, 150, 65);
+		panel.add(diceRollbtn);
+		panel.add(diceLbl);
 		diceRollbtn.addMouseListener(new MouseAdapter() {
 			int i = 0;
 			public void mousePressed(MouseEvent e){
@@ -141,6 +145,7 @@ public class BoardTile {
 				}
 			}
 		});
+		
 	}
 
 
@@ -366,35 +371,5 @@ public class BoardTile {
 				i = i + 1;
 			}
 		}
-	}
-
-
-
-	//+++++++
-	private class PaintCounter extends Canvas {
-		public PaintCounter() {
-
-
-		}
-		private void paintBackground(Graphics2D g2){
-
-			g2.setPaint(Color.LIGHT_GRAY);
-		}
-		//THIS FUNCTION PAINTS THE SNAKES, LADDERS, AND COUNTERS ONTO THE BOARD...NEED TO SPLIT THIS UP PROBABLY
-		public void paint(Graphics g) {
-
-
-			//Creating graphics variable and getting image
-			Graphics2D g2d=(Graphics2D)g; // Create a Java2D version of g.
-
-			//------------------------------------
-			//-----------COUNTER DRAWINGS---------
-			//------------------------------------
-			//PROBABLY SHOULD MAKE COUNTERS AS JLABELS WITH AN IMAGE
-			//MUCH EASIER TO MOVE AROUND AND CAN STORE AS VARIABLE
-
-		}
-
-
 	}
 }
