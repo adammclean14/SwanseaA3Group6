@@ -47,7 +47,7 @@ public class BoardTile {
 		snakeLadderBoard.getContentPane().add(boardPanel);
 
 		//Draws numbers onto grid
-		//drawBoardNumbers();
+		drawBoardNumbers();
 
 		//Creates side menu that contains dice, timer, player's turn, etc
 		createSideMenu(snakeLadderBoard);
@@ -68,50 +68,50 @@ public class BoardTile {
 		menuPanel.setBounds(0, 0, 150, 300);
 		menuPanel.setLayout(null);
 		menuPanel.setBackground(Color.LIGHT_GRAY);
-
+		
 		//added roll die btn   
 		drawDice(menuPanel);
-
+		
 		//Timer Title Label
 		timerTitle = new JLabel("TIMER");
 		timerTitle.setBounds(815, 590, 150, 150);
 		timerTitle.setFont((new Font(timerTitle.getName(), Font.PLAIN, 35)));
 		menuPanel.add(timerTitle);
-
+		
 		//Timer Number just for demonstration of placement...not functional
 		timerFakeLbl = new JLabel("0:23:15");
 		timerFakeLbl.setBounds(800, 635, 150, 150);
 		timerFakeLbl.setFont((new Font(timerFakeLbl.getName(), Font.PLAIN, 35)));
 		timerFakeLbl.setForeground(Color.BLUE);
 		menuPanel.add(timerFakeLbl);
-
+		
 		//Label to make a border for the timer labels
 		timerBox = new JLabel("");
 		timerBox.setBounds(790,625,150,125);
 		Border timerBdr = BorderFactory.createLineBorder(Color.BLUE, 5);
 		timerBox.setBorder(timerBdr);
 		menuPanel.add(timerBox);
-
+		
 		//Player Turn Lbl
 		playerLbl = new JLabel("YOUR TURN:");
 		playerLbl.setBounds(775, 150, 250, 150);
 		playerLbl.setFont((new Font(playerLbl.getName(), Font.PLAIN, 35)));
 		menuPanel.add(playerLbl);
-
+		
 		//Player Turn Name Lbl
 		turnLbl = new JLabel("Jon");
 		turnLbl.setBounds(850, 175, 250, 200);
 		turnLbl.setFont((new Font(turnLbl.getName(), Font.PLAIN, 35)));
 		turnLbl.setForeground(Color.RED);
 		menuPanel.add(turnLbl);
-
+		
 		//Label to make a border for the player labels
 		playerBox = new JLabel("");
 		playerBox.setBounds(765,175,225,150);
 		Border playerBdr = BorderFactory.createLineBorder(Color.DARK_GRAY, 5);
 		playerBox.setBorder(playerBdr);
 		menuPanel.add(playerBox);
-
+		
 		snakeLadderBoard.getContentPane().add(menuPanel);
 	}
 
@@ -145,7 +145,7 @@ public class BoardTile {
 				}
 			}
 		});
-
+		
 	}
 
 
@@ -228,7 +228,6 @@ public class BoardTile {
 
 	private class PaintSurface extends JPanel {
 		public PaintSurface() {
-
 			repaint();
 
 		}
@@ -238,92 +237,10 @@ public class BoardTile {
 		}
 		//THIS FUNCTION PAINTS THE SNAKES, LADDERS, AND COUNTERS ONTO THE BOARD...NEED TO SPLIT THIS UP PROBABLY
 		public void paint(Graphics g) {
-			g.setColor(Color.RED);
-			int i = 0;
-			int j = 0;
 
-			while (j < 11){
-
-
-				int loc = (j * 10) + 1;
-				String locS = Integer.toString(loc);
-				g.setColor(Color.BLUE);
-				if ((loc + 19) % 20 == 0 ){
-					g.drawString(locS, 15, 700 + (-j * 75));
-					
-					String locS2 = Integer.toString(loc + 1);
-					g.drawString(locS2, 15 + (75*1), 700 + (-j * 75));
-					
-					String locS3 = Integer.toString(loc + 2);
-					g.drawString(locS3, 15 + (75*2), 700 + (-j * 75));
-					
-					String locS4 = Integer.toString(loc + 3);
-					g.drawString(locS4, 15 + (75*3), 700 + (-j * 75));
-					
-					String locS5 = Integer.toString(loc + 4);
-					g.drawString(locS5, 15 + (75*4), 700 + (-j * 75));
-					
-					String locS6 = Integer.toString(loc + 5);
-					g.drawString(locS6, 15 + (75*5), 700 + (-j * 75));
-					
-					String locS7 = Integer.toString(loc + 6);
-					g.drawString(locS7, 15 + (75*6), 700 + (-j * 75));
-					
-					String locS8 = Integer.toString(loc + 7);
-					g.drawString(locS8, 15 + (75*7), 700 + (-j * 75));
-					
-					String locS9 = Integer.toString(loc + 8);
-					g.drawString(locS9, 15 + (75*8), 700 + (-j * 75));
-					
-					String locS10 = Integer.toString(loc + 9);
-					g.drawString(locS10, 15 + (75*9), 700 + (-j * 75));
-					
-				}
-				else{
-					g.drawString(locS, 715, 700 + (-j * 75));
-					
-					String locS2 = Integer.toString(loc + 1);
-					g.drawString(locS2, 715 - (75*1), 700 + (-j * 75));
-					
-					String locS3 = Integer.toString(loc + 2);
-					g.drawString(locS3, 715 - (75*2), 700 + (-j * 75));
-					
-					String locS4 = Integer.toString(loc + 3);
-					g.drawString(locS4, 715 - (75*3), 700 + (-j * 75));
-					
-					String locS5 = Integer.toString(loc + 4);
-					g.drawString(locS5, 715 - (75*4), 700 + (-j * 75));
-					
-					String locS6 = Integer.toString(loc + 5);
-					g.drawString(locS6, 715 - (75*5), 700 + (-j * 75));
-					
-					String locS7 = Integer.toString(loc + 6);
-					g.drawString(locS7, 715 - (75*6), 700 + (-j * 75));
-					
-					String locS8 = Integer.toString(loc + 7);
-					g.drawString(locS8, 715 - (75*7), 700 + (-j * 75));
-					
-					String locS9 = Integer.toString(loc + 8);
-					g.drawString(locS9, 715 - (75*8), 700 + (-j * 75));
-					
-					String locS10 = Integer.toString(loc + 9);
-					g.drawString(locS10, 715 - (75*9), 700 + (-j * 75));
-				}
-				j++;
-
-			}
-
-			g.setColor(Color.RED);
-			while (i < 12){
-				g.drawLine(0, 75*(i-1), 750, 75*(i-1));
-				g.drawLine(75*(i-1), 0, 75*(i-1), 750);
-
-				i++;
-			}
 
 			//Creating graphics variable and getting image
 			Graphics2D g2d=(Graphics2D)g; // Create a Java2D version of g.
-
 			java.awt.Image image = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();  
 			java.awt.Image image2 = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage(); 
 			//for rotational transforming
@@ -445,8 +362,14 @@ public class BoardTile {
 			g2d.fillOval(703 - (75 * 4), 703 - 75, 20, 20);
 			g2d.setColor(Color.BLACK);
 
-
-
+			int i = 0;
+			while (i < 5){
+				g2d.fillOval(703 - (75 * 8) + i, 703 - 75, 20, 20);
+				g2d.translate(1, 1);
+				g2d.clearRect(703 - (75 * 8) + i, 703 - 75, 20, 20);
+				//g2d.
+				i = i + 1;
+			}
 		}
 	}
 }

@@ -1,4 +1,4 @@
-public class SnakeLadderLogic extends ComputerAI {
+public class SnakeLadderLogic extends Player {
 	
 	private int m_position;
 	private int m_getDice;

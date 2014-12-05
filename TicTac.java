@@ -191,10 +191,10 @@ public class TicTac extends GameLogic{
 			chainLength = checkBottom(changedX + 1, changedY, checkValue, chainLength);
 			chainLength = checkTop(changedX - 1, changedY, checkValue, chainLength);
 		}
-		if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "O"){
+		if (chainLength >= WINNING_CHAIN_LENGTH && checkValue == "O"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
-		} else if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "X"){
+		} else if (chainLength >= WINNING_CHAIN_LENGTH && checkValue == "X"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
 		}
@@ -283,10 +283,10 @@ public class TicTac extends GameLogic{
 			chainLength = checkRight(changedX, changedY + 1, checkValue, chainLength);
 			chainLength = checkLeft(changedX, changedY - 1, checkValue, chainLength);
 		}
-		if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "O"){
+		if (chainLength >= WINNING_CHAIN_LENGTH && checkValue == "O"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
-		} else if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "X"){
+		} else if (chainLength >= WINNING_CHAIN_LENGTH && checkValue == "X"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
 		}
@@ -389,10 +389,10 @@ public class TicTac extends GameLogic{
 				chainLength = checkTopRight(changedX - 1, changedY + 1, checkValue, chainLength);
 			}
 		}
-		if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "O"){
+		if (chainLength >= WINNING_CHAIN_LENGTH && checkValue == "O"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
-		} else if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "X"){
+		} else if (chainLength >= WINNING_CHAIN_LENGTH && checkValue == "X"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
 		}

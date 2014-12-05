@@ -5,7 +5,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
-public class timeTester{
+public class LabelTimerTester{
 	public static void main( String args[] ) {
 		JFrame win = new JFrame( "Timer" );
 		win.addWindowListener(
