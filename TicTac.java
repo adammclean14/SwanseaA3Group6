@@ -37,11 +37,18 @@ public class TicTac extends GameLogic{
 	ActionListener countAction = new ActionListener(){
 		public void actionPerformed(ActionEvent count){
 			m_timeCount++;
-			if (m_timeCount == 60){
+			//variable to store the number of seconds in a minute
+			final int SECONDS_IN_MINUTE = 60;
+			/**
+			 * Variable to store the number 10. This is used for formatting, adding an extra 0 before the unit
+			 * if the current number of seconds is below 10
+			 */
+			final int TEN = 10;
+			if (m_timeCount == SECONDS_IN_MINUTE){
 				m_minutes++;
 				m_timeCount = 0;
 			}
-			if (m_timeCount < 10){
+			if (m_timeCount < TEN){
 				m_time.setText("Time: " + m_minutes + ":" + "0" + m_timeCount);
 			} else {
 				m_time.setText("Time: " + m_minutes + ":" + m_timeCount);
@@ -73,6 +80,7 @@ public class TicTac extends GameLogic{
 	private JLabel m_player2Name = new JLabel("");
 	private Font m_defaultFont = new Font("Serif", Font.PLAIN, m_time.getFont().getSize());
 	private Font m_boldFont = new Font(m_defaultFont.getFontName(), Font.BOLD, m_defaultFont.getSize());
+	private final int WINNING_CHAIN_LENGTH = 5;
 
 	/**
 	 * The first constructor. It constructs an instance of the class for two human players
@@ -96,7 +104,7 @@ public class TicTac extends GameLogic{
 	 * \param player_2 the first AI player in the game
 	 */
 	public TicTac (Human player_1, TicTacLogic player_2){
-		for (int i = 0; i < 50; i++){
+		for (int i = 0; i < BOARDSIZE -1; i++){
 			m_order.add(player_1);
 			m_order.add(player_2);
 		}
@@ -112,7 +120,7 @@ public class TicTac extends GameLogic{
 	 * \param player_2 the second AI player in the game
 	 */
 	public TicTac (TicTacLogic player_1, TicTacLogic player_2){
-		for (int i = 0; i < 50; i++){
+		for (int i = 0; i < BOARDSIZE -1; i++){
 			m_order.add(player_1);
 			m_order.add(player_2);
 		}
@@ -183,10 +191,10 @@ public class TicTac extends GameLogic{
 			chainLength = checkBottom(changedX + 1, changedY, checkValue, chainLength);
 			chainLength = checkTop(changedX - 1, changedY, checkValue, chainLength);
 		}
-		if (chainLength == 5 && checkValue == "O"){
+		if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "O"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
-		} else if (chainLength == 5 && checkValue == "X"){
+		} else if (chainLength == WINNING_CHAIN_LENGTH && checkValue == "X"){
 			m_order.get(m_turnCount).setHasWon(true);
 			disableButtons();
 		}
