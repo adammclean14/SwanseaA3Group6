@@ -8,9 +8,9 @@ import java.awt.Color;
 
 public class Counter {
 
-	private Color color;
-	private int locationX;
-	private int locationY;
+	private Color m_color;
+	private int m_locationX;
+	private int m_locationY;
 
     /**
      * Constructor counter which sets the counters location and color
@@ -27,8 +27,8 @@ public class Counter {
 	 * @param j
 	 */
 	private void setLocation(int i, int j) {
-		locationX = i;
-		locationY = j;
+		m_locationX = i;
+		m_locationY = j;
 	}
 	
 	/**
@@ -36,7 +36,7 @@ public class Counter {
 	 * @return X location
 	 */
 	public int getLocationX() {
-		return locationX;
+		return m_locationX;
 	}
 	
 	/**
@@ -44,7 +44,7 @@ public class Counter {
 	 * @return Y location
 	 */
 	public int getLocationY() {
-		return locationY;
+		return m_locationY;
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class Counter {
 	 * @param color of piece
 	 */
 	public void setColor(Color color){
-		this.color = color;
+		this.m_color = color;
 	}
 
 	/**
@@ -60,6 +60,6 @@ public class Counter {
 	 * @return color of piece
 	 */
 	public Color getColor(){
-		return color;
+		return m_color;
 	}
 }
