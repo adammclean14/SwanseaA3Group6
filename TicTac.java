@@ -21,10 +21,10 @@ public class TicTac extends GameLogic{
 	ActionListener timerAction = new ActionListener() {
 		public void actionPerformed(ActionEvent flash) {
 			for (int i = 0; i < m_winningButtons.size(); i++){
-				if (m_winningButtons.get(i).getBackground() == m_oldBackground){
+				if (m_winningButtons.get(i).getBackground() == m_oldBlackBackground){
 					m_winningButtons.get(i).setBackground(Color.BLACK);
 				} else {
-					m_winningButtons.get(i).setBackground(m_oldBackground);
+					m_winningButtons.get(i).setBackground(m_oldBlackBackground);
 				}
 			}
 		}
@@ -71,7 +71,8 @@ public class TicTac extends GameLogic{
 	private JButton m_buttons[][] = new JButton[BOARDSIZEX][BOARDSIZEY];
 	private String m_letter = "";
 	private Timer flashtimer = new Timer(500, timerAction);
-	private Color m_oldBackground = Color.BLACK;
+	private Color m_oldBlackBackground = Color.BLACK;
+	private Color m_defaultBack;
 	private JLabel m_time = new JLabel("0");
 	private int m_timeCount = 0;
 	private int m_minutes = 0;
@@ -609,6 +610,7 @@ public class TicTac extends GameLogic{
 			}
 			
 		}
+		m_defaultBack = m_buttons[0][0].getBackground();
 		
 		//Makes the game window visible
 		m_window.setVisible(true);
@@ -625,19 +627,20 @@ public class TicTac extends GameLogic{
 	 */
 	ActionListener resetListener = new ActionListener() {
 		public void actionPerformed(ActionEvent reset) {
+			flashtimer.stop();
 			for(int i = 0; i< BOARDSIZEX; i++)	{
 				for (int j = 0; j < BOARDSIZEY; j++ ){
 					m_buttons[i][j].setEnabled(true);
 					m_buttons[i][j].setText("");
+					m_buttons[i][j].setBackground(m_defaultBack);
 				}
 			}
 			m_order.get(0).setHasWon(false);
 			m_order.get(1).setHasWon(false);
 			m_turnCount = 0;
-			flashtimer.stop();
-			for (int i = 0; i < m_winningButtons.size(); i++){
-					m_winningButtons.get(i).setBackground(m_oldBackground);
-			}
+//			for (int i = 0; i < m_winningButtons.size(); i++){
+//					m_winningButtons.get(i).setBackground(m_oldBackground);
+//			}
 			m_timerDisplay.start();
 			m_timeCount = 0;
 			m_minutes = 0;
@@ -726,7 +729,7 @@ public class TicTac extends GameLogic{
 				m_buttons[i][j].setEnabled(false);
 			}
 		}
-		m_oldBackground = m_winningButtons.get(0).getBackground();
+		m_oldBlackBackground = m_winningButtons.get(0).getBackground();
 		m_player1Name.setFont(m_boldFont);
 		m_player2Name.setFont(m_defaultFont);
 		if (m_tied == false){
