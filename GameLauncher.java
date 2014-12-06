@@ -457,12 +457,12 @@ public class GameLauncher {
 	 * @param playerColors Color array of player colours.
 	 */
 	private static void loadSnakesAndLadders(int numberOfMovers, int numberOfPlayers, String[] playerNames, Color[] playerColors) {
-		ArrayList<Player> players;
+		ArrayList<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < numberOfPlayers; i++){
 			Human temp = new Human(playerNames[i], playerColors[i], false);
 			players.add(temp);
 		}
-		SnakeLadderGame newgame = new SnakeLadderGame(numberOfMovers,players);
+		new SnakeLadderGame(numberOfMovers,players);
 	}
 
 	/**
