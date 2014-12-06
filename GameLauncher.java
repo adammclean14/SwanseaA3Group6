@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -456,7 +457,12 @@ public class GameLauncher {
 	 * @param playerColors Color array of player colours.
 	 */
 	private static void loadSnakesAndLadders(int numberOfMovers, int numberOfPlayers, String[] playerNames, Color[] playerColors) {
-		SnakeLadder newgame = new SnakeLadder(numberOfMovers,numberOfPlayers,playerNames,playerColors);
+		ArrayList<Player> players;
+		for (int i = 0; i < numberOfPlayers; i++){
+			Human temp = new Human(playerNames[i], playerColors[i], false);
+			players.add(temp);
+		}
+		SnakeLadderGame newgame = new SnakeLadderGame(numberOfMovers,players);
 	}
 
 	/**
