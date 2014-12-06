@@ -104,7 +104,7 @@ public class AnimationTester implements Runnable{
 	}
 
 	public void run(){
-		moveIt(15);
+		//moveIt(15);
 	}
 
 
@@ -385,5 +385,73 @@ public class AnimationTester implements Runnable{
 			//
 			//if (pixelCount == 0 && oneX == 0 && oneX ==225)
 		}
+		//CHECKS TO SEE IF COUNTER HAS LANDED ON ANY MOVER
+				if (pixelCount == 0){
+					
+					//LADDER FROM 16 to 45
+					if ( oneX > 315 && oneX < 335 && oneY == 625 ){
+						while (oneY > 400){
+							oneY--;
+						}
+						forward = true;
+					}
+					//SNAKE FROM 43 TO 3
+					if (oneX > 160 && oneX < 180 && oneY == (700 - 300)) {
+						while (oneY < 700){
+						oneY++;
+						forward = true;
+						frame.repaint();
+						}
+						oneX = 175;
+					}
+					
+					//LADDER FROM 48 TO 53
+					if ( oneX > 540 && oneX < 555 && oneY == 400 ){
+						while (oneY > 325){
+							oneY--;
+						}
+						oneX = 550;
+						forward = false;
+					}
+					
+					//LADDER FROM 54 TO 62
+					if (oneX > 465 && oneX < 485 && oneY == 325){
+						oneX =400;
+						oneY = 250;
+						forward = true;
+					}
+					
+					//SNAKE FROM 74 TO 35
+					if (oneX > 465 && oneX < 485 && oneY == 175){
+						oneX = 400;
+						oneY = oneY + (4*75);
+						forward = false;
+					}
+					
+					//SNAKE FROM 86 to 77
+					if (oneX > 390 && oneX < 405 && oneY == 100){
+						oneX = 250;
+						oneY = 175;
+						forward = true;
+					}
+					
+					//LADDER FROM 82 TO 98
+					if (oneX > 90 && oneX < 105 && oneY == 100){
+						oneX = 175;
+						oneY = 25;
+						forward = true;
+					}
+					
+					//SNAKE FROM 94 TO 72
+					if (oneX > 475 && oneX < 490 && oneY == 25){
+						oneX = 625;
+						oneY = 175;
+						forward = true;
+					}
+				
+				}
+				System.out.println(oneX);
+				System.out.println(oneY);
+
 	}
 }
