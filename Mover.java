@@ -9,7 +9,6 @@ public class Mover {
 	public Mover(int numberofMovers) {
 		this.m_numberofMovers = numberofMovers;
 		createMoverArray(this.m_numberofMovers);
-		printArrayList();
 	}
 	
 	private void createMoverArray(int numberofMovers){
@@ -23,15 +22,6 @@ public class Mover {
 		return m_moverArray;
 	}
 	
-	public void printArrayList(){
-		for(int s : m_moverArray){
-			System.out.println(s);
-		}
-	}
-	
-	public static void main(String[] args){
-		Mover t = new Mover(10);
-		
-	}
+
 
 }
