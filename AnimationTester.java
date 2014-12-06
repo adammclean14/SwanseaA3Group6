@@ -7,90 +7,88 @@ import java.awt.geom.AffineTransform;
 import java.util.Random;
 
 import javax.swing.JButton;
-final public class AnimationTester {
+public class AnimationTester {
 
-    JFrame frame;
-    JFrame frame2;
-    DrawPanel drawPanel;
-    JButton rollBtn;
-    JLabel diceLbl;
-    private int oneX = 7;
-    private int oneY = 250;
-    boolean left = false;
-    boolean right = true;
-    boolean forward = true;
-    static String imageLocation;
-    public static void main(String[] args) {
-        new AnimationTester().go();
-    }
+	JFrame frame;
+	JFrame frame2;
+	DrawPanel drawPanel;
+	JButton rollBtn;
+	JLabel diceLbl;
+	private int oneX = 25;
+	private int oneY = 700;
+	boolean left = false;
+	boolean right = true;
+	boolean forward = true;
+	static String imageLocation;
+	boolean yes;
+	public static void main(String[] args) {
+		new AnimationTester().go();
+	}
 
-    private void go() {
-        frame = new JFrame("Test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        drawPanel = new DrawPanel();
-        frame.getContentPane().add(drawPanel);
-        frame.setVisible(true);
-        frame.setSize(1000, 1000);
-        frame.setLocation(500,0);
-        
-        frame2 = new JFrame("MENU FRAME");
-		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame2.setVisible(true);
-		frame2.setLayout(null);
-		frame2.setSize(300, 100);
-		frame2.setLocation(1000,0);
-		
-		rollBtn = new JButton("Start Roll");
-		rollBtn.setBackground(Color.RED);
-		rollBtn.setBounds(0, 0, 75, 75);
-		frame2.add(rollBtn);
-		
-		diceLbl = new JLabel();
-		diceLbl.setBounds(100,0,75,75);
-		
-		java.awt.Image startImage = new ImageIcon (this.getClass().getResource("/1dice.gif")).getImage();
-		diceLbl.setIcon(new ImageIcon(startImage));
-		
-		frame2.add(diceLbl);
-		
-		rollBtn.addMouseListener(new MouseAdapter() {
-			int i = 0;
-			public void mousePressed(MouseEvent e){
-				if (i % 2 == 0){
-					rollBtn.setText("End Roll");
-					java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
-					diceLbl.setIcon(new ImageIcon(gif));
-					i = i + 1;
+	private void go() {
+
+
+			frame = new JFrame("Test");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			drawPanel = new DrawPanel();
+			frame.getContentPane().add(drawPanel);
+			frame.setVisible(true);
+			frame.setSize(1000, 1000);
+			frame.setLocation(500,0);
+
+			frame2 = new JFrame("MENU FRAME");
+			frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame2.setVisible(true);
+			frame2.setLayout(null);
+			frame2.setSize(300, 100);
+			frame2.setLocation(1000,0);
+
+			rollBtn = new JButton("Start Roll");
+			rollBtn.setBackground(Color.RED);
+			rollBtn.setBounds(0, 0, 75, 75);
+			frame2.add(rollBtn);
+
+			diceLbl = new JLabel();
+			diceLbl.setBounds(100,0,75,75);
+
+			java.awt.Image startImage = new ImageIcon (this.getClass().getResource("/1dice.gif")).getImage();
+			diceLbl.setIcon(new ImageIcon(startImage));
+
+			frame2.add(diceLbl);
+
+
+
+
+			rollBtn.addMouseListener(new MouseAdapter() {
+				int i = 0;
+				public void mousePressed(MouseEvent e){
+
+					if (i % 2 == 0){
+						rollBtn.setText("End Roll");
+						java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
+						diceLbl.setIcon(new ImageIcon(gif));
+						i = i + 1;
+					}
+					else{
+						//THIS PROBABLY HAS TO BE A DIFFERENT FUNCTION
+						rollBtn.setText("Start Roll");
+						String thing = getRandNum();
+						java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
+						diceLbl.setIcon(new ImageIcon(image));
+						System.out.println(thing);	
+						i = i -1;
+
+						moveIt();
+					}
+
 				}
-				else{
-					rollBtn.setText("Start Roll");
-					String thing = getRandNum();
-					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
-					diceLbl.setIcon(new ImageIcon(image));
-					System.out.println(thing);	
-					i = i -1;	
-					moveIt();
+			});
 
-					
-				}
-			}
-		});
-		
-		
-		
-		
-	
-        
-        //moveIt();
-        System.out.println("Done");
-        
-        
-        
-        
-        
-    }
+	}
 
-    public String getRandNum(){
+
+
+	public String getRandNum(){
 		int max = 6;
 		int min = 1;
 		Random rand = new Random();
@@ -99,18 +97,23 @@ final public class AnimationTester {
 		//Creates string for image location
 		return imageLocation = randomNum + "dice.gif";
 	}
-    
-    
-    
-    class DrawPanel extends JPanel {
-        public void paintComponent(Graphics g) {
-            //paints board lines
-        	g.setColor(Color.RED);
+
+
+
+	class DrawPanel extends JPanel {
+		@Override
+		public void paintComponent(Graphics g) {
+			//paints oval   
+			g.setColor(Color.GREEN);
+			g.fillOval(oneX, oneY, 20, 20);
+
+			//paints board lines
+			g.setColor(Color.RED);
 			int i = 0;
 			int j = 0;
-			
+
 			//DRAWS NUMBERS
-			
+
 			while (j < 11){
 
 
@@ -190,85 +193,96 @@ final public class AnimationTester {
 
 				i++;
 			}
-                
-            	
-            	
-            	//paints oval   
-                g.setColor(Color.GREEN);
-                g.fillOval(oneX, oneY, 20, 20);
-            
-                //Creates a ladder
-                Graphics2D g2d=(Graphics2D)g; 
-    			java.awt.Image image = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();  
-    			AffineTransform trans = new AffineTransform();
-    			trans.scale(0.2, 0.2); 
-    			trans.translate(800, 80);
-    			trans.rotate( Math.toRadians(45) );
-    			g2d.drawImage(image, trans, this);
-                
-                
-        }
-    }
-    	
-    
-    private void moveIt() {
-    	
-    	
-    	
-    	
-    	int pixelCount = 1500;
-        while(pixelCount > 0){
-            if(oneX == 283){
-                right = false;
-                left = true;
-                forward = false;
-                oneY--;
-                pixelCount --;
-                frame.repaint();
 
-            }
-            if(oneX == 0){
-                right = false;
-                left = true;
-                forward = true;
-                oneY--;
-                pixelCount --;
-                frame.repaint();
 
-            }
-          
-            if (oneY % 25 == 0) {
-            	right = true;
-            	left = false;
-            	
-            }
-            
-            if(left) {
-                oneY--;
-                pixelCount --;
-                frame.repaint();
 
-            }  
-            
-            if(right && forward && left == false){
-                oneX++;  
-                pixelCount --;
-                frame.repaint();
 
-                } 
-            
-            if(right && forward == false && left == false){
-            	oneX--;
-            	pixelCount --;
-                frame.repaint();
+			//Creates a ladder
+			Graphics2D g2d=(Graphics2D)g; 
+			java.awt.Image image = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();  
+			AffineTransform trans = new AffineTransform();
+			trans.scale(0.2, 0.2); 
+			trans.translate(800, 80);
+			trans.rotate( Math.toRadians(45) );
+			g2d.drawImage(image, trans, this);
 
-            }
-            
-            
-            try{
-                Thread.sleep(10);
-            } catch (Exception exc){}
-            frame.repaint();
-        }
-    }
+
+		}
+	}
+
+
+
+	private void moveIt()  {
+
+
+
+		int i = 0;
+		int pixelCount = 150;
+
+
+
+		while(pixelCount > 0){
+			if(oneX == 700){
+				right = false;
+				left = true;
+				forward = false;
+				oneY--;
+				pixelCount --;
+				frame.repaint();
+				//Thread.sleep(100);
+
+			}
+			if(oneX == 0){
+				right = false;
+				left = true;
+				forward = true;
+				oneY = oneY - 75;
+				pixelCount =pixelCount - 75;
+
+				frame.repaint();
+				//Thread.sleep(100);
+
+
+			}
+
+			if (oneY % 700 == 0) {
+				right = true;
+				left = false;
+
+			}
+
+			if(left) {
+				oneY = oneY - 75;
+				pixelCount = pixelCount - 75;
+				frame.repaint();
+				//Thread.sleep(100);
+
+
+			}  
+
+			if(right && forward && left == false){
+				oneX = oneX + 75;  
+				pixelCount = pixelCount - 75;
+				frame.repaint();
+				//Thread.sleep(100);
+
+
+			} 
+
+			if(right && forward == false && left == false){
+				oneX = oneX - 75;
+				pixelCount = pixelCount - 75;
+				frame.repaint();
+				//Thread.sleep(100);
+
+
+			}
+
+
+			try{
+				Thread.sleep(10);
+			} catch (Exception exc){}
+			frame.repaint();
+		}
+	}
 }
