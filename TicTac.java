@@ -99,38 +99,6 @@ public class TicTac extends GameLogic{
 		m_player1LongestChain = 0;
 		m_player2LongestChain = 0;
 	}
-	/**
-	 * The second constructor. It constructs an instance of the class for a human and a computer player
-	 * \param player_1 the first human player in the game
-	 * \param player_2 the first AI player in the game
-	 */
-	public TicTac (Human player_1, TicTacLogic player_2){
-		for (int i = 0; i < BOARDSIZE -1; i++){
-			m_order.add(player_1);
-			m_order.add(player_2);
-		}
-		m_gameWon = false;
-		m_turnCount = 0;
-		m_tied = false;
-		m_player1LongestChain = 0;
-		m_player2LongestChain = 0;
-	}
-	/**
-	 * The third constructor. It constructs an instance of the class for two computer players
-	 * \param player_1 the first AI player in the game
-	 * \param player_2 the second AI player in the game
-	 */
-	public TicTac (TicTacLogic player_1, TicTacLogic player_2){
-		for (int i = 0; i < BOARDSIZE -1; i++){
-			m_order.add(player_1);
-			m_order.add(player_2);
-		}
-		m_gameWon = false;
-		m_turnCount = 0;
-		m_tied = false;
-		m_player1LongestChain = 0;
-		m_player2LongestChain = 0;
-	}
 	
 	/**
 	 * Getter method for the m_turnCount attribute
