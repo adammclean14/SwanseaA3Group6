@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JButton;
-public class AnimationTester implements Runnable{
+public class SnakeLadderGame implements Runnable{
 
 	JFrame frame;
 	JFrame frame2;
@@ -16,19 +18,38 @@ public class AnimationTester implements Runnable{
 	JLabel diceLbl;
 	private int oneX = 25;
 	private int oneY = 700;
-	boolean left = false;
-	boolean right = true;
-	boolean forward = true;
+	private int twoX = 25;
+	private int twoY = 700;
+	private int threeX = 25;
+	private int threeY = 700;
+	private int fourX = 25;
+	private int fourY = 700;
+	boolean left1 = false;
+	boolean right1 = true;
+	boolean forward1 = true;
+	boolean wonGame = false;
+	boolean left2 = false;
+	boolean right2 = true;
+	boolean forward2 = true;
+
+	boolean left3 = false;
+	boolean right3 = true;
+	boolean forward3 = true;
+	boolean left4 = false;
+	boolean right4 = true;
+	boolean forward4 = true;
 	static String imageLocation;
-	boolean yes;
+	int turn = 0;
+	//This is actually #
+	int players = 4;
 	Dice m_dice = new Dice();
-	public static void main(String[] args) {
-		new AnimationTester().go();
-
-		
-		System.out.println("Main thread finished!");
+	ArrayList<Player> playersList;
+	
+	//gets all this info from game launcher
+	public SnakeLadderGame(int numberOfMovers, ArrayList<Player> players){
+		playersList = players;
 	}
-
+	
 	private void go() {
 
 		frame = new JFrame("Test");
@@ -36,7 +57,7 @@ public class AnimationTester implements Runnable{
 		drawPanel = new DrawPanel();
 		frame.getContentPane().add(drawPanel);
 		frame.setVisible(true);
-		frame.setSize(1000, 1000);
+		frame.setSize(755, 775);
 		frame.setLocation(500,0);
 
 		frame2 = new JFrame("MENU FRAME");
@@ -44,7 +65,7 @@ public class AnimationTester implements Runnable{
 		frame2.setVisible(true);
 		frame2.setLayout(null);
 		frame2.setSize(300, 100);
-		frame2.setLocation(1000,0);
+		frame2.setLocation(200,350);
 
 		rollBtn = new JButton("Start Roll");
 		rollBtn.setBackground(Color.RED);
@@ -71,23 +92,48 @@ public class AnimationTester implements Runnable{
 					java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
 					diceLbl.setIcon(new ImageIcon(gif));
 					i = i + 1;
+
+
 				}
 				else{
-					
+
 					rollBtn.setText("Start Roll");
 					String thing = Dice.getNewRoll() +"dice.gif";
 					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
 					diceLbl.setIcon(new ImageIcon(image));
-					
+
 					i = i -1;
-					
+
+					System.out.println("turn number" + turn);
 					Thread one = new Thread() {
-					    public void run() {
-					    	moveIt(Dice.getPrevValue());
-					    }  
+						public void run() {
+
+							if (players == turn){
+								turn = 0;
+							}
+							if (turn == 3 && players > turn){
+								moveIt4(Dice.getPrevValue());
+								turn = 0;
+
+							}
+							else if (turn == 0 && players > turn){
+								moveIt(Dice.getPrevValue());
+								turn ++;
+							}
+							else if (turn == 2 && players > turn){
+								moveIt3(Dice.getPrevValue());
+								turn++;
+							}
+
+							else if (turn == 1 && players > turn){
+								moveIt2(Dice.getPrevValue());
+								turn ++;
+								//turn = -1;
+							}
+						}  
 					};
 					one.start();
-					
+
 				}
 
 			}
@@ -96,7 +142,18 @@ public class AnimationTester implements Runnable{
 
 
 
-		moveIt(105);
+		//moveIt4(15);
+		//moveIt(3);
+		//moveIt2(23);
+		//moveIt3(15);
+		//moveIt3(16);
+		//moveIt(2);
+		//moveIt(8);
+		//moveIt(8);
+		//moveIt(83);
+		//moveIt(17);
+		//moveIt(10);
+		//moveIt(5);
 
 
 	}
@@ -122,13 +179,31 @@ public class AnimationTester implements Runnable{
 		@Override
 		public void paintComponent(Graphics g) {
 			//paints oval   
-			g.setColor(Color.GREEN);
-			g.fillOval(oneX, oneY, 20, 20);
+			//Ellipse2D.Double shape = new Ellipse2D.Double(oneX, oneY, 20, 20);
+			//((Graphics2D) g).draw(shape);
 
-			//paints board lines
+			if (players >= 2){
+				g.setColor(Color.BLUE);
+				g.fillOval(twoX, twoY, 20, 20);
+			}
+			
+			if (players >= 3){
+				g.setColor(Color.RED);
+				g.fillOval(threeX, threeY, 20, 20);
+			}
+			
+			if (players >= 4){
+				g.setColor(Color.BLACK);
+				g.fillOval(fourX, fourY, 20, 20);
+				//paints board lines
+			}
+			
 			g.setColor(Color.RED);
 			int i = 0;
 			int j = 0;
+
+			g.setColor(Color.GREEN);
+			g.fillOval(oneX, oneY, 20, 20);
 
 			//DRAWS NUMBERS
 
@@ -225,7 +300,7 @@ public class AnimationTester implements Runnable{
 			trans.translate(800, 80);
 			trans.rotate( Math.toRadians(45) );
 			g2d.drawImage(image, trans, this);
-			
+
 			//-----Drawing 2nd ladder
 			AffineTransform trans2 = new AffineTransform();            	    	
 
@@ -321,59 +396,47 @@ public class AnimationTester implements Runnable{
 	private void moveIt(int diceRoll) {
 
 
-
-		boolean wonGame = false;
 		int pixelCount = 75 * diceRoll;
-		
-
-		
 		while(pixelCount > 0 && wonGame == false){
 			if(oneX == 700){
-				right = false;
-				left = true;
-				forward = false;
+				right1 = false;
+				left1 = true;
+				forward1 = false;
 				oneY--;
 				pixelCount --;
 				frame.repaint();
-
 			}
 			if(oneX == 24){
-				right = false;
-				left = true;
-				forward = true;
+				right1 = false;
+				left1 = true;
+				forward1 = true;
 				oneY--;
 				pixelCount --;
 				frame.repaint();
-
 			}
-
 			if ((oneY- 700) % 75 == 0) {
-				right = true;
-				left = false;
-
+				right1 = true;
+				left1 = false;
 			}
-
-			if(left) {
+			if(left1) {
 				oneY--;
 				pixelCount --;
 				frame.repaint();
-
 			}  
-
-			if(right && forward && left == false){
+			if(right1 && forward1 && left1 == false){
 				oneX++;  
 				pixelCount --;
 				frame.repaint();
 
 			} 
 
-			if(right && forward == false && left == false){
+			if(right1 && forward1 == false && left1 == false){
 				oneX--;
 				pixelCount --;
 				frame.repaint();
 
 			}
-			
+
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( oneX > 20 && oneX < 45 && oneY == 25 ){
 				System.out.println("Won Game");
@@ -383,83 +446,526 @@ public class AnimationTester implements Runnable{
 
 
 			try{
-				Thread.sleep(1);
+				Thread.sleep(3);
 			} catch (Exception exc){}
 			frame.repaint();
-			
+
 			//
-			
+
 		}
-		
+
 		//CHECKS TO SEE IF COUNTER HAS LANDED ON ANY MOVER
-				if (pixelCount == 0){
-					
-				
-					
-					//LADDER FROM 16 to 45
-					if ( oneX > 315 && oneX < 335 && oneY == 625 ){
-						while (oneY > 400){
-							oneY--;
-						}
-						forward = true;
-					}
-					//SNAKE FROM 43 TO 3
-					if (oneX > 160 && oneX < 180 && oneY == (700 - 300)) {
-						while (oneY < 700){
-						oneY++;
-						forward = true;
-						frame.repaint();
-						}
-						oneX = 175;
-					}
-					
-					//LADDER FROM 48 TO 53
-					if ( oneX > 540 && oneX < 555 && oneY == 400 ){
-						while (oneY > 325){
-							oneY--;
-						}
-						oneX = 550;
-						forward = false;
-					}
-					
-					//LADDER FROM 54 TO 62
-					if (oneX > 465 && oneX < 485 && oneY == 325){
-						oneX =400;
-						oneY = 250;
-						forward = true;
-					}
-					
-					//SNAKE FROM 74 TO 35
-					if (oneX > 465 && oneX < 485 && oneY == 175){
-						oneX = 400;
-						oneY = oneY + (4*75);
-						forward = false;
-					}
-					
-					//SNAKE FROM 86 to 77
-					if (oneX > 390 && oneX < 405 && oneY == 100){
-						oneX = 250;
-						oneY = 175;
-						forward = true;
-					}
-					
-					//LADDER FROM 82 TO 98
-					if (oneX > 90 && oneX < 105 && oneY == 100){
-						oneX = 175;
-						oneY = 25;
-						forward = true;
-					}
-					
-					//SNAKE FROM 94 TO 72
-					if (oneX > 475 && oneX < 490 && oneY == 25){
-						oneX = 625;
-						oneY = 175;
-						forward = true;
-					}
-				
+		if (pixelCount == 0){
+
+
+
+			//LADDER FROM 16 to 45
+			if ( oneX > 315 && oneX < 335 && oneY == 625 ){
+				while (oneY > 400){
+					oneY--;
 				}
-				System.out.println(oneX);
-				System.out.println(oneY);
+				forward1 = true;
+			}
+			//SNAKE FROM 43 TO 3
+			if (oneX > 160 && oneX < 180 && oneY == (700 - 300)) {
+				while (oneY < 700){
+					oneY++;
+					forward1 = true;
+					frame.repaint();
+				}
+				oneX = 175;
+			}
+
+			//LADDER FROM 48 TO 53
+			if ( oneX > 540 && oneX < 555 && oneY == 400 ){
+				while (oneY > 325){
+					oneY--;
+				}
+				oneX = 550;
+				forward1 = false;
+			}
+
+			//LADDER FROM 54 TO 62
+			if (oneX > 465 && oneX < 485 && oneY == 325){
+				oneX =400;
+				oneY = 250;
+				forward1 = true;
+			}
+
+			//SNAKE FROM 74 TO 35
+			if (oneX > 465 && oneX < 485 && oneY == 175){
+				oneX = 400;
+				oneY = oneY + (4*75);
+				forward1 = false;
+			}
+
+			//SNAKE FROM 86 to 77
+			if (oneX > 390 && oneX < 405 && oneY == 100){
+				oneX = 250;
+				oneY = 175;
+				forward1 = false;
+			}
+
+			//LADDER FROM 82 TO 98
+			if (oneX > 85 && oneX < 115 && oneY == 100){
+				oneX = 175;
+				oneY = 25;
+				forward1 = false;
+			}
+
+			//SNAKE FROM 94 TO 72
+			if (oneX > 475 && oneX < 490 && oneY == 25){
+				oneX = 625;
+				oneY = 175;
+				forward1 = false;
+			}
+
+
+
+		}
+		System.out.println(oneX);
+		System.out.println(oneY);
 
 	}
+
+	private void moveIt2(int diceRoll) {
+
+
+
+		int pixelCount = 75 * diceRoll;
+
+
+
+		while(pixelCount > 0 && wonGame == false){
+			if(twoX == 700){
+				right2 = false;
+				left2 = true;
+				forward2 = false;
+				twoY--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+			if(twoX == 24){
+				right2 = false;
+				left2 = true;
+				forward2 = true;
+				twoY--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+
+			if ((twoY- 700) % 75 == 0) {
+				right2 = true;
+				left2 = false;
+
+			}
+
+			if(left2) {
+				twoY--;
+				pixelCount --;
+				frame.repaint();
+
+			}  
+
+			if(right2 && forward2 && left2 == false){
+				twoX++;  
+				pixelCount --;
+				frame.repaint();
+
+			} 
+
+			if(right2 && forward2 == false && left2 == false){
+				twoX--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+
+			//CHECKS TO SEE IF GAME HAS BEEN WON
+			if ( twoX > 20 && twoX < 45 && twoY == 25 ){
+				System.out.println("Won Game");
+				twoX = 25;
+				wonGame = true;
+			}
+
+
+			try{
+				Thread.sleep(3);
+			} catch (Exception exc){}
+			frame.repaint();
+
+			//
+
+		}
+
+		//CHECKS TO SEE IF COUNTER HAS LANDED ON ANY MOVER
+		if (pixelCount == 0){
+
+
+
+			//LADDER FROM 16 to 45
+			if ( twoX > 315 && twoX < 335 && twoY == 625 ){
+				while (twoY > 400){
+					twoY--;
+				}
+				forward2 = true;
+			}
+			//SNAKE FROM 43 TO 3
+			if (twoX > 160 && twoX < 180 && twoY == (700 - 300)) {
+				while (twoY < 700){
+					twoY++;
+					forward2 = true;
+					frame.repaint();
+				}
+				twoX = 175;
+			}
+
+			//LADDER FROM 48 TO 53
+			if ( twoX > 540 && twoX < 555 && twoY == 400 ){
+				while (twoY > 325){
+					twoY--;
+				}
+				twoX = 550;
+				forward2 = false;
+			}
+
+			//LADDER FROM 54 TO 62
+			if (twoX > 465 && twoX < 485 && twoY == 325){
+				twoX =400;
+				twoY = 250;
+				forward2 = true;
+			}
+
+			//SNAKE FROM 74 TO 35
+			if (twoX > 465 && twoX < 485 && twoY == 175){
+				twoX = 400;
+				twoY = twoY + (4*75);
+				forward2 = false;
+			}
+
+			//SNAKE FROM 86 to 77
+			if (twoX > 390 && twoX < 405 && twoY == 100){
+				twoX = 250;
+				twoY = 175;
+				forward2 = false;
+			}
+
+			//LADDER FROM 82 TO 98
+			if (twoX > 85 && twoX < 115 && twoY == 100){
+				twoX = 175;
+				twoY = 25;
+				forward2 = false;
+			}
+
+			//SNAKE FROM 94 TO 72
+			if (twoX > 475 && twoX < 490 && twoY == 25){
+				twoX = 625;
+				twoY = 175;
+				forward2 = false;
+			}
+
+
+
+		}
+		System.out.println(twoX);
+		System.out.println(twoY);
+
+	}
+
+	private void moveIt3(int diceRoll) {
+
+
+
+		int pixelCount = 75 * diceRoll;
+
+
+
+		while(pixelCount > 0 && wonGame == false){
+			if(threeX == 700){
+				right3 = false;
+				left3 = true;
+				forward3 = false;
+				threeY--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+			if(threeX == 24){
+				right3 = false;
+				left3 = true;
+				forward3 = true;
+				threeY--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+
+			if ((threeY- 700) % 75 == 0) {
+				right3 = true;
+				left3 = false;
+
+			}
+
+			if(left3) {
+				threeY--;
+				pixelCount --;
+				frame.repaint();
+
+			}  
+
+			if(right3 && forward3 && left3 == false){
+				threeX++;  
+				pixelCount --;
+				frame.repaint();
+
+			} 
+
+			if(right3 && forward3 == false && left3 == false){
+				threeX--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+
+			//CHECKS TO SEE IF GAME HAS BEEN WON
+			if ( threeX > 20 && threeX < 45 && threeY == 25 ){
+				System.out.println("Won Game");
+				threeX = 25;
+				wonGame = true;
+			}
+
+
+			try{
+				Thread.sleep(3);
+			} catch (Exception exc){}
+			frame.repaint();
+
+			//
+
+		}
+
+		//CHECKS TO SEE IF COUNTER HAS LANDED ON ANY MOVER
+		if (pixelCount == 0){
+
+
+
+			//LADDER FROM 16 to 45
+			if ( threeX > 315 && threeX < 335 && threeY == 625 ){
+				while (threeY > 400){
+					threeY--;
+				}
+				forward3 = true;
+			}
+			//SNAKE FROM 43 TO 3
+			if (threeX > 160 && threeX < 180 && threeY == (700 - 300)) {
+				while (threeY < 700){
+					threeY++;
+					forward3 = true;
+					frame.repaint();
+				}
+				threeX = 175;
+			}
+
+			//LADDER FROM 48 TO 53
+			if ( threeX > 540 && threeX < 555 && threeY == 400 ){
+				while (threeY > 325){
+					threeY--;
+				}
+				threeX = 550;
+				forward3 = false;
+			}
+
+			//LADDER FROM 54 TO 62
+			if (threeX > 465 && threeX < 485 && threeY == 325){
+				threeX =400;
+				threeY = 250;
+				forward3 = true;
+			}
+
+			//SNAKE FROM 74 TO 35
+			if (threeX > 465 && threeX < 485 && threeY == 175){
+				threeX = 400;
+				threeY = threeY + (4*75);
+				forward3 = false;
+			}
+
+			//SNAKE FROM 86 to 77
+			if (threeX > 390 && threeX < 405 && threeY == 100){
+				threeX = 250;
+				threeY = 175;
+				forward3 = false;
+			}
+
+			//LADDER FROM 82 TO 98
+			if (threeX > 85 && threeX < 115 && threeY == 100){
+				threeX = 175;
+				threeY = 25;
+				forward3 = false;
+			}
+
+			//SNAKE FROM 94 TO 72
+			if (threeX > 475 && threeX < 490 && threeY == 25){
+				threeX = 625;
+				threeY = 175;
+				forward3 = false;
+			}
+
+
+
+		}
+		System.out.println(threeX);
+		System.out.println(threeY);
+
+	}
+
+
+	private void moveIt4(int diceRoll) {
+
+
+
+		int pixelCount = 75 * diceRoll;
+
+
+
+		while(pixelCount > 0 && wonGame == false){
+			if(fourX == 700){
+				right4 = false;
+				left4 = true;
+				forward4 = false;
+				fourY--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+			if(fourX == 24){
+				right4 = false;
+				left4 = true;
+				forward4 = true;
+				fourY--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+
+			if ((fourY- 700) % 75 == 0) {
+				right4 = true;
+				left4 = false;
+
+			}
+
+			if(left4) {
+				fourY--;
+				pixelCount --;
+				frame.repaint();
+
+			}  
+
+			if(right4 && forward4 && left4 == false){
+				fourX++;  
+				pixelCount --;
+				frame.repaint();
+
+			} 
+
+			if(right4 && forward4 == false && left4 == false){
+				fourX--;
+				pixelCount --;
+				frame.repaint();
+
+			}
+
+			//CHECKS TO SEE IF GAME HAS BEEN WON
+			if ( fourX > 20 && fourX < 45 && fourY == 25 ){
+				System.out.println("Won Game");
+				fourX = 25;
+				wonGame = true;
+			}
+
+
+			try{
+				Thread.sleep(3);
+			} catch (Exception exc){}
+			frame.repaint();
+
+			//
+
+		}
+
+		//CHECKS TO SEE IF COUNTER HAS LANDED ON ANY MOVER
+		if (pixelCount == 0){
+
+
+
+			//LADDER FROM 16 to 45
+			if ( fourX > 315 && fourX < 335 && fourY == 625 ){
+				while (fourY > 400){
+					fourY--;
+				}
+				forward4 = true;
+			}
+			//SNAKE FROM 43 TO 3
+			if (fourX > 160 && fourX < 180 && fourY == (700 - 300)) {
+				while (fourY < 700){
+					fourY++;
+					forward4 = true;
+					frame.repaint();
+				}
+				fourX = 175;
+			}
+
+			//LADDER FROM 48 TO 53
+			if ( fourX > 540 && fourX < 555 && fourY == 400 ){
+				while (fourY > 325){
+					fourY--;
+				}
+				fourX = 550;
+				forward4 = false;
+			}
+
+			//LADDER FROM 54 TO 62
+			if (fourX > 465 && fourX < 485 && fourY == 325){
+				fourX =400;
+				fourY = 250;
+				forward4 = true;
+			}
+
+			//SNAKE FROM 74 TO 35
+			if (fourX > 465 && fourX < 485 && fourY == 175){
+				fourX = 400;
+				fourY = fourY + (4*75);
+				forward4 = false;
+			}
+
+			//SNAKE FROM 86 to 77
+			if (fourX > 390 && fourX < 405 && fourY == 100){
+				fourX = 250;
+				fourY = 175;
+				forward4 = false;
+			}
+
+			//LADDER FROM 82 TO 98
+			if (fourX > 85 && fourX < 115 && fourY == 100){
+				fourX = 175;
+				fourY = 25;
+				forward4 = false;
+			}
+
+			//SNAKE FROM 94 TO 72
+			if (fourX > 475 && fourX < 490 && fourY == 25){
+				fourX = 625;
+				fourY = 175;
+				forward4 = false;
+			}
+
+
+
+		}
+		System.out.println(fourX);
+		System.out.println(fourY);
+
+	}
+
+
 }
