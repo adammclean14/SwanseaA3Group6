@@ -9,14 +9,9 @@
  *
  */
 public class TicTacLogic extends Player {
-
-<<<<<<< HEAD
-=======
-
 	/**
-	* “That's the thing about people who think they hate computers. What they really hate is lousy programmers.” 
+	* "That's the thing about people who think they hate computers. 
+	* What they really hate is lousy programmers."
 	* - Riza Gulsen
 	*/
-
->>>>>>> origin/master
 }
