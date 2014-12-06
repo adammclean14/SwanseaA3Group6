@@ -7,7 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.util.Random;
 
 import javax.swing.JButton;
-public class AnimationTester {
+public class AnimationTester implements Runnable{
 
 	JFrame frame;
 	JFrame frame2;
@@ -23,10 +23,12 @@ public class AnimationTester {
 	boolean yes;
 	public static void main(String[] args) {
 		new AnimationTester().go();
+
+		
+		System.out.println("Main thread finished!");
 	}
 
 	private void go() {
-
 
 		frame = new JFrame("Test");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,29 +73,43 @@ public class AnimationTester {
 				}
 				else{
 					//THIS PROBABLY HAS TO BE A DIFFERENT FUNCTION
+
 					rollBtn.setText("Start Roll");
-					String thing = getRandNum();
+					int diceRoll = getRandNum();
+					String thing = diceRoll +"dice.gif";
 					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
 					diceLbl.setIcon(new ImageIcon(image));
+					//System.out.println(thing);	
+					moveIt(diceRoll);
 					i = i -1;
-					moveIt();
+
+
 				}
 
 			}
 		});
 
+
+
+
+		moveIt(22);
+
+
+	}
+
+	public void run(){
+		moveIt(15);
 	}
 
 
-
-	public String getRandNum(){
+	public int getRandNum(){
 		int max = 6;
 		int min = 1;
 		Random rand = new Random();
 		int randomNum = rand.nextInt((max - min) + 1) + min;
 
 		//Creates string for image location
-		return imageLocation = randomNum + "dice.gif";
+		return randomNum;
 	}
 
 
@@ -210,13 +226,12 @@ public class AnimationTester {
 
 
 
-	private void moveIt()  {
+	private void moveIt(int diceRoll) {
 
 
 
-		int i = 0;
-		int pixelCount = 150;
 
+		int pixelCount = 75 * diceRoll;
 
 
 		while(pixelCount > 0){
@@ -227,52 +242,42 @@ public class AnimationTester {
 				oneY--;
 				pixelCount --;
 				frame.repaint();
-				//Thread.sleep(100);
 
 			}
-			if(oneX == 0){
+			if(oneX == 24){
 				right = false;
 				left = true;
 				forward = true;
-				oneY = oneY - 75;
-				pixelCount =pixelCount - 75;
-
+				oneY--;
+				pixelCount --;
 				frame.repaint();
-				//Thread.sleep(100);
-
 
 			}
 
-			if (oneY % 700 == 0) {
+			if ((oneY- 700) % 75 == 0) {
 				right = true;
 				left = false;
 
 			}
 
 			if(left) {
-				oneY = oneY - 75;
-				pixelCount = pixelCount - 75;
+				oneY--;
+				pixelCount --;
 				frame.repaint();
-				//Thread.sleep(100);
-
 
 			}  
 
 			if(right && forward && left == false){
-				oneX = oneX + 75;  
-				pixelCount = pixelCount - 75;
+				oneX++;  
+				pixelCount --;
 				frame.repaint();
-				//Thread.sleep(100);
-
 
 			} 
 
 			if(right && forward == false && left == false){
-				oneX = oneX - 75;
-				pixelCount = pixelCount - 75;
+				oneX--;
+				pixelCount --;
 				frame.repaint();
-				//Thread.sleep(100);
-
 
 			}
 
