@@ -21,6 +21,7 @@ public class AnimationTester implements Runnable{
 	boolean forward = true;
 	static String imageLocation;
 	boolean yes;
+	Dice m_dice = new Dice();
 	public static void main(String[] args) {
 		new AnimationTester().go();
 
@@ -73,17 +74,22 @@ public class AnimationTester implements Runnable{
 				}
 				else{
 					//THIS PROBABLY HAS TO BE A DIFFERENT FUNCTION
-
+					
 					rollBtn.setText("Start Roll");
-					int diceRoll = getRandNum();
-					String thing = diceRoll +"dice.gif";
+					String thing = Dice.getNewRoll() +"dice.gif";
 					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
 					diceLbl.setIcon(new ImageIcon(image));
 					//System.out.println(thing);	
-					moveIt(diceRoll);
+					
 					i = i -1;
-
-
+					
+					Thread one = new Thread() {
+					    public void run() {
+					    	moveIt(Dice.getPrevValue());
+					    }  
+					};
+					one.start();
+					
 				}
 
 			}
@@ -372,7 +378,7 @@ public class AnimationTester implements Runnable{
 
 
 			try{
-				Thread.sleep(10);
+				Thread.sleep(3);
 			} catch (Exception exc){}
 			frame.repaint();
 			
