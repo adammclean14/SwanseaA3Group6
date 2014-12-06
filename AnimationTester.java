@@ -28,61 +28,59 @@ public class AnimationTester {
 	private void go() {
 
 
-			frame = new JFrame("Test");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			drawPanel = new DrawPanel();
-			frame.getContentPane().add(drawPanel);
-			frame.setVisible(true);
-			frame.setSize(1000, 1000);
-			frame.setLocation(500,0);
+		frame = new JFrame("Test");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		drawPanel = new DrawPanel();
+		frame.getContentPane().add(drawPanel);
+		frame.setVisible(true);
+		frame.setSize(1000, 1000);
+		frame.setLocation(500,0);
 
-			frame2 = new JFrame("MENU FRAME");
-			frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame2.setVisible(true);
-			frame2.setLayout(null);
-			frame2.setSize(300, 100);
-			frame2.setLocation(1000,0);
+		frame2 = new JFrame("MENU FRAME");
+		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame2.setVisible(true);
+		frame2.setLayout(null);
+		frame2.setSize(300, 100);
+		frame2.setLocation(1000,0);
 
-			rollBtn = new JButton("Start Roll");
-			rollBtn.setBackground(Color.RED);
-			rollBtn.setBounds(0, 0, 75, 75);
-			frame2.add(rollBtn);
+		rollBtn = new JButton("Start Roll");
+		rollBtn.setBackground(Color.RED);
+		rollBtn.setBounds(0, 0, 75, 75);
+		frame2.add(rollBtn);
 
-			diceLbl = new JLabel();
-			diceLbl.setBounds(100,0,75,75);
+		diceLbl = new JLabel();
+		diceLbl.setBounds(100,0,75,75);
 
-			java.awt.Image startImage = new ImageIcon (this.getClass().getResource("/1dice.gif")).getImage();
-			diceLbl.setIcon(new ImageIcon(startImage));
+		java.awt.Image startImage = new ImageIcon (this.getClass().getResource("/1dice.gif")).getImage();
+		diceLbl.setIcon(new ImageIcon(startImage));
 
-			frame2.add(diceLbl);
-
-
+		frame2.add(diceLbl);
 
 
-			rollBtn.addMouseListener(new MouseAdapter() {
-				int i = 0;
-				public void mousePressed(MouseEvent e){
 
-					if (i % 2 == 0){
-						rollBtn.setText("End Roll");
-						java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
-						diceLbl.setIcon(new ImageIcon(gif));
-						i = i + 1;
-					}
-					else{
-						//THIS PROBABLY HAS TO BE A DIFFERENT FUNCTION
-						rollBtn.setText("Start Roll");
-						String thing = getRandNum();
-						java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
-						diceLbl.setIcon(new ImageIcon(image));
-						System.out.println(thing);	
-						i = i -1;
 
-						moveIt();
-					}
+		rollBtn.addMouseListener(new MouseAdapter() {
+			int i = 0;
+			public void mousePressed(MouseEvent e){
 
+				if (i % 2 == 0){
+					rollBtn.setText("End Roll");
+					java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
+					diceLbl.setIcon(new ImageIcon(gif));
+					i = i + 1;
 				}
-			});
+				else{
+					//THIS PROBABLY HAS TO BE A DIFFERENT FUNCTION
+					rollBtn.setText("Start Roll");
+					String thing = getRandNum();
+					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
+					diceLbl.setIcon(new ImageIcon(image));
+					i = i -1;
+					moveIt();
+				}
+
+			}
+		});
 
 	}
 
