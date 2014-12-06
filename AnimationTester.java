@@ -73,13 +73,11 @@ public class AnimationTester implements Runnable{
 					i = i + 1;
 				}
 				else{
-					//THIS PROBABLY HAS TO BE A DIFFERENT FUNCTION
 					
 					rollBtn.setText("Start Roll");
 					String thing = Dice.getNewRoll() +"dice.gif";
 					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
 					diceLbl.setIcon(new ImageIcon(image));
-					//System.out.println(thing);	
 					
 					i = i -1;
 					
@@ -98,7 +96,7 @@ public class AnimationTester implements Runnable{
 
 
 
-		moveIt(15);
+		moveIt(105);
 
 
 	}
@@ -324,12 +322,12 @@ public class AnimationTester implements Runnable{
 
 
 
-
+		boolean wonGame = false;
 		int pixelCount = 75 * diceRoll;
-
 		
 
-		while(pixelCount > 0){
+		
+		while(pixelCount > 0 && wonGame == false){
 			if(oneX == 700){
 				right = false;
 				left = true;
@@ -375,18 +373,28 @@ public class AnimationTester implements Runnable{
 				frame.repaint();
 
 			}
+			
+			//CHECKS TO SEE IF GAME HAS BEEN WON
+			if ( oneX > 20 && oneX < 45 && oneY == 25 ){
+				System.out.println("Won Game");
+				oneX = 25;
+				wonGame = true;
+			}
 
 
 			try{
-				Thread.sleep(3);
+				Thread.sleep(1);
 			} catch (Exception exc){}
 			frame.repaint();
 			
 			//
-			//if (pixelCount == 0 && oneX == 0 && oneX ==225)
+			
 		}
+		
 		//CHECKS TO SEE IF COUNTER HAS LANDED ON ANY MOVER
 				if (pixelCount == 0){
+					
+				
 					
 					//LADDER FROM 16 to 45
 					if ( oneX > 315 && oneX < 335 && oneY == 625 ){
