@@ -44,13 +44,16 @@ public class SnakeLadderGame implements Runnable{
 	int numberOfPlayers = 4;
 	Dice m_dice = new Dice();
 	ArrayList<Player> playersList;
+	ArrayList<Integer> moverNumbers;
 	
 	//gets all this info from game launcher
 	public SnakeLadderGame(int numberOfMovers, ArrayList<Player> players){
 		playersList = players;
 		numberOfPlayers = playersList.size();
-
+		Mover moverArray = new Mover(numberOfMovers);
+		moverNumbers = moverArray.getMoverArrayList();
 		go();
+		//moverNumbers.contains(integer) returns boolean
 	}
 	
 	private void go() {
@@ -140,24 +143,6 @@ public class SnakeLadderGame implements Runnable{
 
 			}
 		});
-
-
-
-
-		//moveIt4(15);
-		//moveIt(3);
-		//moveIt2(23);
-		//moveIt3(15);
-		//moveIt3(16);
-		//moveIt(2);
-		//moveIt(8);
-		//moveIt(8);
-		//moveIt(83);
-		//moveIt(17);
-		//moveIt(10);
-		//moveIt(5);
-
-
 	}
 
 	public void run(){
@@ -184,28 +169,32 @@ public class SnakeLadderGame implements Runnable{
 			//Ellipse2D.Double shape = new Ellipse2D.Double(oneX, oneY, 20, 20);
 			//((Graphics2D) g).draw(shape);
 
+			//player 2
 			if (numberOfPlayers >= 2){
 				g.setColor(Color.BLUE);
 				g.fillOval(twoX, twoY, 20, 20);
 			}
-			
+			//player 3
 			if (numberOfPlayers >= 3){
 				g.setColor(Color.RED);
 				g.fillOval(threeX, threeY, 20, 20);
 			}
-			
+			//player 4
 			if (numberOfPlayers >= 4){
 				g.setColor(Color.BLACK);
 				g.fillOval(fourX, fourY, 20, 20);
 				//paints board lines
 			}
 			
+			//Player 1
+			
+			g.setColor(Color.GREEN);
+			g.fillOval(oneX, oneY, 20, 20);
+			
 			g.setColor(Color.RED);
 			int i = 0;
 			int j = 0;
-
-			g.setColor(Color.GREEN);
-			g.fillOval(oneX, oneY, 20, 20);
+			
 
 			//DRAWS NUMBERS
 
@@ -292,101 +281,85 @@ public class SnakeLadderGame implements Runnable{
 
 
 
-			//Creates a ladder
+			
 			Graphics2D g2d=(Graphics2D)g; 
 			java.awt.Image image = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();
 			java.awt.Image image2 = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage();  
-
+			
+			
+			//Ladder creation
+			//82 TO 98
 			AffineTransform L1 = new AffineTransform();
 			L1.scale(0.2, 0.2); 
 			L1.translate(800, 80);
 			L1.rotate( Math.toRadians(45) );
 			g2d.drawImage(image, L1, this);
 
-			//-----Drawing 2nd ladder
+			//54 to 66
 			AffineTransform L2 = new AffineTransform();            	    	
-
-			//The problem is transform functions go from bottom to top so ...
 			L2.scale(0.2, 0.2); 
-			//So 
 			L2.translate(2600, 1600 );
 			L2.rotate( Math.toRadians(135) );
-
 			g2d.drawImage(image, L2, this);
-			//------Done Drawing 2nd Ladder
-
-			//-----Drawing 3rd ladder
+			
+			//48 to 53
 			AffineTransform L3 = new AffineTransform();            	    	
-
 			L3.scale(0.2, 0.2); 
-			//So 
 			L3.translate(2650, 1600 );
 			L3.rotate( Math.toRadians(0) );
-
 			g2d.drawImage(image, L3, this);
-			//------Done Drawing 3rd Ladder
 
-			//-----Drawing 4th ladder
+			//16 to 45
 			AffineTransform L4 = new AffineTransform();            	    	
 			L4.scale(0.2, 0.4); 
 			L4.translate(1525, 1000 );
 			L4.rotate( Math.toRadians(0) );
-			g2d.drawImage(image, L4, this);
-			//------Done Drawing 4th Ladder
+			//g2d.drawImage(image, L4, this);
 			
+			//58 to 64
 			AffineTransform L5 = new AffineTransform();
+			L5.scale(0.2, 0.2); 
+			L5.translate(1250, 1150 );
+			L5.rotate( Math.toRadians(45));
+			g2d.drawImage(image, L5, this);
 
-
-			//------------------------------------
-			//-----------SNAKE DRAWINGS-----------
-			//------------------------------------
+			
+			//snake drawings
 
 			AffineTransform S1 = new AffineTransform();
-
-
-			//creating transform variable for drawing image
 			S1.scale(0.75, 0.75); 
 			S1.translate(220, 975);
 			S1.rotate( Math.toRadians(270) );
-
-			//drawing a SNAKE
 			g2d.drawImage(image2, S1, this);
 
 
 			//-----Drawing 2nd SNAKE
 			AffineTransform S2 = new AffineTransform();            	    	
-
-			//The problem is transform functions go from bottom to top so ...
 			S2.scale(0.5, 0.5); 
-
 			S2.translate(1250, 425 );
 			S2.rotate( Math.toRadians(225) );
-
 			g2d.drawImage(image2, S2, this);
-			//------Done Drawing 2nd SNAKE
-
+		
 			//-----Drawing 3rd SNAKE
 			AffineTransform S3 = new AffineTransform();            	    	
-
 			S3.scale(0.75, 0.75); 
 			S3.translate(500, 650 );
 			S3.rotate( Math.toRadians(290) );
-
 			g2d.drawImage(image2, S3, this);
-			//------Done Drawing 3rd SNAKE
-
+			
 			//-----Drawing 4th SNAKE
 			AffineTransform S4 = new AffineTransform();            	    	
-
-			S4.scale(0.5, 0.25); 
-			//So 
+			S4.scale(0.5, 0.25);  
 			S4.translate(500, 700 );
 			S4.rotate( Math.toRadians(-45) );
-
 			g2d.drawImage(image2, S4, this);
-			//------Done Drawing 4th SNAKE
 
-
+			//78 to 27
+			AffineTransform S5 = new AffineTransform();            	    	
+			S5.scale(1, 1.2);  
+			S5.translate(480, 500 );
+			S5.rotate( Math.toRadians(225) );
+			g2d.drawImage(image2, S5, this);
 		}
 	}
 
