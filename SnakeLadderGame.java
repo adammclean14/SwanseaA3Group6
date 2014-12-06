@@ -41,13 +41,16 @@ public class SnakeLadderGame implements Runnable{
 	static String imageLocation;
 	int turn = 0;
 	//This is actually #
-	int players = 4;
+	int numberOfPlayers = 4;
 	Dice m_dice = new Dice();
 	ArrayList<Player> playersList;
 	
 	//gets all this info from game launcher
 	public SnakeLadderGame(int numberOfMovers, ArrayList<Player> players){
 		playersList = players;
+		numberOfPlayers = playersList.size();
+
+		go();
 	}
 	
 	private void go() {
@@ -107,25 +110,24 @@ public class SnakeLadderGame implements Runnable{
 					System.out.println("turn number" + turn);
 					Thread one = new Thread() {
 						public void run() {
-
-							if (players == turn){
+							if (numberOfPlayers == turn){
 								turn = 0;
 							}
-							if (turn == 3 && players > turn){
+							if (turn == 3 && numberOfPlayers > turn){
 								moveIt4(Dice.getPrevValue());
 								turn = 0;
 
 							}
-							else if (turn == 0 && players > turn){
+							else if (turn == 0 && numberOfPlayers > turn){
 								moveIt(Dice.getPrevValue());
 								turn ++;
 							}
-							else if (turn == 2 && players > turn){
+							else if (turn == 2 && numberOfPlayers > turn){
 								moveIt3(Dice.getPrevValue());
 								turn++;
 							}
 
-							else if (turn == 1 && players > turn){
+							else if (turn == 1 && numberOfPlayers > turn){
 								moveIt2(Dice.getPrevValue());
 								turn ++;
 								//turn = -1;
@@ -182,17 +184,17 @@ public class SnakeLadderGame implements Runnable{
 			//Ellipse2D.Double shape = new Ellipse2D.Double(oneX, oneY, 20, 20);
 			//((Graphics2D) g).draw(shape);
 
-			if (players >= 2){
+			if (numberOfPlayers >= 2){
 				g.setColor(Color.BLUE);
 				g.fillOval(twoX, twoY, 20, 20);
 			}
 			
-			if (players >= 3){
+			if (numberOfPlayers >= 3){
 				g.setColor(Color.RED);
 				g.fillOval(threeX, threeY, 20, 20);
 			}
 			
-			if (players >= 4){
+			if (numberOfPlayers >= 4){
 				g.setColor(Color.BLACK);
 				g.fillOval(fourX, fourY, 20, 20);
 				//paints board lines
