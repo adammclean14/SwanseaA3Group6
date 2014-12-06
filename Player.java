@@ -9,17 +9,20 @@ import java.awt.Color;
  */
 
 public abstract class Player {
+	/**
+	 * Class variables
+	 */
 	private String m_name;
 	private Color m_pieceColor;
 	private Boolean m_hasWon;
 	
 
 	/** 
-	  * @param name
-	  * @param color
-	  * @param hasWon
+	  * @param name stores the name of the player
+	  * @param color stores the color of the player
+	  * @param hasWon stores a boolean depicting if you have won
 	  *
-	  *
+	  * Constructor for the player class
 	  *
 	  */
 	Player(String name, Color color, Boolean hasWon){
@@ -27,6 +30,9 @@ public abstract class Player {
 		m_pieceColor = color;
 		m_hasWon = hasWon;
 	}
+	/**
+	 * Empty constructor for the Player class
+	 */
 
 	Player(){
 		
@@ -38,6 +44,7 @@ public abstract class Player {
 	public String getName(){
 		return m_name;
 	}
+	
 	/**
 	* Method to set the member variable m_name
 	* @param name
@@ -46,17 +53,38 @@ public abstract class Player {
 	public void setName(String name){
 		name = m_name;
 	}
+	/**
+	* A Method to return piece color
+	* @return m_piceColor
+	*
+	*/
 	public Color getColor(){
 		return m_pieceColor;
 	}
+	
+	/**
+	* A method to set the color of a piece
+	* @param color
+	*
+	*/
 	public void setColor(Color color){
 		color = m_pieceColor;
 	}
-
+	
+	/**
+	* Returns a boolean on the state of the game if won
+	* @return m_hasWon
+	*
+	*/
 	public Boolean getWon(){
 		return m_hasWon;
 
 	}
+	/**
+	* A method to set the member variable m_hasWon
+	* @param hasWon
+	*
+	*/
 	public void setHasWon(Boolean hasWon){
 		hasWon = m_hasWon;
 
