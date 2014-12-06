@@ -297,96 +297,93 @@ public class SnakeLadderGame implements Runnable{
 			java.awt.Image image = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();
 			java.awt.Image image2 = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage();  
 
-			AffineTransform trans = new AffineTransform();
-			trans.scale(0.2, 0.2); 
-			trans.translate(800, 80);
-			trans.rotate( Math.toRadians(45) );
-			g2d.drawImage(image, trans, this);
+			AffineTransform L1 = new AffineTransform();
+			L1.scale(0.2, 0.2); 
+			L1.translate(800, 80);
+			L1.rotate( Math.toRadians(45) );
+			g2d.drawImage(image, L1, this);
 
 			//-----Drawing 2nd ladder
-			AffineTransform trans2 = new AffineTransform();            	    	
+			AffineTransform L2 = new AffineTransform();            	    	
 
 			//The problem is transform functions go from bottom to top so ...
-			trans2.scale(0.2, 0.2); 
+			L2.scale(0.2, 0.2); 
 			//So 
-			trans2.translate(2600, 1600 );
-			trans2.rotate( Math.toRadians(135) );
+			L2.translate(2600, 1600 );
+			L2.rotate( Math.toRadians(135) );
 
-			g2d.drawImage(image, trans2, this);
+			g2d.drawImage(image, L2, this);
 			//------Done Drawing 2nd Ladder
 
 			//-----Drawing 3rd ladder
-			AffineTransform trans3 = new AffineTransform();            	    	
+			AffineTransform L3 = new AffineTransform();            	    	
 
-			trans3.scale(0.2, 0.2); 
+			L3.scale(0.2, 0.2); 
 			//So 
-			trans3.translate(2650, 1600 );
-			trans3.rotate( Math.toRadians(0) );
+			L3.translate(2650, 1600 );
+			L3.rotate( Math.toRadians(0) );
 
-			g2d.drawImage(image, trans3, this);
+			g2d.drawImage(image, L3, this);
 			//------Done Drawing 3rd Ladder
 
 			//-----Drawing 4th ladder
-			AffineTransform trans4 = new AffineTransform();            	    	
-
-			trans4.scale(0.2, 0.4); 
-			//So 
-			trans4.translate(1525, 1000 );
-			trans4.rotate( Math.toRadians(0) );
-
-			g2d.drawImage(image, trans4, this);
+			AffineTransform L4 = new AffineTransform();            	    	
+			L4.scale(0.2, 0.4); 
+			L4.translate(1525, 1000 );
+			L4.rotate( Math.toRadians(0) );
+			g2d.drawImage(image, L4, this);
 			//------Done Drawing 4th Ladder
-
-
+			
+			AffineTransform L5 = new AffineTransform();
 
 
 			//------------------------------------
 			//-----------SNAKE DRAWINGS-----------
 			//------------------------------------
 
-			AffineTransform trans5 = new AffineTransform();
+			AffineTransform S1 = new AffineTransform();
 
 
 			//creating transform variable for drawing image
-			trans5.scale(0.75, 0.75); 
-			trans5.translate(220, 975);
-			trans5.rotate( Math.toRadians(270) );
+			S1.scale(0.75, 0.75); 
+			S1.translate(220, 975);
+			S1.rotate( Math.toRadians(270) );
 
 			//drawing a SNAKE
-			g2d.drawImage(image2, trans5, this);
+			g2d.drawImage(image2, S1, this);
 
 
 			//-----Drawing 2nd SNAKE
-			AffineTransform trans6 = new AffineTransform();            	    	
+			AffineTransform S2 = new AffineTransform();            	    	
 
 			//The problem is transform functions go from bottom to top so ...
-			trans6.scale(0.5, 0.5); 
+			S2.scale(0.5, 0.5); 
 
-			trans6.translate(1250, 425 );
-			trans6.rotate( Math.toRadians(225) );
+			S2.translate(1250, 425 );
+			S2.rotate( Math.toRadians(225) );
 
-			g2d.drawImage(image2, trans6, this);
+			g2d.drawImage(image2, S2, this);
 			//------Done Drawing 2nd SNAKE
 
 			//-----Drawing 3rd SNAKE
-			AffineTransform trans7 = new AffineTransform();            	    	
+			AffineTransform S3 = new AffineTransform();            	    	
 
-			trans7.scale(0.75, 0.75); 
-			trans7.translate(500, 650 );
-			trans7.rotate( Math.toRadians(290) );
+			S3.scale(0.75, 0.75); 
+			S3.translate(500, 650 );
+			S3.rotate( Math.toRadians(290) );
 
-			g2d.drawImage(image2, trans7, this);
+			g2d.drawImage(image2, S3, this);
 			//------Done Drawing 3rd SNAKE
 
 			//-----Drawing 4th SNAKE
-			AffineTransform trans8 = new AffineTransform();            	    	
+			AffineTransform S4 = new AffineTransform();            	    	
 
-			trans8.scale(0.5, 0.25); 
+			S4.scale(0.5, 0.25); 
 			//So 
-			trans8.translate(500, 700 );
-			trans8.rotate( Math.toRadians(-45) );
+			S4.translate(500, 700 );
+			S4.rotate( Math.toRadians(-45) );
 
-			g2d.drawImage(image2, trans8, this);
+			g2d.drawImage(image2, S4, this);
 			//------Done Drawing 4th SNAKE
 
 
