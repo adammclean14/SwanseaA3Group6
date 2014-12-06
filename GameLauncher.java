@@ -13,9 +13,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * @file GameLauncher.java
- * @author Jon Haddow
- * @date 03 Dec 2014
+ * \file GameLauncher.java
+ * \author Jon Haddow
+ * \date 03 Dec 2014
  *
  * This class launches the main menu to start a game
  * and choose the settings for the game.
@@ -24,8 +24,8 @@ import javax.swing.event.ChangeListener;
 public class GameLauncher {
 
 	/* Set values for the game. These are public so they can be accessed by other classes. */
-	public final static int MAX_NUMBER_OF_MOVERS = 5;
-	public final static int MIN_NUMBER_OF_MOVERS = 1;
+	public final static int MAX_NUMBER_OF_MOVERS = 4;
+	public final static int MIN_NUMBER_OF_MOVERS = 0;
 	public final static int DEFAULT_NUMBER_OF_MOVERS = 3;
 	public final static int MAX_NUMBER_OF_SNAKESLADDERS_PLAYERS = 4;
 	public final static int MIN_NUMBER_OF_SNAKESLADDERS_PLAYERS = 1;
