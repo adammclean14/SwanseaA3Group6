@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.JButton;
-public class SnakeLadderGame implements Runnable{
+public class SnakeLadderGame {
 
 
 	//Ladder variables
@@ -18,7 +18,7 @@ public class SnakeLadderGame implements Runnable{
 	private final float m_ladderRotationRight = (float) Math.toRadians(45);
 	private final float m_ladderRotationLeft = (float) Math.toRadians(135);
 	private final float m_ladderRotationUpright = 0;
-	
+
 	private AffineTransform m_ladderOne;
 	private AffineTransform m_ladderTwo;
 	private AffineTransform m_ladderThree;
@@ -29,7 +29,7 @@ public class SnakeLadderGame implements Runnable{
 	private AffineTransform m_ladderEight;
 	private AffineTransform m_ladderNine;
 	private AffineTransform m_ladderTen;
-	
+
 	private final int m_ladderOneTranslateX = 800;
 	private final int m_ladderOneTranslateY = 80;
 	private final int m_ladderTwoTranslateX = 2600;
@@ -70,7 +70,7 @@ public class SnakeLadderGame implements Runnable{
 	private final float m_snakeLargeScalar = (float) 0.75;
 	private final float m_snakeLargerScalar = (float) 1.0;
 	private final float m_snakeLargestScalar = (float) 1.2;
-	
+
 	private final float m_snakeRotationUpright = (float) Math.toRadians(270);
 	private final float m_snakeRotationSlightestRight = (float) Math.toRadians(290);
 	private final float m_snakeRotationSlightRight = (float) Math.toRadians(225);
@@ -97,208 +97,183 @@ public class SnakeLadderGame implements Runnable{
 	private final int m_snakeNineTranslateY = 1450;
 	private final int m_snakeTenTranslateX = 205 ;
 	private final int m_snakeTenTranslateY = 1450;
-	
 
 
 
 
-	
+
+
 	//Other variables
-	
-	JFrame frame;
-	JFrame frame2;
-	DrawPanel drawPanel;
-	JButton rollBtn;
-	JLabel diceLbl;
-	private int oneX = 25;
-	private int oneY = 700;
-	private int twoX = 25;
-	private int twoY = 700;
-	private int threeX = 25;
-	private int threeY = 700;
-	private int fourX = 25;
-	private int fourY = 700;
-	boolean left1 = false;
-	boolean right1 = true;
-	boolean forward1 = true;
-	boolean wonGame = false;
-	boolean left2 = false;
-	boolean right2 = true;
-	boolean forward2 = true;
 
-	boolean left3 = false;
-	boolean right3 = true;
-	boolean forward3 = true;
-	boolean left4 = false;
-	boolean right4 = true;
-	boolean forward4 = true;
-	static String imageLocation;
-	int turn = 0;
-	//This is actually #
-	int numberOfPlayers = 4;
+	JFrame m_snakeLadderBoard;
+	JFrame m_snakeLadderMenu;
+	DrawPanel m_snakeLadderGraphics;
+	JButton m_diceRollBtn;
+	JLabel m_diceRollLbl;
+	JLabel m_currentPlayerNameLbl;
+	LabelTimer m_timerLbl;
+
+	//Counter position variables
+	//All start at same value so they start at square 1
+	private int m_counterOneXPos = 25;
+	private int m_counterOneYPos = 700;
+	boolean m_moveUpOne = false;
+	boolean m_moveAcrossOne = true;
+	boolean m_moveRightOne = true;
+
+	private int m_counterTwoXPos = 25;
+	private int m_counterTwoYPos = 700;
+	private boolean m_moveUpTwo = false;
+	private boolean m_moveAcrossTwo = true;
+	private boolean m_moveRightTwo = true;
+
+	private int m_counterThreeXPos = 25;
+	private int m_counterThreeYPos = 700;
+	private boolean m_moveUpThree = false;
+	private boolean m_moveAcrossThree = true;
+	private boolean m_moveRightThree = true;
+
+	private int m_counterFourXPos = 25;
+	private int m_counterFourYPos = 700;
+	private boolean m_moveUpFour = false;
+	private boolean m_moveAcrossFour = true;
+	private boolean m_moveRightFour = true;
+
+
+	boolean m_gameWon = false;
+
+	private int m_playerTurn = 0;
+	//private static String imageLocation;
+	private int m_numberOfPlayers;
 	Dice m_dice = new Dice();
-	ArrayList<Player> playersList;
-	ArrayList<Integer> moverNumbers;
-	JLabel nameLbl;
-	LabelTimer timeLbl;
+	ArrayList<Player> m_listOfPlayers;
+	ArrayList<Integer> m_moversSelected;
+
+	//snakeLadderBoard dimensions and location
+	private final int m_snakeLadderBoardSizeX = 755;
+	private final int m_snakeLadderBoardSizeY = 775;
+	private final int m_snakeLadderBoardLocX = 500;
+	private final int m_snakeLadderBoardLocY = 0;
+
+	private  int m_snakeLadderMenuSizeX = 300;
+	private  int m_snakeLadderMenuSizeY = 100;
+	private  int m_snakeLadderMenuLocX = 200;
+	private  int m_snakeLadderMenuLocY = 350;
+
+	private int m_diceRollBtnLocX =0;
+	private int m_diceRollBtnLocY = 0;
+	private int m_diceRollBtnWidth = 75;
+	private int m_diceRollBtnHeight = 75;
+
+	private int m_diceRollLblLocX =100;
+	private int m_diceRollLblLocY = 0;
+	private int m_diceRollLblWidth = 75;
+	private int m_diceRollLblHeight = 75;
+
+	private int m_currentPlayerLblLocX =180;
+	private int m_currentPlayerLblLocY = 0;
+	private int m_currentPlayerLblWidth = 200;
+	private int m_currentPlayerLblHeight = 50;
+
+
+
+
+
 	//gets all this info from game launcher
 	public SnakeLadderGame(int numberOfMovers, ArrayList<Player> players){
-		playersList = players;
-		numberOfPlayers = playersList.size();
+		m_listOfPlayers = players;
+		m_numberOfPlayers = m_listOfPlayers.size();
 		Mover moverArray = new Mover(numberOfMovers);
-		moverNumbers = moverArray.getMoverArrayList();
+		m_moversSelected = moverArray.getMoverArrayList();
 		go();
 
 	}
 
 	private void go() {
 
-		frame = new JFrame("Snakes And Ladders Board");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		drawPanel = new DrawPanel();
-		frame.getContentPane().add(drawPanel);
-		frame.setVisible(true);
-		frame.setSize(755, 775);
-		frame.setLocation(500,0);
-
-		frame2 = new JFrame("MENU");
-		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame2.setVisible(true);
-		frame2.setLayout(null);
-		frame2.setSize(300, 100);
-		frame2.setLocation(200,350);
-
-		rollBtn = new JButton("Start Roll");
-		rollBtn.setBackground(Color.RED);
-		rollBtn.setBounds(0, 0, 75, 75);
-		frame2.add(rollBtn);
-
-		diceLbl = new JLabel();
-		diceLbl.setBounds(100,0,75,75);
-
-		java.awt.Image startImage = new ImageIcon (this.getClass().getResource("/1dice.gif")).getImage();
-		diceLbl.setIcon(new ImageIcon(startImage));
-
-		frame2.add(diceLbl);
-
-		nameLbl = new JLabel();
-		nameLbl.setBounds(180,0,200,50);
-		//nameLbl.setText("Default");
-
-
-		timeLbl = new LabelTimer();
-		timeLbl.setBounds(180,10,80,100);
-		timeLbl.timerStart();
-		frame2.add(timeLbl);
-		frame2.add(nameLbl);
-		if(nameLbl.getText().equals("")){
-			nameLbl.setText("Turn: " + playersList.get(0).getName());
-			nameLbl.setForeground(playersList.get(0).getColor());
+		m_snakeLadderBoard = new JFrame("Snakes And Ladders Board");
+		m_snakeLadderBoard.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		m_snakeLadderGraphics = new DrawPanel();
+		m_snakeLadderBoard.getContentPane().add(m_snakeLadderGraphics);
+		m_snakeLadderBoard.setVisible(true);
+		m_snakeLadderBoard.setSize(m_snakeLadderBoardSizeX, m_snakeLadderBoardSizeY);
+		m_snakeLadderBoard.setLocation(m_snakeLadderBoardLocX,m_snakeLadderBoardLocY);
+		m_snakeLadderMenu = new JFrame("MENU");
+		m_snakeLadderMenu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		m_snakeLadderMenu.setVisible(true);
+		m_snakeLadderMenu.setLayout(null);
+		m_snakeLadderMenu.setSize(m_snakeLadderMenuSizeX, m_snakeLadderMenuSizeY);
+		m_snakeLadderMenu.setLocation(m_snakeLadderMenuLocX,m_snakeLadderMenuLocY);
+		m_diceRollBtn = new JButton("Start Roll");
+		m_diceRollBtn.setBackground(Color.RED);
+		m_diceRollBtn.setBounds(m_diceRollBtnLocX, m_diceRollBtnLocY, m_diceRollBtnWidth, m_diceRollBtnHeight);
+		m_snakeLadderMenu.add(m_diceRollBtn);
+		m_diceRollLbl = new JLabel();
+		m_diceRollLbl.setBounds(m_diceRollLblLocX, m_diceRollLblLocY, m_diceRollLblWidth, m_diceRollLblHeight);
+		java.awt.Image startDiceImage = new ImageIcon (this.getClass().getResource("/1dice.gif")).getImage();
+		m_diceRollLbl.setIcon(new ImageIcon(startDiceImage));
+		m_snakeLadderMenu.add(m_diceRollLbl);
+		m_currentPlayerNameLbl = new JLabel();
+		m_currentPlayerNameLbl.setBounds(m_currentPlayerLblLocX,m_currentPlayerLblLocY,m_currentPlayerLblWidth,m_currentPlayerLblHeight);
+		m_timerLbl = new LabelTimer();
+		m_timerLbl.setBounds(180,10,80,100);
+		m_timerLbl.timerStart();
+		m_snakeLadderMenu.add(m_timerLbl);
+		m_snakeLadderMenu.add(m_currentPlayerNameLbl);
+		if(m_currentPlayerNameLbl.getText().equals("")){
+			m_currentPlayerNameLbl.setText("Turn: " + m_listOfPlayers.get(0).getName());
+			m_currentPlayerNameLbl.setForeground(m_listOfPlayers.get(0).getColor());
 		}
 
-		rollBtn.addMouseListener(new MouseAdapter() {
+		m_diceRollBtn.addMouseListener(new MouseAdapter() {
 			int i = 0;
 			public void mousePressed(MouseEvent e){
-				if (wonGame == false){
+				if (m_gameWon == false){
 					if (i % 2 == 0){
-						rollBtn.setText("End Roll");
+						m_diceRollBtn.setText("End Roll");
 						java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
-						diceLbl.setIcon(new ImageIcon(gif));
+						m_diceRollLbl.setIcon(new ImageIcon(gif));
 						i = i + 1;
-
-						if(turn < numberOfPlayers){
-							nameLbl.setText("Turn: " + playersList.get(turn).getName());
-							nameLbl.setForeground(playersList.get(turn).getColor());
+						if(m_playerTurn < m_numberOfPlayers){
+							m_currentPlayerNameLbl.setText("Turn: " + m_listOfPlayers.get(m_playerTurn).getName());
+							m_currentPlayerNameLbl.setForeground(m_listOfPlayers.get(m_playerTurn).getColor());
 						}
 						else{
-							nameLbl.setText("Turn: " + playersList.get(0).getName());
-							nameLbl.setForeground(playersList.get(0).getColor());						
+							m_currentPlayerNameLbl.setText("Turn: " + m_listOfPlayers.get(0).getName());
+							m_currentPlayerNameLbl.setForeground(m_listOfPlayers.get(0).getColor());						
 						}
-
-
-
-					}
-					else{
-
-						rollBtn.setText("Start Roll");
-						String thing = Dice.getNewRoll() +"dice.gif";
-						java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
-						diceLbl.setIcon(new ImageIcon(image));
-
+					}else{
+						m_diceRollBtn.setText("Start Roll");
+						String diceRollImageName = Dice.getNewRoll() +"dice.gif";
+						java.awt.Image diceRollImage = new ImageIcon (this.getClass().getResource(diceRollImageName)).getImage();
+						m_diceRollLbl.setIcon(new ImageIcon(diceRollImage));
 						i = i -1;
-
-						//System.out.println("turn number" + turn);
 						Thread one = new Thread() {
 							public void run() {
-								if (numberOfPlayers == turn){
-									turn = 0;
-								}
-
-
-								if (turn == 3 && numberOfPlayers > turn){
-									//Player 4
-									//nameLbl.setText("Turn: " + playersList.get(3).getName());
-									//nameLbl.setForeground(playersList.get(3).getColor());
+								if (m_numberOfPlayers == m_playerTurn){
+									m_playerTurn = 0;
+								}if (m_playerTurn == 3 && m_numberOfPlayers > m_playerTurn){
 									moveIt4(Dice.getPrevValue());
-									turn = 0;
-
-								}
-								else if (turn == 0 && numberOfPlayers > turn){
-									//Player 1
-									//nameLbl.setText("Turn: " + playersList.get(0).getName());
-									//nameLbl.setForeground(playersList.get(0).getColor());
+									m_playerTurn = 0;
+								}else if (m_playerTurn == 0 && m_numberOfPlayers > m_playerTurn){
 									moveIt(Dice.getPrevValue());
-									turn ++;
-								}
-								else if (turn == 2 && numberOfPlayers > turn){
-									//Player 3
-									//nameLbl.setText("Turn: " + playersList.get(2).getName());
-									//nameLbl.setForeground(playersList.get(2).getColor());
+									m_playerTurn ++;
+								}else if (m_playerTurn == 2 && m_numberOfPlayers > m_playerTurn){
 									moveIt3(Dice.getPrevValue());
-									turn++;
-								}
-
-								else if (turn == 1 && numberOfPlayers > turn){
-									//Player 2
-									//nameLbl.setText("Turn: " + playersList.get(1).getName());
-									//nameLbl.setForeground(playersList.get(1).getColor());
+									m_playerTurn++;
+								}else if (m_playerTurn == 1 && m_numberOfPlayers > m_playerTurn){
 									moveIt2(Dice.getPrevValue());
-									turn ++;
-									//turn = -1;
-								}
-
-
-
-							}  
-						};
-						one.start();
-
-					}
-
-				}
-			}
-		});
-
-
-		//moveIt(79);
-	}
-
-	public void run(){
-		//moveIt(15);
-	}
-
+									m_playerTurn ++;
+								}}};
+								one.start();}}}});}
 
 	public int getRandNum(){
 		int max = 6;
 		int min = 1;
 		Random rand = new Random();
 		int randomNum = rand.nextInt((max - min) + 1) + min;
-
-		//Creates string for image location
 		return randomNum;
 	}
-
-
 
 	class DrawPanel extends JPanel {
 		@Override
@@ -307,26 +282,26 @@ public class SnakeLadderGame implements Runnable{
 
 
 			//player 2
-			if (numberOfPlayers >= 2){
-				g.setColor(playersList.get(1).getColor());
-				g.fillOval(twoX, twoY, 20, 20);
+			if (m_numberOfPlayers >= 2){
+				g.setColor(m_listOfPlayers.get(1).getColor());
+				g.fillOval(m_counterTwoXPos, m_counterTwoYPos, 20, 20);
 			}
 			//player 3
-			if (numberOfPlayers >= 3){
-				g.setColor(playersList.get(2).getColor());
-				g.fillOval(threeX, threeY, 20, 20);
+			if (m_numberOfPlayers >= 3){
+				g.setColor(m_listOfPlayers.get(2).getColor());
+				g.fillOval(m_counterThreeXPos, m_counterThreeYPos, 20, 20);
 			}
 			//player 4
-			if (numberOfPlayers >= 4){
-				g.setColor(playersList.get(3).getColor());
-				g.fillOval(fourX, fourY, 20, 20);
+			if (m_numberOfPlayers >= 4){
+				g.setColor(m_listOfPlayers.get(3).getColor());
+				g.fillOval(m_counterFourXPos, m_counterFourYPos, 20, 20);
 				//paints board lines
 			}
 
 			//Player 1
 
-			g.setColor(playersList.get(0).getColor());
-			g.fillOval(oneX, oneY, 20, 20);
+			g.setColor(m_listOfPlayers.get(0).getColor());
+			g.fillOval(m_counterOneXPos, m_counterOneYPos, 20, 20);
 
 			g.setColor(Color.RED);
 			int i = 0;
@@ -424,10 +399,10 @@ public class SnakeLadderGame implements Runnable{
 			java.awt.Image snakeImage = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage();  
 
 			//Ladder creation
-						
-			
+
+
 			//82 TO 98
-			if (moverNumbers.contains(1))
+			if (m_moversSelected.contains(1))
 			{
 				m_ladderOne = new AffineTransform();
 				m_ladderOne.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
@@ -438,7 +413,7 @@ public class SnakeLadderGame implements Runnable{
 
 
 			//54 to 66
-			if (moverNumbers.contains(2)){
+			if (m_moversSelected.contains(2)){
 				m_ladderTwo = new AffineTransform();            	    	
 				m_ladderTwo.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
 				m_ladderTwo.translate(m_ladderTwoTranslateX, m_ladderTwoTranslateY );
@@ -446,7 +421,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(ladderImage, m_ladderTwo, this);
 			}
 
-			if (moverNumbers.contains(3)){
+			if (m_moversSelected.contains(3)){
 
 				//48 to 53
 				m_ladderThree = new AffineTransform();            	    	
@@ -457,7 +432,7 @@ public class SnakeLadderGame implements Runnable{
 			}
 
 
-			if (moverNumbers.contains(4)){
+			if (m_moversSelected.contains(4)){
 				//16 to 45
 				m_ladderFour = new AffineTransform();            	    	
 				m_ladderFour.scale(m_ladderSmallScalar, m_ladderLargeScalar); 
@@ -466,7 +441,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(ladderImage, m_ladderFour, this);
 			}
 
-			if (moverNumbers.contains(5)){
+			if (m_moversSelected.contains(5)){
 				//58 to 64
 				m_ladderFive = new AffineTransform();
 				m_ladderFive.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
@@ -475,7 +450,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(ladderImage, m_ladderFive, this);
 			}
 
-			if (moverNumbers.contains(6)){
+			if (m_moversSelected.contains(6)){
 				//44 TO 56
 				m_ladderSix = new AffineTransform();
 				m_ladderSix.scale(m_ladderSmallScalar,m_ladderSmallScalar); 
@@ -484,7 +459,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(ladderImage, m_ladderSix, this);
 			}
 
-			if (moverNumbers.contains(7)){
+			if (m_moversSelected.contains(7)){
 				//4 to 17
 				m_ladderSeven = new AffineTransform();
 				m_ladderSeven.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
@@ -493,7 +468,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(ladderImage, m_ladderSeven, this);
 			}
 
-			if (moverNumbers.contains(8)){
+			if (m_moversSelected.contains(8)){
 				//12 TO 29
 				m_ladderEight = new AffineTransform();
 				m_ladderEight.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
@@ -502,7 +477,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(ladderImage, m_ladderEight, this);
 			}
 
-			if (moverNumbers.contains(9)){
+			if (m_moversSelected.contains(9)){
 				//69 TO 72
 				m_ladderNine = new AffineTransform();
 				m_ladderNine.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
@@ -511,7 +486,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(ladderImage, m_ladderNine, this);
 			}
 
-			if (moverNumbers.contains(10)){
+			if (m_moversSelected.contains(10)){
 				//76 TO 84
 				m_ladderTen = new AffineTransform();
 				m_ladderTen.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
@@ -523,9 +498,9 @@ public class SnakeLadderGame implements Runnable{
 			//snake creation
 
 
-			
-			
-			if (moverNumbers.contains(1)){
+
+
+			if (m_moversSelected.contains(1)){
 				//43 to 3
 				m_SnakeOne = new AffineTransform();
 				m_SnakeOne.scale(m_snakeLargeScalar,m_snakeLargeScalar); 
@@ -534,7 +509,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeOne, this);
 			}
 
-			if (moverNumbers.contains(2)){
+			if (m_moversSelected.contains(2)){
 				//94 to 72
 				m_SnakeTwo = new AffineTransform();            	    	
 				m_SnakeTwo.scale(m_snakeSmallerScalar, m_snakeSmallerScalar); 
@@ -543,7 +518,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeTwo, this);
 			}
 
-			if (moverNumbers.contains(3)){
+			if (m_moversSelected.contains(3)){
 				//74 to 35
 				m_SnakeThree = new AffineTransform();            	    	
 				m_SnakeThree.scale(m_snakeLargeScalar, m_snakeLargeScalar); 
@@ -552,7 +527,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeThree, this);
 			}
 
-			if (moverNumbers.contains(4)){
+			if (m_moversSelected.contains(4)){
 				//86 to 77
 				m_SnakeFour = new AffineTransform();            	    	
 				m_SnakeFour.scale(m_snakeSmallerScalar, m_snakeSmallestScalar);  
@@ -561,7 +536,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeFour, this);
 			}
 
-			if (moverNumbers.contains(5)){
+			if (m_moversSelected.contains(5)){
 				//78 to 27
 				m_SnakeFive = new AffineTransform();            	    	
 				m_SnakeFive.scale(m_snakeLargerScalar, m_snakeLargestScalar);  
@@ -570,7 +545,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeFive, this);
 			}
 
-			if (moverNumbers.contains(6)){
+			if (m_moversSelected.contains(6)){
 				//80 to 1
 				m_SnakeSix = new AffineTransform();            	    	
 				m_SnakeSix.scale(m_snakeLargerScalar, m_snakeLargestScalar);  
@@ -579,7 +554,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeSix, this);
 			}
 
-			if (moverNumbers.contains(7)){
+			if (m_moversSelected.contains(7)){
 				//55 to 31			
 				m_SnakeSeven = new AffineTransform();            	    	
 				m_SnakeSeven.scale(m_snakeLargerScalar, m_snakeSmallerScalar);  
@@ -588,7 +563,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeSeven, this);
 			}
 
-			if (moverNumbers.contains(8)){
+			if (m_moversSelected.contains(8)){
 				//97 to 75
 				m_SnakeEight = new AffineTransform();            	    	
 				m_SnakeEight.scale(m_snakeSmallerScalar,m_snakeSmallerScalar); 
@@ -597,7 +572,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeEight, this);
 			}
 
-			if (moverNumbers.contains(9)){
+			if (m_moversSelected.contains(9)){
 				//33 to 8
 				m_SnakeNine = new AffineTransform();            	    	
 				m_SnakeNine.scale(m_snakeSmallScalar, m_snakeSmallerScalar); 
@@ -606,7 +581,7 @@ public class SnakeLadderGame implements Runnable{
 				g2d.drawImage(snakeImage, m_SnakeNine, this);
 			}
 
-			if (moverNumbers.contains(10)){
+			if (m_moversSelected.contains(10)){
 				m_SnakeTen = new AffineTransform();            	    	
 				m_SnakeTen.scale(m_snakeSmallerScalar,m_snakeSmallestScalar); 
 				m_SnakeTen.translate(m_snakeTenTranslateX, m_snakeTenTranslateY );
@@ -621,52 +596,52 @@ public class SnakeLadderGame implements Runnable{
 
 
 		int pixelCount = 75 * diceRoll;
-		while(pixelCount > 0 && wonGame == false){
-			if(oneX == 700){
-				right1 = false;
-				left1 = true;
-				forward1 = false;
-				oneY--;
+		while(pixelCount > 0 && m_gameWon == false){
+			if(m_counterOneXPos == 700){
+				m_moveAcrossOne = false;
+				m_moveUpOne = true;
+				m_moveRightOne = false;
+				m_counterOneYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 			}
-			if(oneX == 24){
-				right1 = false;
-				left1 = true;
-				forward1 = true;
-				oneY--;
+			if(m_counterOneXPos == 24){
+				m_moveAcrossOne = false;
+				m_moveUpOne = true;
+				m_moveRightOne = true;
+				m_counterOneYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 			}
-			if ((oneY- 700) % 75 == 0) {
-				right1 = true;
-				left1 = false;
+			if ((m_counterOneYPos- 700) % 75 == 0) {
+				m_moveAcrossOne = true;
+				m_moveUpOne = false;
 			}
-			if(left1) {
-				oneY--;
+			if(m_moveUpOne) {
+				m_counterOneYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 			}  
-			if(right1 && forward1 && left1 == false){
-				oneX++;  
+			if(m_moveAcrossOne && m_moveRightOne && m_moveUpOne == false){
+				m_counterOneXPos++;  
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			} 
 
-			if(right1 && forward1 == false && left1 == false){
-				oneX--;
+			if(m_moveAcrossOne && m_moveRightOne == false && m_moveUpOne == false){
+				m_counterOneXPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
-			if ( oneX > 20 && oneX < 45 && oneY == 25 ){
+			if ( m_counterOneXPos > 20 && m_counterOneXPos < 45 && m_counterOneYPos == 25 ){
 				//System.out.println("Won Game");
-				oneX = 25;
+				m_counterOneXPos = 25;
 				//timeLbl.timerStop();
-				wonGame = true;
+				m_gameWon = true;
 
 				wonGameStuff(0);
 			}
@@ -675,7 +650,7 @@ public class SnakeLadderGame implements Runnable{
 			try{
 				Thread.sleep(3);
 			} catch (Exception exc){}
-			frame.repaint();
+			m_snakeLadderBoard.repaint();
 
 			//
 
@@ -687,144 +662,144 @@ public class SnakeLadderGame implements Runnable{
 
 
 			//LADDER FROM 16 to 45
-			if ( oneX > 315 && oneX < 335 && oneY == 625 && moverNumbers.contains(4)){
-				oneY = 400;
-				forward1 = true;
+			if ( m_counterOneXPos > 315 && m_counterOneXPos < 335 && m_counterOneYPos == 625 && m_moversSelected.contains(4)){
+				m_counterOneYPos = 400;
+				m_moveRightOne = true;
 			}
 			//SNAKE FROM 43 TO 3
-			if (oneX > 160 && oneX < 180 && oneY == 400 && moverNumbers.contains(1)) {
-				while (oneY < 700){
-					oneY++;
-					forward1 = true;
-					frame.repaint();
+			if (m_counterOneXPos > 160 && m_counterOneXPos < 180 && m_counterOneYPos == 400 && m_moversSelected.contains(1)) {
+				while (m_counterOneYPos < 700){
+					m_counterOneYPos++;
+					m_moveRightOne = true;
+					m_snakeLadderBoard.repaint();
 				}
-				oneX = 175;
+				m_counterOneXPos = 175;
 			}
 
 			//LADDER FROM 48 TO 53
-			if ( oneX > 540 && oneX < 555 && oneY == 400 && moverNumbers.contains(3)){
-				while (oneY > 325){
-					oneY--;
+			if ( m_counterOneXPos > 540 && m_counterOneXPos < 555 && m_counterOneYPos == 400 && m_moversSelected.contains(3)){
+				while (m_counterOneYPos > 325){
+					m_counterOneYPos--;
 				}
-				oneX = 550;
-				forward1 = false;
+				m_counterOneXPos = 550;
+				m_moveRightOne = false;
 			}
 
 			//LADDER FROM 54 TO 62
-			if (oneX > 465 && oneX < 485 && oneY == 325 && moverNumbers.contains(2)){
-				oneX =400;
-				oneY = 250;
-				forward1 = true;
+			if (m_counterOneXPos > 465 && m_counterOneXPos < 485 && m_counterOneYPos == 325 && m_moversSelected.contains(2)){
+				m_counterOneXPos =400;
+				m_counterOneYPos = 250;
+				m_moveRightOne = true;
 			}
 
 			//SNAKE FROM 74 TO 35
-			if (oneX > 465 && oneX < 485 && oneY == 175 && moverNumbers.contains(3)){
-				oneX = 400;
-				oneY = oneY + (4*75);
-				forward1 = false;
+			if (m_counterOneXPos > 465 && m_counterOneXPos < 485 && m_counterOneYPos == 175 && m_moversSelected.contains(3)){
+				m_counterOneXPos = 400;
+				m_counterOneYPos = m_counterOneYPos + (4*75);
+				m_moveRightOne = false;
 			}
 
 			//SNAKE FROM 86 to 77
-			if (oneX > 390 && oneX < 405 && oneY == 100 && moverNumbers.contains(4)){
-				oneX = 250;
-				oneY = 175;
-				forward1 = false;
+			if (m_counterOneXPos > 390 && m_counterOneXPos < 405 && m_counterOneYPos == 100 && m_moversSelected.contains(4)){
+				m_counterOneXPos = 250;
+				m_counterOneYPos = 175;
+				m_moveRightOne = false;
 			}
 
 			//LADDER FROM 82 TO 98
-			if (oneX > 85 && oneX < 115 && oneY == 100 && moverNumbers.contains(1)){
-				oneX = 175;
-				oneY = 25;
-				forward1 = false;
+			if (m_counterOneXPos > 85 && m_counterOneXPos < 115 && m_counterOneYPos == 100 && m_moversSelected.contains(1)){
+				m_counterOneXPos = 175;
+				m_counterOneYPos = 25;
+				m_moveRightOne = false;
 			}
 
 			//SNAKE FROM 94 TO 72
-			if (oneX > 475 && oneX < 490 && oneY == 25 && moverNumbers.contains(2)){
-				oneX = 625;
-				oneY = 175;
-				forward1 = false;
+			if (m_counterOneXPos > 475 && m_counterOneXPos < 490 && m_counterOneYPos == 25 && m_moversSelected.contains(2)){
+				m_counterOneXPos = 625;
+				m_counterOneYPos = 175;
+				m_moveRightOne = false;
 			}
 
 			//SNAKE FROM 80 TO 1
-			if (oneX > 20 && oneX < 40 && oneY == 175 && moverNumbers.contains(6)){
-				oneX = 25;
-				oneY = 700;
-				forward1 = true;
+			if (m_counterOneXPos > 20 && m_counterOneXPos < 40 && m_counterOneYPos == 175 && m_moversSelected.contains(6)){
+				m_counterOneXPos = 25;
+				m_counterOneYPos = 700;
+				m_moveRightOne = true;
 			}
 
 			//LADDER FROM 58 to 64
-			if (oneX > 160 && oneX < 180 && oneY == 325 && moverNumbers.contains(5)){
-				oneX = 250;
-				oneY = 250;
-				forward1 = true;
+			if (m_counterOneXPos > 160 && m_counterOneXPos < 180 && m_counterOneYPos == 325 && m_moversSelected.contains(5)){
+				m_counterOneXPos = 250;
+				m_counterOneYPos = 250;
+				m_moveRightOne = true;
 			}
 
 			//SNAKE FROM 78 TO 27
-			if (oneX > 160 && oneX < 180 && oneY == 175 && moverNumbers.contains(5)){
-				oneX = 475;
-				oneY = 550;
-				forward1 = true;
+			if (m_counterOneXPos > 160 && m_counterOneXPos < 180 && m_counterOneYPos == 175 && m_moversSelected.contains(5)){
+				m_counterOneXPos = 475;
+				m_counterOneYPos = 550;
+				m_moveRightOne = true;
 			}
 
 			//SNAKE FROM 55 T0 31
-			if (oneX > 390 && oneX < 410 && oneY == 325 && moverNumbers.contains(7)){
-				oneX =699;
-				oneY = 475;
-				forward1 = false;
+			if (m_counterOneXPos > 390 && m_counterOneXPos < 410 && m_counterOneYPos == 325 && m_moversSelected.contains(7)){
+				m_counterOneXPos =699;
+				m_counterOneYPos = 475;
+				m_moveRightOne = false;
 			}
 
 			//SNAKE FROM 97 TO 75
-			if (oneX > 240 && oneX < 260 && oneY == 25 && moverNumbers.contains(8)){
-				oneX = 400;
-				oneY = 175;
-				forward1 = false;
+			if (m_counterOneXPos > 240 && m_counterOneXPos < 260 && m_counterOneYPos == 25 && m_moversSelected.contains(8)){
+				m_counterOneXPos = 400;
+				m_counterOneYPos = 175;
+				m_moveRightOne = false;
 			}
 
 			//SNAKE FROM 33 TO 8
-			if (oneX > 535 && oneX < 565 && oneY == 475 && moverNumbers.contains(9)){
-				oneX = 545;
-				oneY = 700;
-				forward1 = true;
+			if (m_counterOneXPos > 535 && m_counterOneXPos < 565 && m_counterOneYPos == 475 && m_moversSelected.contains(9)){
+				m_counterOneXPos = 545;
+				m_counterOneYPos = 700;
+				m_moveRightOne = true;
 			}
 			//SNAKE FROM 62 TO 59
-			if (oneX > 90 && oneX < 110 && oneY == 250 && moverNumbers.contains(10)){
-				oneX = 105;
-				oneY = 325;
-				forward1 = false;
+			if (m_counterOneXPos > 90 && m_counterOneXPos < 110 && m_counterOneYPos == 250 && m_moversSelected.contains(10)){
+				m_counterOneXPos = 105;
+				m_counterOneYPos = 325;
+				m_moveRightOne = false;
 			}
 			//LADDER FROM 44 TO 56
-			if (oneX > 240 && oneX < 260 && oneY == 400 && moverNumbers.contains(6)){
-				oneX = 325;
-				oneY = 325;
-				forward1 = false;
+			if (m_counterOneXPos > 240 && m_counterOneXPos < 260 && m_counterOneYPos == 400 && m_moversSelected.contains(6)){
+				m_counterOneXPos = 325;
+				m_counterOneYPos = 325;
+				m_moveRightOne = false;
 			}
 
 			//LADDER FROM 4 TO 17
-			if (oneX > 240 && oneX < 260 && oneY == 700 && moverNumbers.contains(7)){
-				oneX = 250;
-				oneY = 625;
-				forward1 = false;
+			if (m_counterOneXPos > 240 && m_counterOneXPos < 260 && m_counterOneYPos == 700 && m_moversSelected.contains(7)){
+				m_counterOneXPos = 250;
+				m_counterOneYPos = 625;
+				m_moveRightOne = false;
 			}
 
 			//LADDER FROM 14 TO 29
-			if (oneX > 615 && oneX < 635 && oneY == 625 && moverNumbers.contains(8)){
-				oneX = 625;
-				oneY = 550;
-				forward1 = true;
+			if (m_counterOneXPos > 615 && m_counterOneXPos < 635 && m_counterOneYPos == 625 && m_moversSelected.contains(8)){
+				m_counterOneXPos = 625;
+				m_counterOneYPos = 550;
+				m_moveRightOne = true;
 			}
 
 			//LADDER FROM 69 TO 72
-			if (oneX > 615 && oneX < 635 && oneY == 250 && moverNumbers.contains(9)){
-				oneX = 625;
-				oneY = 175;
-				forward1 = false;
+			if (m_counterOneXPos > 615 && m_counterOneXPos < 635 && m_counterOneYPos == 250 && m_moversSelected.contains(9)){
+				m_counterOneXPos = 625;
+				m_counterOneYPos = 175;
+				m_moveRightOne = false;
 			}
 
 			//LADDER FROM 76 TO 84
-			if (oneX > 315 && oneX < 335 && oneY == 175 && moverNumbers.contains(10)){
-				oneX = 250;
-				oneY = 100;
-				forward1 = true;
+			if (m_counterOneXPos > 315 && m_counterOneXPos < 335 && m_counterOneYPos == 175 && m_moversSelected.contains(10)){
+				m_counterOneXPos = 250;
+				m_counterOneYPos = 100;
+				m_moveRightOne = true;
 			}
 
 
@@ -842,58 +817,58 @@ public class SnakeLadderGame implements Runnable{
 
 
 
-		while(pixelCount > 0 && wonGame == false){
-			if(twoX == 700){
-				right2 = false;
-				left2 = true;
-				forward2 = false;
-				twoY--;
+		while(pixelCount > 0 && m_gameWon == false){
+			if(m_counterTwoXPos == 700){
+				m_moveAcrossTwo = false;
+				m_moveUpTwo = true;
+				m_moveRightTwo = false;
+				m_counterTwoYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}
-			if(twoX == 24){
-				right2 = false;
-				left2 = true;
-				forward2 = true;
-				twoY--;
+			if(m_counterTwoXPos == 24){
+				m_moveAcrossTwo = false;
+				m_moveUpTwo = true;
+				m_moveRightTwo = true;
+				m_counterTwoYPos--;
 				pixelCount --;
-				frame.repaint();
-
-			}
-
-			if ((twoY- 700) % 75 == 0) {
-				right2 = true;
-				left2 = false;
+				m_snakeLadderBoard.repaint();
 
 			}
 
-			if(left2) {
-				twoY--;
+			if ((m_counterTwoYPos- 700) % 75 == 0) {
+				m_moveAcrossTwo = true;
+				m_moveUpTwo = false;
+
+			}
+
+			if( m_moveUpTwo) {
+				m_counterTwoYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}  
 
-			if(right2 && forward2 && left2 == false){
-				twoX++;  
+			if(m_moveAcrossTwo && m_moveRightTwo &&  m_moveUpTwo == false){
+				m_counterTwoXPos++;  
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			} 
 
-			if(right2 && forward2 == false && left2 == false){
-				twoX--;
+			if(m_moveAcrossTwo && m_moveRightTwo == false &&  m_moveUpTwo == false){
+				m_counterTwoXPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
-			if ( twoX > 20 && twoX < 45 && twoY == 25 ){
+			if ( m_counterTwoXPos > 20 && m_counterTwoXPos < 45 && m_counterTwoYPos == 25 ){
 				//System.out.println("Won Game");
-				twoX = 25;
-				wonGame = true;
+				m_counterTwoXPos = 25;
+				m_gameWon = true;
 				//timeLbl.timerStop();
 				wonGameStuff(1);
 			}
@@ -902,7 +877,7 @@ public class SnakeLadderGame implements Runnable{
 			try{
 				Thread.sleep(3);
 			} catch (Exception exc){}
-			frame.repaint();
+			m_snakeLadderBoard.repaint();
 
 			//
 
@@ -914,145 +889,145 @@ public class SnakeLadderGame implements Runnable{
 
 
 			//LADDER FROM 16 to 45
-			if ( twoX > 315 && twoX < 335 && twoY == 625 && moverNumbers.contains(4)){
-				twoY = 400;
-				forward2 = true;
+			if ( m_counterTwoXPos > 315 && m_counterTwoXPos < 335 && m_counterTwoYPos == 625 && m_moversSelected.contains(4)){
+				m_counterTwoYPos = 400;
+				m_moveRightTwo = true;
 			}
 			//SNAKE FROM 43 TO 3
-			if (twoX > 160 && twoX < 180 && twoY == 400 && moverNumbers.contains(1)) {
-				while (twoY < 700){
-					twoY++;
-					forward2 = true;
-					frame.repaint();
+			if (m_counterTwoXPos > 160 && m_counterTwoXPos < 180 && m_counterTwoYPos == 400 && m_moversSelected.contains(1)) {
+				while (m_counterTwoYPos < 700){
+					m_counterTwoYPos++;
+					m_moveRightTwo = true;
+					m_snakeLadderBoard.repaint();
 				}
-				twoX = 175;
+				m_counterTwoXPos = 175;
 			}
 
 			//LADDER FROM 48 TO 53
-			if ( twoX > 540 && twoX < 555 && twoY == 400 && moverNumbers.contains(3)){
-				while (twoY > 325){
-					twoY--;
+			if ( m_counterTwoXPos > 540 && m_counterTwoXPos < 555 && m_counterTwoYPos == 400 && m_moversSelected.contains(3)){
+				while (m_counterTwoYPos > 325){
+					m_counterTwoYPos--;
 				}
-				twoX = 550;
-				forward2 = false;
+				m_counterTwoXPos = 550;
+				m_moveRightTwo = false;
 			}
 
 			//LADDER FROM 54 TO 62
-			if (twoX > 465 && twoX < 485 && twoY == 325 && moverNumbers.contains(2)){
-				twoX =400;
-				twoY = 250;
-				forward2 = true;
+			if (m_counterTwoXPos > 465 && m_counterTwoXPos < 485 && m_counterTwoYPos == 325 && m_moversSelected.contains(2)){
+				m_counterTwoXPos =400;
+				m_counterTwoYPos = 250;
+				m_moveRightTwo = true;
 			}
 
 			//SNAKE FROM 74 TO 35
-			if (twoX > 465 && twoX < 485 && twoY == 175 && moverNumbers.contains(3)){
-				twoX = 400;
-				twoY = twoY + (4*75);
-				forward2 = false;
+			if (m_counterTwoXPos > 465 && m_counterTwoXPos < 485 && m_counterTwoYPos == 175 && m_moversSelected.contains(3)){
+				m_counterTwoXPos = 400;
+				m_counterTwoYPos = m_counterTwoYPos + (4*75);
+				m_moveRightTwo = false;
 			}
 
 			//SNAKE FROM 86 to 77
-			if (twoX > 390 && twoX < 405 && twoY == 100 && moverNumbers.contains(4)){
-				twoX = 250;
-				twoY = 175;
-				forward2 = false;
+			if (m_counterTwoXPos > 390 && m_counterTwoXPos < 405 && m_counterTwoYPos == 100 && m_moversSelected.contains(4)){
+				m_counterTwoXPos = 250;
+				m_counterTwoYPos = 175;
+				m_moveRightTwo = false;
 			}
 
 			//LADDER FROM 82 TO 98
-			if (twoX > 85 && twoX < 115 && twoY == 100 && moverNumbers.contains(1)){
-				twoX = 175;
-				twoY = 25;
-				forward2 = false;
+			if (m_counterTwoXPos > 85 && m_counterTwoXPos < 115 && m_counterTwoYPos == 100 && m_moversSelected.contains(1)){
+				m_counterTwoXPos = 175;
+				m_counterTwoYPos = 25;
+				m_moveRightTwo = false;
 			}
 
 			//SNAKE FROM 94 TO 72
-			if (twoX > 475 && twoX < 490 && twoY == 25 && moverNumbers.contains(2)){
-				twoX = 625;
-				twoY = 175;
-				forward2 = false;
+			if (m_counterTwoXPos > 475 && m_counterTwoXPos < 490 && m_counterTwoYPos == 25 && m_moversSelected.contains(2)){
+				m_counterTwoXPos = 625;
+				m_counterTwoYPos = 175;
+				m_moveRightTwo = false;
 			}
 
 			//SNAKE FROM 80 TO 1
-			if (twoX > 20 && twoX < 40 && twoY == 175 && moverNumbers.contains(6)){
-				twoX = 25;
-				twoY = 700;
-				forward2 = true;
+			if (m_counterTwoXPos > 20 && m_counterTwoXPos < 40 && m_counterTwoYPos == 175 && m_moversSelected.contains(6)){
+				m_counterTwoXPos = 25;
+				m_counterTwoYPos = 700;
+				m_moveRightTwo = true;
 			}
 
 			//LADDER FROM 58 to 64
-			if (twoX > 160 && twoX < 180 && twoY == 325 && moverNumbers.contains(5)){
-				twoX = 250;
-				twoY = 250;
-				forward2 = true;
+			if (m_counterTwoXPos > 160 && m_counterTwoXPos < 180 && m_counterTwoYPos == 325 && m_moversSelected.contains(5)){
+				m_counterTwoXPos = 250;
+				m_counterTwoYPos = 250;
+				m_moveRightTwo = true;
 			}
 
 			//SNAKE FROM 78 TO 27
-			if (twoX > 160 && twoX < 180 && twoY == 175 && moverNumbers.contains(5)){
-				twoX = 475;
-				twoY = 550;
-				forward2 = true;
+			if (m_counterTwoXPos > 160 && m_counterTwoXPos < 180 && m_counterTwoYPos == 175 && m_moversSelected.contains(5)){
+				m_counterTwoXPos = 475;
+				m_counterTwoYPos = 550;
+				m_moveRightTwo = true;
 			}
 
 			//SNAKE FROM 55 T0 31
-			if (twoX > 390 && twoX < 410 && twoY == 325 && moverNumbers.contains(7)){
-				twoX =699;
-				twoY = 475;
-				forward2 = false;
+			if (m_counterTwoXPos > 390 && m_counterTwoXPos < 410 && m_counterTwoYPos == 325 && m_moversSelected.contains(7)){
+				m_counterTwoXPos =699;
+				m_counterTwoYPos = 475;
+				m_moveRightTwo = false;
 			}
 
 			//SNAKE FROM 97 TO 75
-			if (twoX > 240 && twoX < 260 && twoY == 25 && moverNumbers.contains(8)){
-				twoX = 400;
-				twoY = 175;
-				forward2 = false;
+			if (m_counterTwoXPos > 240 && m_counterTwoXPos < 260 && m_counterTwoYPos == 25 && m_moversSelected.contains(8)){
+				m_counterTwoXPos = 400;
+				m_counterTwoYPos = 175;
+				m_moveRightTwo = false;
 			}
 
 			//SNAKE FROM 33 TO 8
-			if (twoX > 535 && twoX < 565 && twoY == 475 && moverNumbers.contains(9)){
-				twoX = 545;
-				twoY = 700;
-				forward2 = true;
+			if (m_counterTwoXPos > 535 && m_counterTwoXPos < 565 && m_counterTwoYPos == 475 && m_moversSelected.contains(9)){
+				m_counterTwoXPos = 545;
+				m_counterTwoYPos = 700;
+				m_moveRightTwo = true;
 			}
 			//SNAKE FROM 62 TO 59
-			if (twoX > 90 && twoX < 110 && twoY == 250 && moverNumbers.contains(10)){
-				twoX = 105;
-				twoY = 325;
-				forward2 = false;
+			if (m_counterTwoXPos > 90 && m_counterTwoXPos < 110 && m_counterTwoYPos == 250 && m_moversSelected.contains(10)){
+				m_counterTwoXPos = 105;
+				m_counterTwoYPos = 325;
+				m_moveRightTwo = false;
 			}
 
 			//LADDER FROM 44 TO 56
-			if (twoX > 240 && twoX < 260 && twoY == 400 && moverNumbers.contains(6)){
-				twoX = 325;
-				twoY = 325;
-				forward2 = false;
+			if (m_counterTwoXPos > 240 && m_counterTwoXPos < 260 && m_counterTwoYPos == 400 && m_moversSelected.contains(6)){
+				m_counterTwoXPos = 325;
+				m_counterTwoYPos = 325;
+				m_moveRightTwo = false;
 			}
 
 			//LADDER FROM 4 TO 17
-			if (twoX > 240 && twoX < 260 && twoY == 700 && moverNumbers.contains(7)){
-				twoX = 250;
-				twoY = 625;
-				forward2 = false;
+			if (m_counterTwoXPos > 240 && m_counterTwoXPos < 260 && m_counterTwoYPos == 700 && m_moversSelected.contains(7)){
+				m_counterTwoXPos = 250;
+				m_counterTwoYPos = 625;
+				m_moveRightTwo = false;
 			}
 
 			//LADDER FROM 14 TO 29
-			if (twoX > 615 && twoX < 635 && twoY == 625 && moverNumbers.contains(8)){
-				twoX = 625;
-				twoY = 550;
-				forward2 = true;
+			if (m_counterTwoXPos > 615 && m_counterTwoXPos < 635 && m_counterTwoYPos == 625 && m_moversSelected.contains(8)){
+				m_counterTwoXPos = 625;
+				m_counterTwoYPos = 550;
+				m_moveRightTwo = true;
 			}
 
 			//LADDER FROM 69 TO 72
-			if (twoX > 615 && twoX < 635 && twoY == 250 && moverNumbers.contains(9)){
-				twoX = 625;
-				twoY = 175;
-				forward2 = false;
+			if (m_counterTwoXPos > 615 && m_counterTwoXPos < 635 && m_counterTwoYPos == 250 && m_moversSelected.contains(9)){
+				m_counterTwoXPos = 625;
+				m_counterTwoYPos = 175;
+				m_moveRightTwo = false;
 			}
 
 			//LADDER FROM 76 TO 84
-			if (twoX > 315 && twoX < 335 && twoY == 175 && moverNumbers.contains(10)){
-				twoX = 250;
-				twoY = 100;
-				forward2 = true;
+			if (m_counterTwoXPos > 315 && m_counterTwoXPos < 335 && m_counterTwoYPos == 175 && m_moversSelected.contains(10)){
+				m_counterTwoXPos = 250;
+				m_counterTwoYPos = 100;
+				m_moveRightTwo = true;
 			}
 
 
@@ -1071,65 +1046,65 @@ public class SnakeLadderGame implements Runnable{
 
 
 
-		while(pixelCount > 0 && wonGame == false){
-			if(threeX == 700){
-				right3 = false;
-				left3 = true;
-				forward3 = false;
-				threeY--;
+		while(pixelCount > 0 && m_gameWon == false){
+			if(m_counterThreeXPos == 700){
+				m_moveAcrossThree = false;
+				m_moveUpThree = true;
+				m_moveRightThree = false;
+				m_counterThreeYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}
-			if(threeX == 24){
-				right3 = false;
-				left3 = true;
-				forward3 = true;
-				threeY--;
+			if(m_counterThreeXPos == 24){
+				m_moveAcrossThree = false;
+				m_moveUpThree = true;
+				m_moveRightThree = true;
+				m_counterThreeYPos--;
 				pixelCount --;
-				frame.repaint();
-
-			}
-
-			if ((threeY- 700) % 75 == 0) {
-				right3 = true;
-				left3 = false;
+				m_snakeLadderBoard.repaint();
 
 			}
 
-			if(left3) {
-				threeY--;
+			if ((m_counterThreeYPos- 700) % 75 == 0) {
+				m_moveAcrossThree = true;
+				m_moveUpThree = false;
+
+			}
+
+			if(m_moveUpThree) {
+				m_counterThreeYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}  
 
-			if(right3 && forward3 && left3 == false){
-				threeX++;  
+			if(m_moveAcrossThree && m_moveRightThree && m_moveUpThree == false){
+				m_counterThreeXPos++;  
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			} 
 
-			if(right3 && forward3 == false && left3 == false){
-				threeX--;
+			if(m_moveAcrossThree && m_moveRightThree == false && m_moveUpThree == false){
+				m_counterThreeXPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
-			if ( threeX > 20 && threeX < 45 && threeY == 25 ){
+			if ( m_counterThreeXPos > 20 && m_counterThreeXPos < 45 && m_counterThreeYPos == 25 ){
 				//System.out.println("Won Game");
-				threeX = 25;
-				wonGame = true;
+				m_counterThreeXPos = 25;
+				m_gameWon = true;
 				wonGameStuff(2);			}
 
 
 			try{
 				Thread.sleep(3);
 			} catch (Exception exc){}
-			frame.repaint();
+			m_snakeLadderBoard.repaint();
 
 			//
 
@@ -1141,145 +1116,145 @@ public class SnakeLadderGame implements Runnable{
 
 
 			//LADDER FROM 16 to 45
-			if ( threeX > 315 && threeX < 335 && threeY == 625 && moverNumbers.contains(4)){
-				threeY = 400;
-				forward3 = true;
+			if ( m_counterThreeXPos > 315 && m_counterThreeXPos < 335 && m_counterThreeYPos == 625 && m_moversSelected.contains(4)){
+				m_counterThreeYPos = 400;
+				m_moveRightThree = true;
 			}
 			//SNAKE FROM 43 TO 3
-			if (threeX > 160 && threeX < 180 && threeY == 400 && moverNumbers.contains(1)) {
-				while (threeY < 700){
-					threeY++;
-					forward3 = true;
-					frame.repaint();
+			if (m_counterThreeXPos > 160 && m_counterThreeXPos < 180 && m_counterThreeYPos == 400 && m_moversSelected.contains(1)) {
+				while (m_counterThreeYPos < 700){
+					m_counterThreeYPos++;
+					m_moveRightThree = true;
+					m_snakeLadderBoard.repaint();
 				}
-				threeX = 175;
+				m_counterThreeXPos = 175;
 			}
 
 			//LADDER FROM 48 TO 53
-			if ( threeX > 540 && threeX < 555 && threeY == 400 && moverNumbers.contains(3)){
-				while (threeY > 325){
-					threeY--;
+			if ( m_counterThreeXPos > 540 && m_counterThreeXPos < 555 && m_counterThreeYPos == 400 && m_moversSelected.contains(3)){
+				while (m_counterThreeYPos > 325){
+					m_counterThreeYPos--;
 				}
-				threeX = 550;
-				forward3 = false;
+				m_counterThreeXPos = 550;
+				m_moveRightThree = false;
 			}
 
 			//LADDER FROM 54 TO 62
-			if (threeX > 465 && threeX < 485 && threeY == 325 && moverNumbers.contains(2)){
-				threeX =400;
-				threeY = 250;
-				forward3 = true;
+			if (m_counterThreeXPos > 465 && m_counterThreeXPos < 485 && m_counterThreeYPos == 325 && m_moversSelected.contains(2)){
+				m_counterThreeXPos =400;
+				m_counterThreeYPos = 250;
+				m_moveRightThree = true;
 			}
 
 			//SNAKE FROM 74 TO 35
-			if (threeX > 465 && threeX < 485 && threeY == 175 && moverNumbers.contains(3)){
-				threeX = 400;
-				threeY = threeY + (4*75);
-				forward3 = false;
+			if (m_counterThreeXPos > 465 && m_counterThreeXPos < 485 && m_counterThreeYPos == 175 && m_moversSelected.contains(3)){
+				m_counterThreeXPos = 400;
+				m_counterThreeYPos = m_counterThreeYPos + (4*75);
+				m_moveRightThree = false;
 			}
 
 			//SNAKE FROM 86 to 77
-			if (threeX > 390 && threeX < 405 && threeY == 100 && moverNumbers.contains(4)){
-				threeX = 250;
-				threeY = 175;
-				forward3 = false;
+			if (m_counterThreeXPos > 390 && m_counterThreeXPos < 405 && m_counterThreeYPos == 100 && m_moversSelected.contains(4)){
+				m_counterThreeXPos = 250;
+				m_counterThreeYPos = 175;
+				m_moveRightThree = false;
 			}
 
 			//LADDER FROM 82 TO 98
-			if (threeX > 85 && threeX < 115 && threeY == 100 && moverNumbers.contains(1)){
-				threeX = 175;
-				threeY = 25;
-				forward3 = false;
+			if (m_counterThreeXPos > 85 && m_counterThreeXPos < 115 && m_counterThreeYPos == 100 && m_moversSelected.contains(1)){
+				m_counterThreeXPos = 175;
+				m_counterThreeYPos = 25;
+				m_moveRightThree = false;
 			}
 
 			//SNAKE FROM 94 TO 72
-			if (threeX > 475 && threeX < 490 && threeY == 25 && moverNumbers.contains(2)){
-				threeX = 625;
-				threeY = 175;
-				forward3 = false;
+			if (m_counterThreeXPos > 475 && m_counterThreeXPos < 490 && m_counterThreeYPos == 25 && m_moversSelected.contains(2)){
+				m_counterThreeXPos = 625;
+				m_counterThreeYPos = 175;
+				m_moveRightThree = false;
 			}
 
 			//SNAKE FROM 80 TO 1
-			if (threeX > 20 && threeX < 40 && threeY == 175 && moverNumbers.contains(6)){
-				threeX = 25;
-				threeY = 700;
-				forward3 = true;
+			if (m_counterThreeXPos > 20 && m_counterThreeXPos < 40 && m_counterThreeYPos == 175 && m_moversSelected.contains(6)){
+				m_counterThreeXPos = 25;
+				m_counterThreeYPos = 700;
+				m_moveRightThree = true;
 			}
 
 			//LADDER FROM 58 to 64
-			if (threeX > 160 && threeX < 180 && threeY == 325 && moverNumbers.contains(5)){
-				threeX = 250;
-				threeY = 250;
-				forward3 = true;
+			if (m_counterThreeXPos > 160 && m_counterThreeXPos < 180 && m_counterThreeYPos == 325 && m_moversSelected.contains(5)){
+				m_counterThreeXPos = 250;
+				m_counterThreeYPos = 250;
+				m_moveRightThree = true;
 			}
 
 			//SNAKE FROM 78 TO 27
-			if (threeX > 160 && threeX < 180 && threeY == 175 && moverNumbers.contains(5)){
-				threeX = 475;
-				threeY = 550;
-				forward3 = true;
+			if (m_counterThreeXPos > 160 && m_counterThreeXPos < 180 && m_counterThreeYPos == 175 && m_moversSelected.contains(5)){
+				m_counterThreeXPos = 475;
+				m_counterThreeYPos = 550;
+				m_moveRightThree = true;
 			}
 
 			//SNAKE FROM 55 T0 31
-			if (threeX > 390 && threeX < 410 && threeY == 325 && moverNumbers.contains(7)){
-				threeX =699;
-				threeY = 475;
-				forward3 = false;
+			if (m_counterThreeXPos > 390 && m_counterThreeXPos < 410 && m_counterThreeYPos == 325 && m_moversSelected.contains(7)){
+				m_counterThreeXPos =699;
+				m_counterThreeYPos = 475;
+				m_moveRightThree = false;
 			}
 
 			//SNAKE FROM 97 TO 75
-			if (threeX > 240 && threeX < 260 && threeY == 25 && moverNumbers.contains(8)){
-				threeX = 400;
-				threeY = 175;
-				forward3 = false;
+			if (m_counterThreeXPos > 240 && m_counterThreeXPos < 260 && m_counterThreeYPos == 25 && m_moversSelected.contains(8)){
+				m_counterThreeXPos = 400;
+				m_counterThreeYPos = 175;
+				m_moveRightThree = false;
 			}
 
 			//SNAKE FROM 33 TO 8
-			if (threeX > 535 && threeX < 565 && threeY == 475 && moverNumbers.contains(9)){
-				threeX = 545;
-				threeY = 700;
-				forward3 = true;
+			if (m_counterThreeXPos > 535 && m_counterThreeXPos < 565 && m_counterThreeYPos == 475 && m_moversSelected.contains(9)){
+				m_counterThreeXPos = 545;
+				m_counterThreeYPos = 700;
+				m_moveRightThree = true;
 			}
 			//SNAKE FROM 62 TO 59
-			if (threeX > 90 && threeX < 110 && threeY == 250 && moverNumbers.contains(10)){
-				threeX = 105;
-				threeY = 325;
-				forward3 = false;
+			if (m_counterThreeXPos > 90 && m_counterThreeXPos < 110 && m_counterThreeYPos == 250 && m_moversSelected.contains(10)){
+				m_counterThreeXPos = 105;
+				m_counterThreeYPos = 325;
+				m_moveRightThree = false;
 			}
 
 			//LADDER FROM 44 TO 56
-			if (threeX > 240 && threeX < 260 && threeY == 400 && moverNumbers.contains(6)){
-				threeX = 325;
-				threeY = 325;
-				forward3 = false;
+			if (m_counterThreeXPos > 240 && m_counterThreeXPos < 260 && m_counterThreeYPos == 400 && m_moversSelected.contains(6)){
+				m_counterThreeXPos = 325;
+				m_counterThreeYPos = 325;
+				m_moveRightThree = false;
 			}
 
 			//LADDER FROM 4 TO 17
-			if (threeX > 240 && threeX < 260 && threeY == 700 && moverNumbers.contains(7)){
-				threeX = 250;
-				threeY = 625;
-				forward3 = false;
+			if (m_counterThreeXPos > 240 && m_counterThreeXPos < 260 && m_counterThreeYPos == 700 && m_moversSelected.contains(7)){
+				m_counterThreeXPos = 250;
+				m_counterThreeYPos = 625;
+				m_moveRightThree = false;
 			}
 
 			//LADDER FROM 14 TO 29
-			if (threeX > 615 && threeX < 635 && threeY == 625 && moverNumbers.contains(8)){
-				threeX = 625;
-				threeY = 550;
-				forward3 = true;
+			if (m_counterThreeXPos > 615 && m_counterThreeXPos < 635 && m_counterThreeYPos == 625 && m_moversSelected.contains(8)){
+				m_counterThreeXPos = 625;
+				m_counterThreeYPos = 550;
+				m_moveRightThree = true;
 			}
 
 			//LADDER FROM 69 TO 72
-			if (threeX > 615 && threeX < 635 && threeY == 250 && moverNumbers.contains(9)){
-				threeX = 625;
-				threeY = 175;
-				forward3 = false;
+			if (m_counterThreeXPos > 615 && m_counterThreeXPos < 635 && m_counterThreeYPos == 250 && m_moversSelected.contains(9)){
+				m_counterThreeXPos = 625;
+				m_counterThreeYPos = 175;
+				m_moveRightThree = false;
 			}
 
 			//LADDER FROM 76 TO 84
-			if (threeX > 315 && threeX < 335 && threeY == 175 && moverNumbers.contains(10)){
-				threeX = 250;
-				threeY = 100;
-				forward3 = true;
+			if (m_counterThreeXPos > 315 && m_counterThreeXPos < 335 && m_counterThreeYPos == 175 && m_moversSelected.contains(10)){
+				m_counterThreeXPos = 250;
+				m_counterThreeYPos = 100;
+				m_moveRightThree = true;
 			}
 
 		}
@@ -1297,58 +1272,58 @@ public class SnakeLadderGame implements Runnable{
 
 
 
-		while(pixelCount > 0 && wonGame == false){
-			if(fourX == 700){
-				right4 = false;
-				left4 = true;
-				forward4 = false;
-				fourY--;
+		while(pixelCount > 0 && m_gameWon == false){
+			if(m_counterFourXPos == 700){
+				m_moveAcrossFour = false;
+				m_moveUpFour = true;
+				m_moveRightFour = false;
+				m_counterFourYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}
-			if(fourX == 24){
-				right4 = false;
-				left4 = true;
-				forward4 = true;
-				fourY--;
+			if(m_counterFourXPos == 24){
+				m_moveAcrossFour = false;
+				m_moveUpFour = true;
+				m_moveRightFour = true;
+				m_counterFourYPos--;
 				pixelCount --;
-				frame.repaint();
-
-			}
-
-			if ((fourY- 700) % 75 == 0) {
-				right4 = true;
-				left4 = false;
+				m_snakeLadderBoard.repaint();
 
 			}
 
-			if(left4) {
-				fourY--;
+			if ((m_counterFourYPos- 700) % 75 == 0) {
+				m_moveAcrossFour = true;
+				m_moveUpFour = false;
+
+			}
+
+			if(m_moveUpFour) {
+				m_counterFourYPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}  
 
-			if(right4 && forward4 && left4 == false){
-				fourX++;  
+			if(m_moveAcrossFour && m_moveRightFour && m_moveUpFour == false){
+				m_counterFourXPos++;  
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			} 
 
-			if(right4 && forward4 == false && left4 == false){
-				fourX--;
+			if(m_moveAcrossFour && m_moveRightFour == false && m_moveUpFour == false){
+				m_counterFourXPos--;
 				pixelCount --;
-				frame.repaint();
+				m_snakeLadderBoard.repaint();
 
 			}
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
-			if ( fourX > 20 && fourX < 45 && fourY == 25 ){
+			if ( m_counterFourXPos > 20 && m_counterFourXPos < 45 && m_counterFourYPos == 25 ){
 				//System.out.println("Won Game");
-				fourX = 25;
-				wonGame = true;
+				m_counterFourXPos = 25;
+				m_gameWon = true;
 				wonGameStuff(3);	
 			}
 
@@ -1356,7 +1331,7 @@ public class SnakeLadderGame implements Runnable{
 			try{
 				Thread.sleep(3);
 			} catch (Exception exc){}
-			frame.repaint();
+			m_snakeLadderBoard.repaint();
 
 			//
 
@@ -1372,144 +1347,144 @@ public class SnakeLadderGame implements Runnable{
 
 
 				//LADDER FROM 16 to 45
-				if ( fourX > 315 && fourX < 335 && fourY == 625 && moverNumbers.contains(4)){
-					fourY = 400;
-					forward4 = true;
+				if ( m_counterFourXPos > 315 && m_counterFourXPos < 335 && m_counterFourYPos == 625 && m_moversSelected.contains(4)){
+					m_counterFourYPos = 400;
+					m_moveRightFour = true;
 				}
 				//SNAKE FROM 43 TO 3
-				if (fourX > 160 && fourX < 180 && fourY == 400 && moverNumbers.contains(1)) {
-					while (fourY < 700){
-						fourY++;
-						forward4 = true;
-						frame.repaint();
+				if (m_counterFourXPos > 160 && m_counterFourXPos < 180 && m_counterFourYPos == 400 && m_moversSelected.contains(1)) {
+					while (m_counterFourYPos < 700){
+						m_counterFourYPos++;
+						m_moveRightFour = true;
+						m_snakeLadderBoard.repaint();
 					}
-					fourX = 175;
+					m_counterFourXPos = 175;
 				}
 
 				//LADDER FROM 48 TO 53
-				if ( fourX > 540 && fourX < 555 && fourY == 400 && moverNumbers.contains(3)){
-					while (fourY > 325){
-						fourY--;
+				if ( m_counterFourXPos > 540 && m_counterFourXPos < 555 && m_counterFourYPos == 400 && m_moversSelected.contains(3)){
+					while (m_counterFourYPos > 325){
+						m_counterFourYPos--;
 					}
-					fourX = 550;
-					forward4 = false;
+					m_counterFourXPos = 550;
+					m_moveRightFour = false;
 				}
 
 				//LADDER FROM 54 TO 62
-				if (fourX > 465 && fourX < 485 && fourY == 325 && moverNumbers.contains(2)){
-					fourX =400;
-					fourY = 250;
-					forward4 = true;
+				if (m_counterFourXPos > 465 && m_counterFourXPos < 485 && m_counterFourYPos == 325 && m_moversSelected.contains(2)){
+					m_counterFourXPos =400;
+					m_counterFourYPos = 250;
+					m_moveRightFour = true;
 				}
 
 				//SNAKE FROM 74 TO 35
-				if (fourX > 465 && fourX < 485 && fourY == 175 && moverNumbers.contains(3)){
-					fourX = 400;
-					fourY = fourY + (4*75);
-					forward4 = false;
+				if (m_counterFourXPos > 465 && m_counterFourXPos < 485 && m_counterFourYPos == 175 && m_moversSelected.contains(3)){
+					m_counterFourXPos = 400;
+					m_counterFourYPos = m_counterFourYPos + (4*75);
+					m_moveRightFour = false;
 				}
 
 				//SNAKE FROM 86 to 77
-				if (fourX > 390 && fourX < 405 && fourY == 100 && moverNumbers.contains(4)){
-					fourX = 250;
-					fourY = 175;
-					forward4 = false;
+				if (m_counterFourXPos > 390 && m_counterFourXPos < 405 && m_counterFourYPos == 100 && m_moversSelected.contains(4)){
+					m_counterFourXPos = 250;
+					m_counterFourYPos = 175;
+					m_moveRightFour = false;
 				}
 
 				//LADDER FROM 82 TO 98
-				if (fourX > 85 && fourX < 115 && fourY == 100 && moverNumbers.contains(1)){
-					fourX = 175;
-					fourY = 25;
-					forward4 = false;
+				if (m_counterFourXPos > 85 && m_counterFourXPos < 115 && m_counterFourYPos == 100 && m_moversSelected.contains(1)){
+					m_counterFourXPos = 175;
+					m_counterFourYPos = 25;
+					m_moveRightFour = false;
 				}
 
 				//SNAKE FROM 94 TO 72
-				if (fourX > 475 && fourX < 490 && fourY == 25 && moverNumbers.contains(2)){
-					fourX = 625;
-					fourY = 175;
-					forward4 = false;
+				if (m_counterFourXPos > 475 && m_counterFourXPos < 490 && m_counterFourYPos == 25 && m_moversSelected.contains(2)){
+					m_counterFourXPos = 625;
+					m_counterFourYPos = 175;
+					m_moveRightFour = false;
 				}
 
 				//SNAKE FROM 80 TO 1
-				if (fourX > 20 && fourX < 40 && fourY == 175 && moverNumbers.contains(6)){
-					fourX = 25;
-					fourY = 700;
-					forward4 = true;
+				if (m_counterFourXPos > 20 && m_counterFourXPos < 40 && m_counterFourYPos == 175 && m_moversSelected.contains(6)){
+					m_counterFourXPos = 25;
+					m_counterFourYPos = 700;
+					m_moveRightFour = true;
 				}
 
 				//LADDER FROM 58 to 64
-				if (fourX > 160 && fourX < 180 && fourY == 325 && moverNumbers.contains(5)){
-					fourX = 250;
-					fourY = 250;
-					forward4 = true;
+				if (m_counterFourXPos > 160 && m_counterFourXPos < 180 && m_counterFourYPos == 325 && m_moversSelected.contains(5)){
+					m_counterFourXPos = 250;
+					m_counterFourYPos = 250;
+					m_moveRightFour = true;
 				}
 
 				//SNAKE FROM 78 TO 27
-				if (fourX > 160 && fourX < 180 && fourY == 175 && moverNumbers.contains(5)){
-					fourX = 475;
-					fourY = 550;
-					forward4 = true;
+				if (m_counterFourXPos > 160 && m_counterFourXPos < 180 && m_counterFourYPos == 175 && m_moversSelected.contains(5)){
+					m_counterFourXPos = 475;
+					m_counterFourYPos = 550;
+					m_moveRightFour = true;
 				}
 
 				//SNAKE FROM 55 T0 31
-				if (fourX > 390 && fourX < 410 && fourY == 325 && moverNumbers.contains(7)){
-					fourX =699;
-					fourY = 475;
-					forward4 = false;
+				if (m_counterFourXPos > 390 && m_counterFourXPos < 410 && m_counterFourYPos == 325 && m_moversSelected.contains(7)){
+					m_counterFourXPos =699;
+					m_counterFourYPos = 475;
+					m_moveRightFour = false;
 				}
 
 				//SNAKE FROM 97 TO 75
-				if (fourX > 240 && fourX < 260 && fourY == 25 && moverNumbers.contains(8)){
-					fourX = 400;
-					fourY = 175;
-					forward4 = false;
+				if (m_counterFourXPos > 240 && m_counterFourXPos < 260 && m_counterFourYPos == 25 && m_moversSelected.contains(8)){
+					m_counterFourXPos = 400;
+					m_counterFourYPos = 175;
+					m_moveRightFour = false;
 				}
 
 				//SNAKE FROM 33 TO 8
-				if (fourX > 535 && fourX < 565 && fourY == 475 && moverNumbers.contains(9)){
-					fourX = 545;
-					fourY = 700;
-					forward4 = true;
+				if (m_counterFourXPos > 535 && m_counterFourXPos < 565 && m_counterFourYPos == 475 && m_moversSelected.contains(9)){
+					m_counterFourXPos = 545;
+					m_counterFourYPos = 700;
+					m_moveRightFour = true;
 				}
 				//SNAKE FROM 62 TO 59
-				if (fourX > 90 && fourX < 110 && fourY == 250 && moverNumbers.contains(10)){
-					fourX = 105;
-					fourY = 325;
-					forward4 = false;
+				if (m_counterFourXPos > 90 && m_counterFourXPos < 110 && m_counterFourYPos == 250 && m_moversSelected.contains(10)){
+					m_counterFourXPos = 105;
+					m_counterFourYPos = 325;
+					m_moveRightFour = false;
 				}
 
 				//LADDER FROM 44 TO 56
-				if (fourX > 240 && fourX < 260 && fourY == 400 && moverNumbers.contains(6)){
-					fourX = 325;
-					fourY = 325;
-					forward4 = false;
+				if (m_counterFourXPos > 240 && m_counterFourXPos < 260 && m_counterFourYPos == 400 && m_moversSelected.contains(6)){
+					m_counterFourXPos = 325;
+					m_counterFourYPos = 325;
+					m_moveRightFour = false;
 				}
 				//LADDER FROM 4 TO 17
-				if (fourX > 240 && fourX < 260 && fourY == 700 && moverNumbers.contains(7)){
-					fourX = 250;
-					fourY = 625;
-					forward4 = false;
+				if (m_counterFourXPos > 240 && m_counterFourXPos < 260 && m_counterFourYPos == 700 && m_moversSelected.contains(7)){
+					m_counterFourXPos = 250;
+					m_counterFourYPos = 625;
+					m_moveRightFour = false;
 				}
 
 				//LADDER FROM 14 TO 29
-				if (fourX > 615 && fourX < 635 && fourY == 625 && moverNumbers.contains(8)){
-					fourX = 625;
-					fourY = 550;
-					forward4 = true;
+				if (m_counterFourXPos > 615 && m_counterFourXPos < 635 && m_counterFourYPos == 625 && m_moversSelected.contains(8)){
+					m_counterFourXPos = 625;
+					m_counterFourYPos = 550;
+					m_moveRightFour = true;
 				}
 
 				//LADDER FROM 69 TO 72
-				if (fourX > 615 && fourX < 635 && fourY == 250 && moverNumbers.contains(9)){
-					fourX = 625;
-					fourY = 175;
-					forward4 = false;
+				if (m_counterFourXPos > 615 && m_counterFourXPos < 635 && m_counterFourYPos == 250 && m_moversSelected.contains(9)){
+					m_counterFourXPos = 625;
+					m_counterFourYPos = 175;
+					m_moveRightFour = false;
 				}
 
 				//LADDER FROM 76 TO 84
-				if (fourX > 315 && fourX < 335 && fourY == 175 && moverNumbers.contains(10)){
-					fourX = 250;
-					fourY = 100;
-					forward4 = true;
+				if (m_counterFourXPos > 315 && m_counterFourXPos < 335 && m_counterFourYPos == 175 && m_moversSelected.contains(10)){
+					m_counterFourXPos = 250;
+					m_counterFourYPos = 100;
+					m_moveRightFour = true;
 				}
 
 
@@ -1523,16 +1498,16 @@ public class SnakeLadderGame implements Runnable{
 	public void wonGameStuff(int PlayerInt){
 		//Winning Stuff
 		java.awt.Image winGif = new ImageIcon (this.getClass().getResource("/funnyWin.gif")).getImage();
-		diceLbl.setIcon(new ImageIcon(winGif));
-		diceLbl.setBounds(100,25,300,300);
-		rollBtn.setVisible(false);
-		nameLbl.setBounds(100,0,500,50);
-		nameLbl.setText( playersList.get(PlayerInt).getName() + " WINS!!!");
-		nameLbl.setFont(new Font(Font.SANS_SERIF, 32, 50));
-		timeLbl.setVisible(false);
-		frame2.setSize(500,350);
-		frame2.setLocation(600, 250);
-		frame2.setBackground(Color.LIGHT_GRAY);
+		m_diceRollLbl.setIcon(new ImageIcon(winGif));
+		m_diceRollLbl.setBounds(100,25,300,300);
+		m_diceRollBtn.setVisible(false);
+		m_currentPlayerNameLbl.setBounds(100,0,500,50);
+		m_currentPlayerNameLbl.setText( m_listOfPlayers.get(PlayerInt).getName() + " WINS!!!");
+		m_currentPlayerNameLbl.setFont(new Font(Font.SANS_SERIF, 32, 50));
+		m_timerLbl.setVisible(false);
+		m_snakeLadderMenu.setSize(500,350);
+		m_snakeLadderMenu.setLocation(600, 250);
+		m_snakeLadderMenu.setBackground(Color.LIGHT_GRAY);
 	}
 
 }
