@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,11 +12,99 @@ public class SnakeLadderGame implements Runnable{
 
 
 	//Ladder variables
+	private final float m_ladderSmallScalar = (float) 0.2;
+	private final float m_ladderLargeScalar = (float) 0.4;
+
+	private final float m_ladderRotationRight = (float) Math.toRadians(45);
+	private final float m_ladderRotationLeft = (float) Math.toRadians(135);
+	private final float m_ladderRotationUpright = 0;
+	
+	private AffineTransform m_ladderOne;
+	private AffineTransform m_ladderTwo;
+	private AffineTransform m_ladderThree;
+	private AffineTransform m_ladderFour;
+	private AffineTransform m_ladderFive;
+	private AffineTransform m_ladderSix;
+	private AffineTransform m_ladderSeven;
+	private AffineTransform m_ladderEight;
+	private AffineTransform m_ladderNine;
+	private AffineTransform m_ladderTen;
+	
+	private final int m_ladderOneTranslateX = 800;
+	private final int m_ladderOneTranslateY = 80;
+	private final int m_ladderTwoTranslateX = 2600;
+	private	final int m_ladderTwoTranslateY = 1600;
+	private final int m_ladderThreeTranslateX = 2650;
+	private final int m_ladderThreeTranslateY = 1600;
+	private	final int m_ladderFourTranslateX = 1525;
+	private final int m_ladderFourTranslateY = 1000;
+	private final int m_ladderFiveTranslateX = 1250;
+	private final int m_ladderFiveTranslateY = 1150;
+	private final int m_ladderSixTranslateX =1650;
+	private final int m_ladderSixTranslateY =1550;
+	private final int m_ladderSevenTranslateX =1150;
+	private final int m_ladderSevenTranslateY =3050;
+	private final int m_ladderEightTranslateX = 3050;
+	private final int m_ladderEightTranslateY = 2700;
+	private final int m_ladderNineTranslateX = 3050;
+	private final int m_ladderNineTranslateY = 800;
+	private final int m_ladderTenTranslateX = 1875;
+	private final int m_ladderTenTranslateY = 875;
+
+	// snake variables
+	private AffineTransform m_SnakeOne;
+	private AffineTransform m_SnakeTwo;
+	private AffineTransform m_SnakeThree;
+	private AffineTransform m_SnakeFour;
+	private AffineTransform m_SnakeFive;
+	private AffineTransform m_SnakeSix;			
+	private AffineTransform m_SnakeSeven;
+	private AffineTransform m_SnakeEight;
+	private AffineTransform m_SnakeNine;
+	private AffineTransform m_SnakeTen;
+
+
+	private final float m_snakeSmallestScalar = (float) 0.25;
+	private final float m_snakeSmallerScalar = (float) 0.5;
+	private final float m_snakeSmallScalar = (float) 0.7;
+	private final float m_snakeLargeScalar = (float) 0.75;
+	private final float m_snakeLargerScalar = (float) 1.0;
+	private final float m_snakeLargestScalar = (float) 1.2;
+	
+	private final float m_snakeRotationUpright = (float) Math.toRadians(270);
+	private final float m_snakeRotationSlightestRight = (float) Math.toRadians(290);
+	private final float m_snakeRotationSlightRight = (float) Math.toRadians(225);
+	private final float m_snakeRotationHardRight = (float) Math.toRadians(-135);
+	private final float m_snakeRotationHardLeft = (float) Math.toRadians(-45);
+
+	private final int m_snakeOneTranslateX = 220;
+	private final int m_snakeOneTranslateY = 975;
+	private final int m_snakeTwoTranslateX = 1250 ;
+	private final int m_snakeTwoTranslateY= 425;
+	private final int m_snakeThreeTranslateX = 500 ;
+	private final int m_snakeThreeTranslateY  = 650 ;
+	private final int m_snakeFourTranslateX = 500;
+	private final int m_snakeFourTranslateY  = 700;
+	private final int m_snakeFiveTranslateX = 480 ;
+	private final int m_snakeFiveTranslateY = 500;
+	private final int m_snakeSixTranslateX = 15 ;
+	private final int m_snakeSixTranslateY = 600;
+	private final int m_snakeSevenTranslateX = 715 ;
+	private final int m_snakeSevenTranslateY = 1025;
+	private final int m_snakeEightTranslateX = 825;
+	private final int m_snakeEightTranslateY = 425;
+	private final int m_snakeNineTranslateX = 775;
+	private final int m_snakeNineTranslateY = 1450;
+	private final int m_snakeTenTranslateX = 205 ;
+	private final int m_snakeTenTranslateY = 1450;
 	
 
 
 
 
+	
+	//Other variables
+	
 	JFrame frame;
 	JFrame frame2;
 	DrawPanel drawPanel;
@@ -257,63 +344,63 @@ public class SnakeLadderGame implements Runnable{
 				if ((loc + 19) % 20 == 0 ){
 					g.drawString(locS, 15, 700 + (-j * 75));
 
-					String locS2 = Integer.toString(loc + 1);
-					g.drawString(locS2, 15 + (75*1), 700 + (-j * 75));
+					String locm_SnakeTwo = Integer.toString(loc + 1);
+					g.drawString(locm_SnakeTwo, 15 + (75*1), 700 + (-j * 75));
 
-					String locS3 = Integer.toString(loc + 2);
-					g.drawString(locS3, 15 + (75*2), 700 + (-j * 75));
+					String locm_SnakeThree = Integer.toString(loc + 2);
+					g.drawString(locm_SnakeThree, 15 + (75*2), 700 + (-j * 75));
 
-					String locS4 = Integer.toString(loc + 3);
-					g.drawString(locS4, 15 + (75*3), 700 + (-j * 75));
+					String locm_SnakeFour = Integer.toString(loc + 3);
+					g.drawString(locm_SnakeFour, 15 + (75*3), 700 + (-j * 75));
 
-					String locS5 = Integer.toString(loc + 4);
-					g.drawString(locS5, 15 + (75*4), 700 + (-j * 75));
+					String locm_SnakeFive = Integer.toString(loc + 4);
+					g.drawString(locm_SnakeFive, 15 + (75*4), 700 + (-j * 75));
 
-					String locS6 = Integer.toString(loc + 5);
-					g.drawString(locS6, 15 + (75*5), 700 + (-j * 75));
+					String locm_SnakeSix = Integer.toString(loc + 5);
+					g.drawString(locm_SnakeSix, 15 + (75*5), 700 + (-j * 75));
 
-					String locS7 = Integer.toString(loc + 6);
-					g.drawString(locS7, 15 + (75*6), 700 + (-j * 75));
+					String locm_SnakeSeven = Integer.toString(loc + 6);
+					g.drawString(locm_SnakeSeven, 15 + (75*6), 700 + (-j * 75));
 
-					String locS8 = Integer.toString(loc + 7);
-					g.drawString(locS8, 15 + (75*7), 700 + (-j * 75));
+					String locm_SnakeEight = Integer.toString(loc + 7);
+					g.drawString(locm_SnakeEight, 15 + (75*7), 700 + (-j * 75));
 
-					String locS9 = Integer.toString(loc + 8);
-					g.drawString(locS9, 15 + (75*8), 700 + (-j * 75));
+					String locm_SnakeNine = Integer.toString(loc + 8);
+					g.drawString(locm_SnakeNine, 15 + (75*8), 700 + (-j * 75));
 
-					String locS10 = Integer.toString(loc + 9);
-					g.drawString(locS10, 15 + (75*9), 700 + (-j * 75));
+					String locm_SnakeTen = Integer.toString(loc + 9);
+					g.drawString(locm_SnakeTen, 15 + (75*9), 700 + (-j * 75));
 
 				}
 				else{
 					g.drawString(locS, 715, 700 + (-j * 75));
 
-					String locS2 = Integer.toString(loc + 1);
-					g.drawString(locS2, 715 - (75*1), 700 + (-j * 75));
+					String locm_SnakeTwo = Integer.toString(loc + 1);
+					g.drawString(locm_SnakeTwo, 715 - (75*1), 700 + (-j * 75));
 
-					String locS3 = Integer.toString(loc + 2);
-					g.drawString(locS3, 715 - (75*2), 700 + (-j * 75));
+					String locm_SnakeThree = Integer.toString(loc + 2);
+					g.drawString(locm_SnakeThree, 715 - (75*2), 700 + (-j * 75));
 
-					String locS4 = Integer.toString(loc + 3);
-					g.drawString(locS4, 715 - (75*3), 700 + (-j * 75));
+					String locm_SnakeFour = Integer.toString(loc + 3);
+					g.drawString(locm_SnakeFour, 715 - (75*3), 700 + (-j * 75));
 
-					String locS5 = Integer.toString(loc + 4);
-					g.drawString(locS5, 715 - (75*4), 700 + (-j * 75));
+					String locm_SnakeFive = Integer.toString(loc + 4);
+					g.drawString(locm_SnakeFive, 715 - (75*4), 700 + (-j * 75));
 
-					String locS6 = Integer.toString(loc + 5);
-					g.drawString(locS6, 715 - (75*5), 700 + (-j * 75));
+					String locm_SnakeSix = Integer.toString(loc + 5);
+					g.drawString(locm_SnakeSix, 715 - (75*5), 700 + (-j * 75));
 
-					String locS7 = Integer.toString(loc + 6);
-					g.drawString(locS7, 715 - (75*6), 700 + (-j * 75));
+					String locm_SnakeSeven = Integer.toString(loc + 6);
+					g.drawString(locm_SnakeSeven, 715 - (75*6), 700 + (-j * 75));
 
-					String locS8 = Integer.toString(loc + 7);
-					g.drawString(locS8, 715 - (75*7), 700 + (-j * 75));
+					String locm_SnakeEight = Integer.toString(loc + 7);
+					g.drawString(locm_SnakeEight, 715 - (75*7), 700 + (-j * 75));
 
-					String locS9 = Integer.toString(loc + 8);
-					g.drawString(locS9, 715 - (75*8), 700 + (-j * 75));
+					String locm_SnakeNine = Integer.toString(loc + 8);
+					g.drawString(locm_SnakeNine, 715 - (75*8), 700 + (-j * 75));
 
-					String locS10 = Integer.toString(loc + 9);
-					g.drawString(locS10, 715 - (75*9), 700 + (-j * 75));
+					String locm_SnakeTen = Integer.toString(loc + 9);
+					g.drawString(locm_SnakeTen, 715 - (75*9), 700 + (-j * 75));
 				}
 				j++;
 
@@ -332,49 +419,12 @@ public class SnakeLadderGame implements Runnable{
 
 
 
-			Graphics2D g2d=(Graphics2D)g; 
+			Graphics2D g2d=(Graphics2D)g;
 			java.awt.Image ladderImage = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();
 			java.awt.Image snakeImage = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage();  
 
 			//Ladder creation
-			//makes these variables private when we move to the top
-			
-			final float m_ladderSmallScalar = (float) 0.2;
-			final float m_ladderLargeScalar = (float) 0.4;
-
-			final float m_ladderRotationRight = (float) Math.toRadians(45);
-			final float m_ladderRotationLeft = (float) Math.toRadians(135);
-			final float m_ladderRotationUpright = 0;
-			
-			AffineTransform m_ladderOne;
-			AffineTransform m_ladderTwo;
-			AffineTransform m_ladderThree;
-			AffineTransform m_ladderFour;
-			AffineTransform m_ladderFive;
-			AffineTransform m_ladderSix;
-			AffineTransform m_ladderSeven;
-			AffineTransform m_ladderEight;
-			AffineTransform m_ladderNine;
-			AffineTransform m_ladderTen;
-			
-			final int m_ladderOneTranslateX = 800;
-			final int m_ladderOneTranslateY = 80;
-			final int m_ladderTwoTranslateX = 2600;
-			final int m_ladderTwoTranslateY = 1600;
-			final int m_ladderThreeTranslateX = 2650;
-			final int m_ladderThreeTranslateY = 1600;
-			final int m_ladderFourTranslateX = 1525;
-			final int m_ladderFourTranslateY = 1000;
-			final int m_ladderFiveTranslateX = 1250;
-			final int m_ladderFiveTranslateY = 1150;
-			final int m_ladderSixTranslateX =1650;
-			final int m_ladderSixTranslateY =1550;
-			final int m_ladderSevenTranslateX =1150;
-			final int m_ladderSevenTranslateY =3050;
-			final int m_ladderEightTranslateX = 3050;
-			final int m_ladderEightTranslateY = 2700;
-
-			
+						
 			
 			//82 TO 98
 			if (moverNumbers.contains(1))
@@ -456,7 +506,7 @@ public class SnakeLadderGame implements Runnable{
 				//69 TO 72
 				m_ladderNine = new AffineTransform();
 				m_ladderNine.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
-				m_ladderNine.translate(3050, 800 );
+				m_ladderNine.translate(m_ladderNineTranslateX, m_ladderNineTranslateY );
 				m_ladderNine.rotate( m_ladderRotationUpright);
 				g2d.drawImage(ladderImage, m_ladderNine, this);
 			}
@@ -465,100 +515,103 @@ public class SnakeLadderGame implements Runnable{
 				//76 TO 84
 				m_ladderTen = new AffineTransform();
 				m_ladderTen.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
-				m_ladderTen.translate(1875, 875 );
-				m_ladderTen.rotate( m_ladderRotationUpright);
+				m_ladderTen.translate(m_ladderTenTranslateX, m_ladderTenTranslateY  );
+				m_ladderTen.rotate( m_ladderRotationLeft);
 				g2d.drawImage(ladderImage, m_ladderTen, this);
 			}
 
 			//snake creation
 
+
+			
+			
 			if (moverNumbers.contains(1)){
 				//43 to 3
-				AffineTransform S1 = new AffineTransform();
-				S1.scale(0.75, 0.75); 
-				S1.translate(220, 975);
-				S1.rotate( Math.toRadians(270) );
-				g2d.drawImage(snakeImage, S1, this);
+				m_SnakeOne = new AffineTransform();
+				m_SnakeOne.scale(m_snakeLargeScalar,m_snakeLargeScalar); 
+				m_SnakeOne.translate(m_snakeOneTranslateX, m_snakeOneTranslateY);
+				m_SnakeOne.rotate( m_snakeRotationUpright);
+				g2d.drawImage(snakeImage, m_SnakeOne, this);
 			}
 
 			if (moverNumbers.contains(2)){
 				//94 to 72
-				AffineTransform S2 = new AffineTransform();            	    	
-				S2.scale(0.5, 0.5); 
-				S2.translate(1250, 425 );
-				S2.rotate( Math.toRadians(225) );
-				g2d.drawImage(snakeImage, S2, this);
+				m_SnakeTwo = new AffineTransform();            	    	
+				m_SnakeTwo.scale(m_snakeSmallerScalar, m_snakeSmallerScalar); 
+				m_SnakeTwo.translate(m_snakeTwoTranslateX, m_snakeTwoTranslateY );
+				m_SnakeTwo.rotate(m_snakeRotationSlightRight);
+				g2d.drawImage(snakeImage, m_SnakeTwo, this);
 			}
 
 			if (moverNumbers.contains(3)){
 				//74 to 35
-				AffineTransform S3 = new AffineTransform();            	    	
-				S3.scale(0.75, 0.75); 
-				S3.translate(500, 650 );
-				S3.rotate( Math.toRadians(290) );
-				g2d.drawImage(snakeImage, S3, this);
+				m_SnakeThree = new AffineTransform();            	    	
+				m_SnakeThree.scale(m_snakeLargeScalar, m_snakeLargeScalar); 
+				m_SnakeThree.translate(m_snakeThreeTranslateX, m_snakeThreeTranslateY );
+				m_SnakeThree.rotate(m_snakeRotationSlightestRight );
+				g2d.drawImage(snakeImage, m_SnakeThree, this);
 			}
 
 			if (moverNumbers.contains(4)){
 				//86 to 77
-				AffineTransform S4 = new AffineTransform();            	    	
-				S4.scale(0.5, 0.25);  
-				S4.translate(500, 700 );
-				S4.rotate( Math.toRadians(-45) );
-				g2d.drawImage(snakeImage, S4, this);
+				m_SnakeFour = new AffineTransform();            	    	
+				m_SnakeFour.scale(m_snakeSmallerScalar, m_snakeSmallestScalar);  
+				m_SnakeFour.translate(m_snakeFourTranslateX, m_snakeFourTranslateY);
+				m_SnakeFour.rotate( m_snakeRotationHardLeft );
+				g2d.drawImage(snakeImage, m_SnakeFour, this);
 			}
 
 			if (moverNumbers.contains(5)){
 				//78 to 27
-				AffineTransform S5 = new AffineTransform();            	    	
-				S5.scale(1, 1.2);  
-				S5.translate(480, 500 );
-				S5.rotate( Math.toRadians(225) );
-				g2d.drawImage(snakeImage, S5, this);
+				m_SnakeFive = new AffineTransform();            	    	
+				m_SnakeFive.scale(m_snakeLargerScalar, m_snakeLargestScalar);  
+				m_SnakeFive.translate(m_snakeFiveTranslateX, m_snakeFiveTranslateY );
+				m_SnakeFive.rotate( m_snakeRotationSlightRight );
+				g2d.drawImage(snakeImage, m_SnakeFive, this);
 			}
 
 			if (moverNumbers.contains(6)){
 				//80 to 1
-				AffineTransform S6 = new AffineTransform();            	    	
-				S6.scale(1, 1.2);  
-				S6.translate(15, 600 );
-				S6.rotate( Math.toRadians(-90) );
-				g2d.drawImage(snakeImage, S6, this);
+				m_SnakeSix = new AffineTransform();            	    	
+				m_SnakeSix.scale(m_snakeLargerScalar, m_snakeLargestScalar);  
+				m_SnakeSix.translate(m_snakeSixTranslateX, m_snakeSixTranslateY );
+				m_SnakeSix.rotate( m_snakeRotationUpright );
+				g2d.drawImage(snakeImage, m_SnakeSix, this);
 			}
 
 			if (moverNumbers.contains(7)){
 				//55 to 31			
-				AffineTransform S7 = new AffineTransform();            	    	
-				S7.scale(1, 0.5);  
-				S7.translate(715, 1025 );
-				S7.rotate( Math.toRadians(-135) );
-				g2d.drawImage(snakeImage, S7, this);
+				m_SnakeSeven = new AffineTransform();            	    	
+				m_SnakeSeven.scale(m_snakeLargerScalar, m_snakeSmallerScalar);  
+				m_SnakeSeven.translate(m_snakeSevenTranslateX, m_snakeSevenTranslateY );
+				m_SnakeSeven.rotate(m_snakeRotationHardRight);
+				g2d.drawImage(snakeImage, m_SnakeSeven, this);
 			}
 
 			if (moverNumbers.contains(8)){
 				//97 to 75
-				AffineTransform S8 = new AffineTransform();            	    	
-				S8.scale(0.5, 0.5); 
-				S8.translate(825, 425 );
-				S8.rotate( Math.toRadians(225) );
-				g2d.drawImage(snakeImage, S8, this);
+				m_SnakeEight = new AffineTransform();            	    	
+				m_SnakeEight.scale(m_snakeSmallerScalar,m_snakeSmallerScalar); 
+				m_SnakeEight.translate(m_snakeEightTranslateX, m_snakeEightTranslateY );
+				m_SnakeEight.rotate( m_snakeRotationSlightRight );
+				g2d.drawImage(snakeImage, m_SnakeEight, this);
 			}
 
 			if (moverNumbers.contains(9)){
 				//33 to 8
-				AffineTransform S9 = new AffineTransform();            	    	
-				S9.scale(0.7, 0.5); 
-				S9.translate(775, 1450 );
-				S9.rotate( Math.toRadians(-90) );
-				g2d.drawImage(snakeImage, S9, this);
+				m_SnakeNine = new AffineTransform();            	    	
+				m_SnakeNine.scale(m_snakeSmallScalar, m_snakeSmallerScalar); 
+				m_SnakeNine.translate(m_snakeNineTranslateX, m_snakeNineTranslateY );
+				m_SnakeNine.rotate( m_snakeRotationUpright );
+				g2d.drawImage(snakeImage, m_SnakeNine, this);
 			}
 
 			if (moverNumbers.contains(10)){
-				AffineTransform S10 = new AffineTransform();            	    	
-				S10.scale(0.5, 0.25); 
-				S10.translate(205, 1450 );
-				S10.rotate( Math.toRadians(-90) );
-				g2d.drawImage(snakeImage, S10, this);
+				m_SnakeTen = new AffineTransform();            	    	
+				m_SnakeTen.scale(m_snakeSmallerScalar,m_snakeSmallestScalar); 
+				m_SnakeTen.translate(m_snakeTenTranslateX, m_snakeTenTranslateY );
+				m_SnakeTen.rotate( m_snakeRotationUpright);
+				g2d.drawImage(snakeImage, m_SnakeTen, this);
 			}
 
 		}
