@@ -16,6 +16,7 @@ public class SnakeLadderGame implements Runnable{
 	DrawPanel drawPanel;
 	JButton rollBtn;
 	JLabel diceLbl;
+	JLabel nameLbl;
 	private int oneX = 25;
 	private int oneY = 700;
 	private int twoX = 25;
@@ -45,7 +46,8 @@ public class SnakeLadderGame implements Runnable{
 	Dice m_dice = new Dice();
 	ArrayList<Player> playersList;
 	ArrayList<Integer> moverNumbers;
-
+	LabelTimer timerLbl;
+	
 	//gets all this info from game launcher
 	public SnakeLadderGame(int numberOfMovers, ArrayList<Player> players){
 		playersList = players;
@@ -55,7 +57,7 @@ public class SnakeLadderGame implements Runnable{
 		go();
 		//moverNumbers.contains(integer) returns boolean
 	}
-
+	
 	private void go() {
 
 		frame = new JFrame("Test");
@@ -80,11 +82,22 @@ public class SnakeLadderGame implements Runnable{
 
 		diceLbl = new JLabel();
 		diceLbl.setBounds(100,0,75,75);
-
+		
+		timerLbl = new LabelTimer();
+		
+		nameLbl = new JLabel();
+		timerLbl.setBounds(200, 0, 100, 75);
+		timerLbl.timerStart();
+		
 		java.awt.Image startImage = new ImageIcon (this.getClass().getResource("/1dice.gif")).getImage();
 		diceLbl.setIcon(new ImageIcon(startImage));
 
 		frame2.add(diceLbl);
+		
+		frame2.add(nameLbl);
+		
+		frame2.add(timerLbl);
+		
 
 
 
@@ -104,10 +117,11 @@ public class SnakeLadderGame implements Runnable{
 				else{
 
 					rollBtn.setText("Start Roll");
+
 					String thing = Dice.getNewRoll() +"dice.gif";
 					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
 					diceLbl.setIcon(new ImageIcon(image));
-
+					
 					i = i -1;
 
 					System.out.println("turn number" + turn);
@@ -117,21 +131,37 @@ public class SnakeLadderGame implements Runnable{
 								turn = 0;
 							}
 							if (turn == 3 && numberOfPlayers > turn){
+								//Player 4
+								//nameLbl.setText("Turn: " + playersList.get(3).getName());
+								//nameLbl.setForeground(playersList.get(3).getColor());
 								moveIt4(Dice.getPrevValue());
+								
 								turn = 0;
 
 							}
 							else if (turn == 0 && numberOfPlayers > turn){
+								//Player 1
+								//nameLbl.setText("Turn: " + playersList.get(0).getName());
+								//nameLbl.setForeground(playersList.get(0).getColor());
 								moveIt(Dice.getPrevValue());
+							
 								turn ++;
 							}
 							else if (turn == 2 && numberOfPlayers > turn){
+								//Player 3
+								//nameLbl.setText("Turn: " + playersList.get(2).getName());
+								//nameLbl.setForeground(playersList.get(2).getColor());
 								moveIt3(Dice.getPrevValue());
+								
 								turn++;
 							}
 
 							else if (turn == 1 && numberOfPlayers > turn){
+								//player 2
+								//nameLbl.setText("Turn: " + playersList.get(1).getName());
+								//nameLbl.setForeground(playersList.get(1).getColor());
 								moveIt2(Dice.getPrevValue());
+							
 								turn ++;
 								//turn = -1;
 							}
@@ -143,8 +173,6 @@ public class SnakeLadderGame implements Runnable{
 
 			}
 		});
-		
-		//moveIt(79);
 	}
 
 	public void run(){
@@ -168,7 +196,8 @@ public class SnakeLadderGame implements Runnable{
 		@Override
 		public void paintComponent(Graphics g) {
 			//paints oval   
-			
+			//Ellipse2D.Double shape = new Ellipse2D.Double(oneX, oneY, 20, 20);
+			//((Graphics2D) g).draw(shape);
 
 			//player 2
 			if (numberOfPlayers >= 2){
@@ -186,16 +215,16 @@ public class SnakeLadderGame implements Runnable{
 				g.fillOval(fourX, fourY, 20, 20);
 				//paints board lines
 			}
-
+			
 			//Player 1
-
+			
 			g.setColor(playersList.get(0).getColor());
 			g.fillOval(oneX, oneY, 20, 20);
-
+			
 			g.setColor(Color.RED);
 			int i = 0;
 			int j = 0;
-
+			
 
 			//DRAWS NUMBERS
 
@@ -282,98 +311,90 @@ public class SnakeLadderGame implements Runnable{
 
 
 
-
+			
 			Graphics2D g2d=(Graphics2D)g; 
-			java.awt.Image ladderImage = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();
-			java.awt.Image snakeImage = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage();  
+			java.awt.Image image = new ImageIcon (this.getClass().getResource("/ladder.png")).getImage();
+			java.awt.Image image2 = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage();  
+			
 			
 			//Ladder creation
-
 			//82 TO 98
 			AffineTransform L1 = new AffineTransform();
 			L1.scale(0.2, 0.2); 
 			L1.translate(800, 80);
 			L1.rotate( Math.toRadians(45) );
-			g2d.drawImage(ladderImage, L1, this);
+			g2d.drawImage(image, L1, this);
 
 			//54 to 66
 			AffineTransform L2 = new AffineTransform();            	    	
 			L2.scale(0.2, 0.2); 
 			L2.translate(2600, 1600 );
 			L2.rotate( Math.toRadians(135) );
-			g2d.drawImage(ladderImage, L2, this);
-
+			g2d.drawImage(image, L2, this);
+			
 			//48 to 53
 			AffineTransform L3 = new AffineTransform();            	    	
 			L3.scale(0.2, 0.2); 
 			L3.translate(2650, 1600 );
 			L3.rotate( Math.toRadians(0) );
-			g2d.drawImage(ladderImage, L3, this);
+			g2d.drawImage(image, L3, this);
 
 			//16 to 45
 			AffineTransform L4 = new AffineTransform();            	    	
 			L4.scale(0.2, 0.4); 
 			L4.translate(1525, 1000 );
 			L4.rotate( Math.toRadians(0) );
-			g2d.drawImage(ladderImage, L4, this);
-
+			//g2d.drawImage(image, L4, this);
+			
 			//58 to 64
 			AffineTransform L5 = new AffineTransform();
 			L5.scale(0.2, 0.2); 
 			L5.translate(1250, 1150 );
 			L5.rotate( Math.toRadians(45));
-			g2d.drawImage(ladderImage, L5, this);
+			g2d.drawImage(image, L5, this);
 
+			
+			//snake drawings
 
-			//snake creation
-
-			//43 to 3
 			AffineTransform S1 = new AffineTransform();
 			S1.scale(0.75, 0.75); 
 			S1.translate(220, 975);
 			S1.rotate( Math.toRadians(270) );
-			g2d.drawImage(snakeImage, S1, this);
+			g2d.drawImage(image2, S1, this);
 
 
-			//94 to 72
+			//-----Drawing 2nd SNAKE
 			AffineTransform S2 = new AffineTransform();            	    	
 			S2.scale(0.5, 0.5); 
 			S2.translate(1250, 425 );
 			S2.rotate( Math.toRadians(225) );
-			g2d.drawImage(snakeImage, S2, this);
-
-			//74 to 35
+			g2d.drawImage(image2, S2, this);
+		
+			//-----Drawing 3rd SNAKE
 			AffineTransform S3 = new AffineTransform();            	    	
 			S3.scale(0.75, 0.75); 
 			S3.translate(500, 650 );
 			S3.rotate( Math.toRadians(290) );
-			g2d.drawImage(snakeImage, S3, this);
-
-			//86 to 77
+			g2d.drawImage(image2, S3, this);
+			
+			//-----Drawing 4th SNAKE
 			AffineTransform S4 = new AffineTransform();            	    	
 			S4.scale(0.5, 0.25);  
 			S4.translate(500, 700 );
 			S4.rotate( Math.toRadians(-45) );
-			g2d.drawImage(snakeImage, S4, this);
+			g2d.drawImage(image2, S4, this);
 
 			//78 to 27
 			AffineTransform S5 = new AffineTransform();            	    	
 			S5.scale(1, 1.2);  
 			S5.translate(480, 500 );
 			S5.rotate( Math.toRadians(225) );
-			g2d.drawImage(snakeImage, S5, this);
-			
-			//80 to 1
-			AffineTransform S6 = new AffineTransform();            	    	
-			S6.scale(1, 1.2);  
-			S6.translate(15, 600 );
-			S6.rotate( Math.toRadians(-90) );
-			g2d.drawImage(snakeImage, S6, this);
-			
-			
+			g2d.drawImage(image2, S5, this);
 		}
 	}
-	
+
+
+
 	private void moveIt(int diceRoll) {
 
 
@@ -421,6 +442,7 @@ public class SnakeLadderGame implements Runnable{
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( oneX > 20 && oneX < 45 && oneY == 25 ){
 				System.out.println("Won Game");
+				timerLbl.timerStop();
 				oneX = 25;
 				wonGame = true;
 			}
@@ -500,20 +522,8 @@ public class SnakeLadderGame implements Runnable{
 				oneY = 175;
 				forward1 = false;
 			}
-			
-			//SNAKE FROM 80 TO 1
-			if (oneX > 20 && oneX < 40 && oneY == 175){
-				oneX = 25;
-				oneY = 700;
-				forward1 = true;
-			}
-			
-			//LADDER FROM 58 to 64
-			if (oneX > 160 && oneX < 180 && oneY == 300){
-				oneX = 25;
-				oneY = 700;
-				forward1 = true;
-			}
+
+
 
 		}
 		System.out.println(oneX);
@@ -579,6 +589,7 @@ public class SnakeLadderGame implements Runnable{
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( twoX > 20 && twoX < 45 && twoY == 25 ){
 				System.out.println("Won Game");
+				timerLbl.timerStop();
 				twoX = 25;
 				wonGame = true;
 			}
@@ -659,19 +670,6 @@ public class SnakeLadderGame implements Runnable{
 				forward2 = false;
 			}
 
-			//SNAKE FROM 80 TO 1
-			if (twoX > 20 && twoX < 40 && twoY == 175){
-				twoX = 25;
-				twoY = 700;
-				forward2 = true;
-			}
-			
-			//LADDER FROM 58 to 64
-			if (twoX > 160 && twoX < 180 && twoY == 300){
-				twoX = 25;
-				twoY = 700;
-				forward2 = true;
-			}
 
 
 		}
@@ -738,6 +736,7 @@ public class SnakeLadderGame implements Runnable{
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( threeX > 20 && threeX < 45 && threeY == 25 ){
 				System.out.println("Won Game");
+				timerLbl.timerStop();
 				threeX = 25;
 				wonGame = true;
 			}
@@ -818,19 +817,6 @@ public class SnakeLadderGame implements Runnable{
 				forward3 = false;
 			}
 
-			//SNAKE FROM 80 TO 1
-			if (threeX > 20 && threeX < 40 && threeY == 175){
-				threeX = 25;
-				threeY = 700;
-				forward3 = true;
-			}
-			
-			//LADDER FROM 58 to 64
-			if (threeX > 160 && threeX < 180 && threeY == 300){
-				threeX = 25;
-				threeY = 700;
-				forward3 = true;
-			}
 
 
 		}
@@ -898,6 +884,7 @@ public class SnakeLadderGame implements Runnable{
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( fourX > 20 && fourX < 45 && fourY == 25 ){
 				System.out.println("Won Game");
+				timerLbl.timerStop();
 				fourX = 25;
 				wonGame = true;
 			}
@@ -978,19 +965,6 @@ public class SnakeLadderGame implements Runnable{
 				forward4 = false;
 			}
 
-			//SNAKE FROM 80 TO 1
-			if (fourX > 20 && fourX < 40 && fourY == 175){
-				fourX = 25;
-				fourY = 700;
-				forward4 = true;
-			}
-			
-			//LADDER FROM 58 to 64
-			if (fourX > 160 && fourX < 180 && fourY == 300){
-				fourX = 25;
-				fourY = 700;
-				forward4 = true;
-			}
 
 
 		}
