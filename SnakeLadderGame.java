@@ -90,14 +90,17 @@ public class SnakeLadderGame implements Runnable{
 
 		nameLbl = new JLabel();
 		nameLbl.setBounds(180,0,200,50);
-		nameLbl.setText("Default");
+		//nameLbl.setText("Default");
 		
 		timeLbl = new LabelTimer();
 		timeLbl.setBounds(180,10,80,100);
 		timeLbl.timerStart();
 		frame2.add(timeLbl);
 		frame2.add(nameLbl);
-
+		if(nameLbl.getText().equals("")){
+			nameLbl.setText("Turn: " + playersList.get(0).getName());
+			nameLbl.setForeground(playersList.get(0).getColor());
+		}
 
 		rollBtn.addMouseListener(new MouseAdapter() {
 			int i = 0;
@@ -108,6 +111,10 @@ public class SnakeLadderGame implements Runnable{
 					java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
 					diceLbl.setIcon(new ImageIcon(gif));
 					i = i + 1;
+
+						nameLbl.setText("Turn: " + playersList.get(turn).getName());
+						nameLbl.setForeground(playersList.get(turn).getColor());
+					
 
 
 				}
@@ -126,25 +133,42 @@ public class SnakeLadderGame implements Runnable{
 							if (numberOfPlayers == turn){
 								turn = 0;
 							}
+							
+
 							if (turn == 3 && numberOfPlayers > turn){
+								//Player 4
+								//nameLbl.setText("Turn: " + playersList.get(3).getName());
+								//nameLbl.setForeground(playersList.get(3).getColor());
 								moveIt4(Dice.getPrevValue());
 								turn = 0;
 
 							}
 							else if (turn == 0 && numberOfPlayers > turn){
+								//Player 1
+								//nameLbl.setText("Turn: " + playersList.get(0).getName());
+								//nameLbl.setForeground(playersList.get(0).getColor());
 								moveIt(Dice.getPrevValue());
 								turn ++;
 							}
 							else if (turn == 2 && numberOfPlayers > turn){
+								//Player 3
+								//nameLbl.setText("Turn: " + playersList.get(2).getName());
+								//nameLbl.setForeground(playersList.get(2).getColor());
 								moveIt3(Dice.getPrevValue());
 								turn++;
 							}
 
 							else if (turn == 1 && numberOfPlayers > turn){
+								//Player 2
+								//nameLbl.setText("Turn: " + playersList.get(1).getName());
+								//nameLbl.setForeground(playersList.get(1).getColor());
 								moveIt2(Dice.getPrevValue());
 								turn ++;
 								//turn = -1;
 							}
+							
+							
+							
 						}  
 					};
 					one.start();
