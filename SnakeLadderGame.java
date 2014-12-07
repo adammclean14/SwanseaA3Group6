@@ -45,6 +45,8 @@ public class SnakeLadderGame implements Runnable{
 	Dice m_dice = new Dice();
 	ArrayList<Player> playersList;
 	ArrayList<Integer> moverNumbers;
+	JLabel nameLbl;
+	LabelTimer timeLbl;
 
 	//gets all this info from game launcher
 	public SnakeLadderGame(int numberOfMovers, ArrayList<Player> players){
@@ -86,7 +88,15 @@ public class SnakeLadderGame implements Runnable{
 
 		frame2.add(diceLbl);
 
-
+		nameLbl = new JLabel();
+		nameLbl.setBounds(180,0,200,50);
+		nameLbl.setText("Default");
+		
+		timeLbl = new LabelTimer();
+		timeLbl.setBounds(180,10,80,100);
+		timeLbl.timerStart();
+		frame2.add(timeLbl);
+		frame2.add(nameLbl);
 
 
 		rollBtn.addMouseListener(new MouseAdapter() {
@@ -337,16 +347,51 @@ public class SnakeLadderGame implements Runnable{
 				L5.rotate( Math.toRadians(45));
 				g2d.drawImage(ladderImage, L5, this);
 			}
-			
+
 			if (moverNumbers.contains(6)){
-			//44 TO 56
-			AffineTransform L6 = new AffineTransform();
-			L6.scale(0.2, 0.2); 
-			L6.translate(1650, 1550 );
-			L6.rotate( Math.toRadians(45));
-			g2d.drawImage(ladderImage, L6, this);
+				//44 TO 56
+				AffineTransform L6 = new AffineTransform();
+				L6.scale(0.2, 0.2); 
+				L6.translate(1650, 1550 );
+				L6.rotate( Math.toRadians(45));
+				g2d.drawImage(ladderImage, L6, this);
 			}
 			
+			if (moverNumbers.contains(7)){
+			//4 to 17
+			AffineTransform L7 = new AffineTransform();
+			L7.scale(0.2, 0.2); 
+			L7.translate(1150, 3050 );
+			L7.rotate( Math.toRadians(0));
+			g2d.drawImage(ladderImage, L7, this);
+			}
+			
+			if (moverNumbers.contains(8)){
+			//12 TO 29
+			AffineTransform L8 = new AffineTransform();
+			L8.scale(0.2, 0.2); 
+			L8.translate(3050, 2700 );
+			L8.rotate( Math.toRadians(0));
+			g2d.drawImage(ladderImage, L8, this);
+			}
+			
+			if (moverNumbers.contains(9)){
+			//69 TO 72
+			AffineTransform L9 = new AffineTransform();
+			L9.scale(0.2, 0.2); 
+			L9.translate(3050, 800 );
+			L9.rotate( Math.toRadians(0));
+			g2d.drawImage(ladderImage, L9, this);
+			}
+			
+			if (moverNumbers.contains(10)){
+			//76 TO 84
+			AffineTransform L10 = new AffineTransform();
+			L10.scale(0.2, 0.2); 
+			L10.translate(1875, 875 );
+			L10.rotate( Math.toRadians(135));
+			g2d.drawImage(ladderImage, L10, this);
+			}
 
 			//snake creation
 
@@ -421,22 +466,22 @@ public class SnakeLadderGame implements Runnable{
 				S8.rotate( Math.toRadians(225) );
 				g2d.drawImage(snakeImage, S8, this);
 			}
-			
+
 			if (moverNumbers.contains(9)){
-			//33 to 8
-			AffineTransform S9 = new AffineTransform();            	    	
-			S9.scale(0.7, 0.5); 
-			S9.translate(775, 1450 );
-			S9.rotate( Math.toRadians(-90) );
-			g2d.drawImage(snakeImage, S9, this);
+				//33 to 8
+				AffineTransform S9 = new AffineTransform();            	    	
+				S9.scale(0.7, 0.5); 
+				S9.translate(775, 1450 );
+				S9.rotate( Math.toRadians(-90) );
+				g2d.drawImage(snakeImage, S9, this);
 			}
 
 			if (moverNumbers.contains(10)){
-			AffineTransform S10 = new AffineTransform();            	    	
-			S10.scale(0.5, 0.25); 
-			S10.translate(205, 1450 );
-			S10.rotate( Math.toRadians(-90) );
-			g2d.drawImage(snakeImage, S10, this);
+				AffineTransform S10 = new AffineTransform();            	    	
+				S10.scale(0.5, 0.25); 
+				S10.translate(205, 1450 );
+				S10.rotate( Math.toRadians(-90) );
+				g2d.drawImage(snakeImage, S10, this);
 			}
 
 		}
@@ -603,9 +648,9 @@ public class SnakeLadderGame implements Runnable{
 				oneY = 175;
 				forward1 = false;
 			}
-			
+
 			//SNAKE FROM 33 TO 8
-			if (oneX > 535 && oneX < 555 && oneY == 475 && moverNumbers.contains(9)){
+			if (oneX > 535 && oneX < 565 && oneY == 475 && moverNumbers.contains(9)){
 				oneX = 545;
 				oneY = 700;
 				forward1 = true;
@@ -622,6 +667,35 @@ public class SnakeLadderGame implements Runnable{
 				oneY = 325;
 				forward1 = false;
 			}
+			
+			//LADDER FROM 4 TO 17
+			if (oneX > 240 && oneX < 260 && oneY == 700 && moverNumbers.contains(7)){
+				oneX = 250;
+				oneY = 625;
+				forward1 = false;
+			}
+			
+			//LADDER FROM 14 TO 29
+			if (oneX > 615 && oneX < 635 && oneY == 625 && moverNumbers.contains(8)){
+				oneX = 625;
+				oneY = 550;
+				forward1 = true;
+			}
+			
+			//LADDER FROM 69 TO 72
+			if (oneX > 615 && oneX < 635 && oneY == 250 && moverNumbers.contains(9)){
+				oneX = 625;
+				oneY = 175;
+				forward1 = false;
+			}
+			
+			//LADDER FROM 76 TO 84
+			if (oneX > 315 && oneX < 335 && oneY == 175 && moverNumbers.contains(10)){
+				oneX = 325;
+				oneY = 100;
+				forward1 = true;
+			}
+
 
 		}
 		System.out.println(oneX);
@@ -801,9 +875,9 @@ public class SnakeLadderGame implements Runnable{
 				twoY = 175;
 				forward2 = false;
 			}
-			
+
 			//SNAKE FROM 33 TO 8
-			if (twoX > 535 && twoX < 555 && twoY == 475 && moverNumbers.contains(9)){
+			if (twoX > 535 && twoX < 565 && twoY == 475 && moverNumbers.contains(9)){
 				twoX = 545;
 				twoY = 700;
 				forward2 = true;
@@ -814,7 +888,7 @@ public class SnakeLadderGame implements Runnable{
 				twoY = 325;
 				forward2 = false;
 			}
-			
+
 			//LADDER FROM 44 TO 56
 			if (twoX > 240 && twoX < 260 && twoY == 400 && moverNumbers.contains(6)){
 				twoX = 325;
@@ -822,6 +896,35 @@ public class SnakeLadderGame implements Runnable{
 				forward2 = false;
 			}
 			
+			//LADDER FROM 4 TO 17
+			if (twoX > 240 && twoX < 260 && twoY == 700 && moverNumbers.contains(7)){
+				twoX = 250;
+				twoY = 625;
+				forward2 = false;
+			}
+			
+			//LADDER FROM 14 TO 29
+			if (twoX > 615 && twoX < 635 && twoY == 625 && moverNumbers.contains(8)){
+				twoX = 625;
+				twoY = 550;
+				forward2 = true;
+			}
+			
+			//LADDER FROM 69 TO 72
+			if (twoX > 615 && twoX < 635 && twoY == 250 && moverNumbers.contains(9)){
+				twoX = 625;
+				twoY = 175;
+				forward2 = false;
+			}
+			
+			//LADDER FROM 76 TO 84
+			if (twoX > 315 && twoX < 335 && twoY == 175 && moverNumbers.contains(10)){
+				twoX = 325;
+				twoY = 100;
+				forward2 = true;
+			}
+
+
 
 		}
 		System.out.println(twoX);
@@ -1003,7 +1106,7 @@ public class SnakeLadderGame implements Runnable{
 			}
 
 			//SNAKE FROM 33 TO 8
-			if (threeX > 535 && threeX < 555 && threeY == 475 && moverNumbers.contains(9)){
+			if (threeX > 535 && threeX < 565 && threeY == 475 && moverNumbers.contains(9)){
 				threeX = 545;
 				threeY = 700;
 				forward3 = true;
@@ -1014,14 +1117,42 @@ public class SnakeLadderGame implements Runnable{
 				threeY = 325;
 				forward3 = false;
 			}
-			
+
 			//LADDER FROM 44 TO 56
 			if (threeX > 240 && threeX < 260 && threeY == 400 && moverNumbers.contains(6)){
 				threeX = 325;
 				threeY = 325;
 				forward3 = false;
 			}
+
+			//LADDER FROM 4 TO 17
+			if (threeX > 240 && threeX < 260 && threeY == 700 && moverNumbers.contains(7)){
+				threeX = 250;
+				threeY = 625;
+				forward3 = false;
+			}
 			
+			//LADDER FROM 14 TO 29
+			if (threeX > 615 && threeX < 635 && threeY == 625 && moverNumbers.contains(8)){
+				threeX = 625;
+				threeY = 550;
+				forward3 = true;
+			}
+			
+			//LADDER FROM 69 TO 72
+			if (threeX > 615 && threeX < 635 && threeY == 250 && moverNumbers.contains(9)){
+				threeX = 625;
+				threeY = 175;
+				forward3 = false;
+			}
+			
+			//LADDER FROM 76 TO 84
+			if (threeX > 315 && threeX < 335 && threeY == 175 && moverNumbers.contains(10)){
+				threeX = 325;
+				threeY = 100;
+				forward3 = true;
+			}
+
 		}
 		System.out.println(threeX);
 		System.out.println(threeY);
@@ -1207,7 +1338,7 @@ public class SnakeLadderGame implements Runnable{
 				}
 
 				//SNAKE FROM 33 TO 8
-				if (fourX > 535 && fourX < 555 && fourY == 475 && moverNumbers.contains(9)){
+				if (fourX > 535 && fourX < 565 && fourY == 475 && moverNumbers.contains(9)){
 					fourX = 545;
 					fourY = 700;
 					forward4 = true;
@@ -1218,14 +1349,42 @@ public class SnakeLadderGame implements Runnable{
 					fourY = 325;
 					forward4 = false;
 				}
-				
+
 				//LADDER FROM 44 TO 56
 				if (fourX > 240 && fourX < 260 && fourY == 400 && moverNumbers.contains(6)){
 					fourX = 325;
 					fourY = 325;
 					forward4 = false;
 				}
+				//LADDER FROM 4 TO 17
+				if (fourX > 240 && fourX < 260 && fourY == 700 && moverNumbers.contains(7)){
+					fourX = 250;
+					fourY = 625;
+					forward4 = false;
+				}
 				
+				//LADDER FROM 14 TO 29
+				if (fourX > 615 && fourX < 635 && fourY == 625 && moverNumbers.contains(8)){
+					fourX = 625;
+					fourY = 550;
+					forward4 = true;
+				}
+				
+				//LADDER FROM 69 TO 72
+				if (fourX > 615 && fourX < 635 && fourY == 250 && moverNumbers.contains(9)){
+					fourX = 625;
+					fourY = 175;
+					forward4 = false;
+				}
+				
+				//LADDER FROM 76 TO 84
+				if (fourX > 315 && fourX < 335 && fourY == 175 && moverNumbers.contains(10)){
+					fourX = 325;
+					fourY = 100;
+					forward4 = true;
+				}
+
+
 			}
 			System.out.println(fourX);
 			System.out.println(fourY);
