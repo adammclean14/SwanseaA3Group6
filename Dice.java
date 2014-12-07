@@ -24,7 +24,7 @@ public class Dice {
 	/**
 	 * Method to generate a new random number between the finals MIN_ROLL & MAX_ROLL
 	 * 
-	 * \return m_dieRoll
+	 * @return m_dieRoll
 	 * 
 	 */
 	public static int getNewRoll(){
@@ -35,7 +35,7 @@ public class Dice {
 	/**
 	 * A Method to return the previous value stored, this method should not be called before a get
 	 * 
-	 * \return m_dieRoll
+	 * @return m_dieRoll
 	 * 
 	 */
 	
