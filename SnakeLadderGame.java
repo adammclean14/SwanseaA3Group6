@@ -11,6 +11,13 @@ import java.util.Random;
 import javax.swing.JButton;
 public class SnakeLadderGame implements Runnable{
 
+
+	//Ladder variables
+	
+
+
+
+
 	JFrame frame;
 	JFrame frame2;
 	DrawPanel drawPanel;
@@ -47,7 +54,6 @@ public class SnakeLadderGame implements Runnable{
 	ArrayList<Integer> moverNumbers;
 	JLabel nameLbl;
 	LabelTimer timeLbl;
-
 	//gets all this info from game launcher
 	public SnakeLadderGame(int numberOfMovers, ArrayList<Player> players){
 		playersList = players;
@@ -60,7 +66,7 @@ public class SnakeLadderGame implements Runnable{
 
 	private void go() {
 
-		frame = new JFrame("Test");
+		frame = new JFrame("Snakes And Ladders Board");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		drawPanel = new DrawPanel();
 		frame.getContentPane().add(drawPanel);
@@ -68,7 +74,7 @@ public class SnakeLadderGame implements Runnable{
 		frame.setSize(755, 775);
 		frame.setLocation(500,0);
 
-		frame2 = new JFrame("MENU FRAME");
+		frame2 = new JFrame("MENU");
 		frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame2.setVisible(true);
 		frame2.setLayout(null);
@@ -91,7 +97,8 @@ public class SnakeLadderGame implements Runnable{
 		nameLbl = new JLabel();
 		nameLbl.setBounds(180,0,200,50);
 		//nameLbl.setText("Default");
-		
+
+
 		timeLbl = new LabelTimer();
 		timeLbl.setBounds(180,10,80,100);
 		timeLbl.timerStart();
@@ -105,78 +112,86 @@ public class SnakeLadderGame implements Runnable{
 		rollBtn.addMouseListener(new MouseAdapter() {
 			int i = 0;
 			public void mousePressed(MouseEvent e){
+				if (wonGame == false){
+					if (i % 2 == 0){
+						rollBtn.setText("End Roll");
+						java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
+						diceLbl.setIcon(new ImageIcon(gif));
+						i = i + 1;
 
-				if (i % 2 == 0){
-					rollBtn.setText("End Roll");
-					java.awt.Image gif = new ImageIcon (this.getClass().getResource("/diceBig.gif")).getImage();
-					diceLbl.setIcon(new ImageIcon(gif));
-					i = i + 1;
+						if(turn < numberOfPlayers){
+							nameLbl.setText("Turn: " + playersList.get(turn).getName());
+							nameLbl.setForeground(playersList.get(turn).getColor());
+						}
+						else{
+							nameLbl.setText("Turn: " + playersList.get(0).getName());
+							nameLbl.setForeground(playersList.get(0).getColor());						
+						}
 
-						nameLbl.setText("Turn: " + playersList.get(turn).getName());
-						nameLbl.setForeground(playersList.get(turn).getColor());
-					
 
+
+					}
+					else{
+
+						rollBtn.setText("Start Roll");
+						String thing = Dice.getNewRoll() +"dice.gif";
+						java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
+						diceLbl.setIcon(new ImageIcon(image));
+
+						i = i -1;
+
+						//System.out.println("turn number" + turn);
+						Thread one = new Thread() {
+							public void run() {
+								if (numberOfPlayers == turn){
+									turn = 0;
+								}
+
+
+								if (turn == 3 && numberOfPlayers > turn){
+									//Player 4
+									//nameLbl.setText("Turn: " + playersList.get(3).getName());
+									//nameLbl.setForeground(playersList.get(3).getColor());
+									moveIt4(Dice.getPrevValue());
+									turn = 0;
+
+								}
+								else if (turn == 0 && numberOfPlayers > turn){
+									//Player 1
+									//nameLbl.setText("Turn: " + playersList.get(0).getName());
+									//nameLbl.setForeground(playersList.get(0).getColor());
+									moveIt(Dice.getPrevValue());
+									turn ++;
+								}
+								else if (turn == 2 && numberOfPlayers > turn){
+									//Player 3
+									//nameLbl.setText("Turn: " + playersList.get(2).getName());
+									//nameLbl.setForeground(playersList.get(2).getColor());
+									moveIt3(Dice.getPrevValue());
+									turn++;
+								}
+
+								else if (turn == 1 && numberOfPlayers > turn){
+									//Player 2
+									//nameLbl.setText("Turn: " + playersList.get(1).getName());
+									//nameLbl.setForeground(playersList.get(1).getColor());
+									moveIt2(Dice.getPrevValue());
+									turn ++;
+									//turn = -1;
+								}
+
+
+
+							}  
+						};
+						one.start();
+
+					}
 
 				}
-				else{
-
-					rollBtn.setText("Start Roll");
-					String thing = Dice.getNewRoll() +"dice.gif";
-					java.awt.Image image = new ImageIcon (this.getClass().getResource(thing)).getImage();
-					diceLbl.setIcon(new ImageIcon(image));
-
-					i = i -1;
-
-					System.out.println("turn number" + turn);
-					Thread one = new Thread() {
-						public void run() {
-							if (numberOfPlayers == turn){
-								turn = 0;
-							}
-							
-
-							if (turn == 3 && numberOfPlayers > turn){
-								//Player 4
-								//nameLbl.setText("Turn: " + playersList.get(3).getName());
-								//nameLbl.setForeground(playersList.get(3).getColor());
-								moveIt4(Dice.getPrevValue());
-								turn = 0;
-
-							}
-							else if (turn == 0 && numberOfPlayers > turn){
-								//Player 1
-								//nameLbl.setText("Turn: " + playersList.get(0).getName());
-								//nameLbl.setForeground(playersList.get(0).getColor());
-								moveIt(Dice.getPrevValue());
-								turn ++;
-							}
-							else if (turn == 2 && numberOfPlayers > turn){
-								//Player 3
-								//nameLbl.setText("Turn: " + playersList.get(2).getName());
-								//nameLbl.setForeground(playersList.get(2).getColor());
-								moveIt3(Dice.getPrevValue());
-								turn++;
-							}
-
-							else if (turn == 1 && numberOfPlayers > turn){
-								//Player 2
-								//nameLbl.setText("Turn: " + playersList.get(1).getName());
-								//nameLbl.setForeground(playersList.get(1).getColor());
-								moveIt2(Dice.getPrevValue());
-								turn ++;
-								//turn = -1;
-							}
-							
-							
-							
-						}  
-					};
-					one.start();
-
-				}
-
 			}
 		});
+
 
 		//moveIt(79);
 	}
@@ -322,99 +337,137 @@ public class SnakeLadderGame implements Runnable{
 			java.awt.Image snakeImage = new ImageIcon (this.getClass().getResource("/snake.gif")).getImage();  
 
 			//Ladder creation
+			//makes these variables private when we move to the top
+			
+			final float m_ladderSmallScalar = (float) 0.2;
+			final float m_ladderLargeScalar = (float) 0.4;
 
+			final float m_ladderRotationRight = (float) Math.toRadians(45);
+			final float m_ladderRotationLeft = (float) Math.toRadians(135);
+			final float m_ladderRotationUpright = 0;
+			
+			AffineTransform m_ladderOne;
+			AffineTransform m_ladderTwo;
+			AffineTransform m_ladderThree;
+			AffineTransform m_ladderFour;
+			AffineTransform m_ladderFive;
+			AffineTransform m_ladderSix;
+			AffineTransform m_ladderSeven;
+			AffineTransform m_ladderEight;
+			AffineTransform m_ladderNine;
+			AffineTransform m_ladderTen;
+			
+			final int m_ladderOneTranslateX = 800;
+			final int m_ladderOneTranslateY = 80;
+			final int m_ladderTwoTranslateX = 2600;
+			final int m_ladderTwoTranslateY = 1600;
+			final int m_ladderThreeTranslateX = 2650;
+			final int m_ladderThreeTranslateY = 1600;
+			final int m_ladderFourTranslateX = 1525;
+			final int m_ladderFourTranslateY = 1000;
+			final int m_ladderFiveTranslateX = 1250;
+			final int m_ladderFiveTranslateY = 1150;
+			final int m_ladderSixTranslateX =1650;
+			final int m_ladderSixTranslateY =1550;
+			final int m_ladderSevenTranslateX =1150;
+			final int m_ladderSevenTranslateY =3050;
+			final int m_ladderEightTranslateX = 3050;
+			final int m_ladderEightTranslateY = 2700;
+
+			
+			
 			//82 TO 98
 			if (moverNumbers.contains(1))
 			{
-				AffineTransform L1 = new AffineTransform();
-				L1.scale(0.2, 0.2); 
-				L1.translate(800, 80);
-				L1.rotate( Math.toRadians(45) );
-				g2d.drawImage(ladderImage, L1, this);
+				m_ladderOne = new AffineTransform();
+				m_ladderOne.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderOne.translate(m_ladderOneTranslateX, m_ladderOneTranslateY);
+				m_ladderOne.rotate( m_ladderRotationRight);
+				g2d.drawImage(ladderImage, m_ladderOne, this);
 			}
 
 
 			//54 to 66
 			if (moverNumbers.contains(2)){
-				AffineTransform L2 = new AffineTransform();            	    	
-				L2.scale(0.2, 0.2); 
-				L2.translate(2600, 1600 );
-				L2.rotate( Math.toRadians(135) );
-				g2d.drawImage(ladderImage, L2, this);
+				m_ladderTwo = new AffineTransform();            	    	
+				m_ladderTwo.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderTwo.translate(m_ladderTwoTranslateX, m_ladderTwoTranslateY );
+				m_ladderTwo.rotate( m_ladderRotationLeft );
+				g2d.drawImage(ladderImage, m_ladderTwo, this);
 			}
 
 			if (moverNumbers.contains(3)){
 
 				//48 to 53
-				AffineTransform L3 = new AffineTransform();            	    	
-				L3.scale(0.2, 0.2); 
-				L3.translate(2650, 1600 );
-				L3.rotate( Math.toRadians(0) );
-				g2d.drawImage(ladderImage, L3, this);
+				m_ladderThree = new AffineTransform();            	    	
+				m_ladderThree.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderThree.translate(m_ladderThreeTranslateX, m_ladderThreeTranslateY );
+				m_ladderThree.rotate(m_ladderRotationUpright);
+				g2d.drawImage(ladderImage, m_ladderThree, this);
 			}
 
 
 			if (moverNumbers.contains(4)){
 				//16 to 45
-				AffineTransform L4 = new AffineTransform();            	    	
-				L4.scale(0.2, 0.4); 
-				L4.translate(1525, 1000 );
-				L4.rotate( Math.toRadians(0) );
-				g2d.drawImage(ladderImage, L4, this);
+				m_ladderFour = new AffineTransform();            	    	
+				m_ladderFour.scale(m_ladderSmallScalar, m_ladderLargeScalar); 
+				m_ladderFour.translate(m_ladderFourTranslateX, m_ladderFourTranslateY );
+				m_ladderFour.rotate(m_ladderRotationUpright);
+				g2d.drawImage(ladderImage, m_ladderFour, this);
 			}
 
 			if (moverNumbers.contains(5)){
 				//58 to 64
-				AffineTransform L5 = new AffineTransform();
-				L5.scale(0.2, 0.2); 
-				L5.translate(1250, 1150 );
-				L5.rotate( Math.toRadians(45));
-				g2d.drawImage(ladderImage, L5, this);
+				m_ladderFive = new AffineTransform();
+				m_ladderFive.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderFive.translate(m_ladderFiveTranslateX, m_ladderFiveTranslateY );
+				m_ladderFive.rotate( m_ladderRotationRight);
+				g2d.drawImage(ladderImage, m_ladderFive, this);
 			}
 
 			if (moverNumbers.contains(6)){
 				//44 TO 56
-				AffineTransform L6 = new AffineTransform();
-				L6.scale(0.2, 0.2); 
-				L6.translate(1650, 1550 );
-				L6.rotate( Math.toRadians(45));
-				g2d.drawImage(ladderImage, L6, this);
+				m_ladderSix = new AffineTransform();
+				m_ladderSix.scale(m_ladderSmallScalar,m_ladderSmallScalar); 
+				m_ladderSix.translate(m_ladderSixTranslateX, m_ladderSixTranslateY );
+				m_ladderSix.rotate(m_ladderRotationRight);
+				g2d.drawImage(ladderImage, m_ladderSix, this);
 			}
-			
+
 			if (moverNumbers.contains(7)){
-			//4 to 17
-			AffineTransform L7 = new AffineTransform();
-			L7.scale(0.2, 0.2); 
-			L7.translate(1150, 3050 );
-			L7.rotate( Math.toRadians(0));
-			g2d.drawImage(ladderImage, L7, this);
+				//4 to 17
+				m_ladderSeven = new AffineTransform();
+				m_ladderSeven.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderSeven.translate(m_ladderSevenTranslateX, m_ladderSevenTranslateY );
+				m_ladderSeven.rotate( m_ladderRotationUpright);
+				g2d.drawImage(ladderImage, m_ladderSeven, this);
 			}
-			
+
 			if (moverNumbers.contains(8)){
-			//12 TO 29
-			AffineTransform L8 = new AffineTransform();
-			L8.scale(0.2, 0.2); 
-			L8.translate(3050, 2700 );
-			L8.rotate( Math.toRadians(0));
-			g2d.drawImage(ladderImage, L8, this);
+				//12 TO 29
+				m_ladderEight = new AffineTransform();
+				m_ladderEight.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderEight.translate(m_ladderEightTranslateX, m_ladderEightTranslateY );
+				m_ladderEight.rotate( m_ladderRotationUpright);
+				g2d.drawImage(ladderImage, m_ladderEight, this);
 			}
-			
+
 			if (moverNumbers.contains(9)){
-			//69 TO 72
-			AffineTransform L9 = new AffineTransform();
-			L9.scale(0.2, 0.2); 
-			L9.translate(3050, 800 );
-			L9.rotate( Math.toRadians(0));
-			g2d.drawImage(ladderImage, L9, this);
+				//69 TO 72
+				m_ladderNine = new AffineTransform();
+				m_ladderNine.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderNine.translate(3050, 800 );
+				m_ladderNine.rotate( m_ladderRotationUpright);
+				g2d.drawImage(ladderImage, m_ladderNine, this);
 			}
-			
+
 			if (moverNumbers.contains(10)){
-			//76 TO 84
-			AffineTransform L10 = new AffineTransform();
-			L10.scale(0.2, 0.2); 
-			L10.translate(1875, 875 );
-			L10.rotate( Math.toRadians(135));
-			g2d.drawImage(ladderImage, L10, this);
+				//76 TO 84
+				m_ladderTen = new AffineTransform();
+				m_ladderTen.scale(m_ladderSmallScalar, m_ladderSmallScalar); 
+				m_ladderTen.translate(1875, 875 );
+				m_ladderTen.rotate( m_ladderRotationUpright);
+				g2d.drawImage(ladderImage, m_ladderTen, this);
 			}
 
 			//snake creation
@@ -557,9 +610,12 @@ public class SnakeLadderGame implements Runnable{
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( oneX > 20 && oneX < 45 && oneY == 25 ){
-				System.out.println("Won Game");
+				//System.out.println("Won Game");
 				oneX = 25;
+				//timeLbl.timerStop();
 				wonGame = true;
+
+				wonGameStuff(0);
 			}
 
 
@@ -579,9 +635,7 @@ public class SnakeLadderGame implements Runnable{
 
 			//LADDER FROM 16 to 45
 			if ( oneX > 315 && oneX < 335 && oneY == 625 && moverNumbers.contains(4)){
-				while (oneY > 400){
-					oneY--;
-				}
+				oneY = 400;
 				forward1 = true;
 			}
 			//SNAKE FROM 43 TO 3
@@ -691,39 +745,39 @@ public class SnakeLadderGame implements Runnable{
 				oneY = 325;
 				forward1 = false;
 			}
-			
+
 			//LADDER FROM 4 TO 17
 			if (oneX > 240 && oneX < 260 && oneY == 700 && moverNumbers.contains(7)){
 				oneX = 250;
 				oneY = 625;
 				forward1 = false;
 			}
-			
+
 			//LADDER FROM 14 TO 29
 			if (oneX > 615 && oneX < 635 && oneY == 625 && moverNumbers.contains(8)){
 				oneX = 625;
 				oneY = 550;
 				forward1 = true;
 			}
-			
+
 			//LADDER FROM 69 TO 72
 			if (oneX > 615 && oneX < 635 && oneY == 250 && moverNumbers.contains(9)){
 				oneX = 625;
 				oneY = 175;
 				forward1 = false;
 			}
-			
+
 			//LADDER FROM 76 TO 84
 			if (oneX > 315 && oneX < 335 && oneY == 175 && moverNumbers.contains(10)){
-				oneX = 325;
+				oneX = 250;
 				oneY = 100;
 				forward1 = true;
 			}
 
 
 		}
-		System.out.println(oneX);
-		System.out.println(oneY);
+		//System.out.println(oneX);
+		//System.out.println(oneY);
 
 	}
 
@@ -784,9 +838,11 @@ public class SnakeLadderGame implements Runnable{
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( twoX > 20 && twoX < 45 && twoY == 25 ){
-				System.out.println("Won Game");
+				//System.out.println("Won Game");
 				twoX = 25;
 				wonGame = true;
+				//timeLbl.timerStop();
+				wonGameStuff(1);
 			}
 
 
@@ -806,10 +862,8 @@ public class SnakeLadderGame implements Runnable{
 
 			//LADDER FROM 16 to 45
 			if ( twoX > 315 && twoX < 335 && twoY == 625 && moverNumbers.contains(4)){
-				while (twoY > 400){
-					twoY--;
-				}
-				forward1 = true;
+				twoY = 400;
+				forward2 = true;
 			}
 			//SNAKE FROM 43 TO 3
 			if (twoX > 160 && twoX < 180 && twoY == 400 && moverNumbers.contains(1)) {
@@ -919,31 +973,31 @@ public class SnakeLadderGame implements Runnable{
 				twoY = 325;
 				forward2 = false;
 			}
-			
+
 			//LADDER FROM 4 TO 17
 			if (twoX > 240 && twoX < 260 && twoY == 700 && moverNumbers.contains(7)){
 				twoX = 250;
 				twoY = 625;
 				forward2 = false;
 			}
-			
+
 			//LADDER FROM 14 TO 29
 			if (twoX > 615 && twoX < 635 && twoY == 625 && moverNumbers.contains(8)){
 				twoX = 625;
 				twoY = 550;
 				forward2 = true;
 			}
-			
+
 			//LADDER FROM 69 TO 72
 			if (twoX > 615 && twoX < 635 && twoY == 250 && moverNumbers.contains(9)){
 				twoX = 625;
 				twoY = 175;
 				forward2 = false;
 			}
-			
+
 			//LADDER FROM 76 TO 84
 			if (twoX > 315 && twoX < 335 && twoY == 175 && moverNumbers.contains(10)){
-				twoX = 325;
+				twoX = 250;
 				twoY = 100;
 				forward2 = true;
 			}
@@ -951,8 +1005,8 @@ public class SnakeLadderGame implements Runnable{
 
 
 		}
-		System.out.println(twoX);
-		System.out.println(twoY);
+		//System.out.println(twoX);
+		//System.out.println(twoY);
 
 	}
 
@@ -1013,10 +1067,10 @@ public class SnakeLadderGame implements Runnable{
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( threeX > 20 && threeX < 45 && threeY == 25 ){
-				System.out.println("Won Game");
+				//System.out.println("Won Game");
 				threeX = 25;
 				wonGame = true;
-			}
+				wonGameStuff(2);			}
 
 
 			try{
@@ -1035,9 +1089,7 @@ public class SnakeLadderGame implements Runnable{
 
 			//LADDER FROM 16 to 45
 			if ( threeX > 315 && threeX < 335 && threeY == 625 && moverNumbers.contains(4)){
-				while (threeY > 400){
-					threeY--;
-				}
+				threeY = 400;
 				forward3 = true;
 			}
 			//SNAKE FROM 43 TO 3
@@ -1155,31 +1207,31 @@ public class SnakeLadderGame implements Runnable{
 				threeY = 625;
 				forward3 = false;
 			}
-			
+
 			//LADDER FROM 14 TO 29
 			if (threeX > 615 && threeX < 635 && threeY == 625 && moverNumbers.contains(8)){
 				threeX = 625;
 				threeY = 550;
 				forward3 = true;
 			}
-			
+
 			//LADDER FROM 69 TO 72
 			if (threeX > 615 && threeX < 635 && threeY == 250 && moverNumbers.contains(9)){
 				threeX = 625;
 				threeY = 175;
 				forward3 = false;
 			}
-			
+
 			//LADDER FROM 76 TO 84
 			if (threeX > 315 && threeX < 335 && threeY == 175 && moverNumbers.contains(10)){
-				threeX = 325;
+				threeX = 250;
 				threeY = 100;
 				forward3 = true;
 			}
 
 		}
-		System.out.println(threeX);
-		System.out.println(threeY);
+		//System.out.println(threeX);
+		//System.out.println(threeY);
 
 	}
 
@@ -1241,9 +1293,10 @@ public class SnakeLadderGame implements Runnable{
 
 			//CHECKS TO SEE IF GAME HAS BEEN WON
 			if ( fourX > 20 && fourX < 45 && fourY == 25 ){
-				System.out.println("Won Game");
+				//System.out.println("Won Game");
 				fourX = 25;
 				wonGame = true;
+				wonGameStuff(3);	
 			}
 
 
@@ -1267,9 +1320,7 @@ public class SnakeLadderGame implements Runnable{
 
 				//LADDER FROM 16 to 45
 				if ( fourX > 315 && fourX < 335 && fourY == 625 && moverNumbers.contains(4)){
-					while (fourY > 400){
-						fourY--;
-					}
+					fourY = 400;
 					forward4 = true;
 				}
 				//SNAKE FROM 43 TO 3
@@ -1386,33 +1437,49 @@ public class SnakeLadderGame implements Runnable{
 					fourY = 625;
 					forward4 = false;
 				}
-				
+
 				//LADDER FROM 14 TO 29
 				if (fourX > 615 && fourX < 635 && fourY == 625 && moverNumbers.contains(8)){
 					fourX = 625;
 					fourY = 550;
 					forward4 = true;
 				}
-				
+
 				//LADDER FROM 69 TO 72
 				if (fourX > 615 && fourX < 635 && fourY == 250 && moverNumbers.contains(9)){
 					fourX = 625;
 					fourY = 175;
 					forward4 = false;
 				}
-				
+
 				//LADDER FROM 76 TO 84
 				if (fourX > 315 && fourX < 335 && fourY == 175 && moverNumbers.contains(10)){
-					fourX = 325;
+					fourX = 250;
 					fourY = 100;
 					forward4 = true;
 				}
 
 
 			}
-			System.out.println(fourX);
-			System.out.println(fourY);
+			//System.out.println(fourX);
+			//System.out.println(fourY);
 		}
+
+
+	}
+	public void wonGameStuff(int PlayerInt){
+		//Winning Stuff
+		java.awt.Image winGif = new ImageIcon (this.getClass().getResource("/funnyWin.gif")).getImage();
+		diceLbl.setIcon(new ImageIcon(winGif));
+		diceLbl.setBounds(100,25,300,300);
+		rollBtn.setVisible(false);
+		nameLbl.setBounds(100,0,500,50);
+		nameLbl.setText( playersList.get(PlayerInt).getName() + " WINS!!!");
+		nameLbl.setFont(new Font(Font.SANS_SERIF, 32, 50));
+		timeLbl.setVisible(false);
+		frame2.setSize(500,350);
+		frame2.setLocation(600, 250);
+		frame2.setBackground(Color.LIGHT_GRAY);
 	}
 
 }
