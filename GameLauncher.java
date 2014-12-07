@@ -29,7 +29,7 @@
 		/* Set values for the game. These are public so they can be accessed by other classes. */
 		public final static int MAX_NUMBER_OF_MOVERS = 5;
 		public final static int MIN_NUMBER_OF_MOVERS = 1;
-		public final static int DEFAULT_NUMBER_OF_MOVERS = 1;
+		public final static int DEFAULT_NUMBER_OF_MOVERS = 3;
 		public final static int MAX_NUMBER_OF_SNAKESLADDERS_PLAYERS = 4;
 		public final static int MIN_NUMBER_OF_SNAKESLADDERS_PLAYERS = 1;
 		public final static int DEFAULT_NUMBER_OF_PLAYERS = 2;
